@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken');
-const keys = require('../../config/keys');
+const jwt = require("jsonwebtoken");
+const keys = require("../config/keys");
 
 module.exports = async (req, res, next) => {
   // Get token from header
-  const token = await req.header('x-auth-token');
+  const token = await req.header("x-auth-token");
 
   if (!token) {
-    console.log('not authorized');
+    console.log("not authorized");
   }
 
   // Verify token
@@ -14,11 +14,10 @@ module.exports = async (req, res, next) => {
     const decoded = jwt.verify(token, keys.jwtSecret);
 
     req.user = decoded.user; // Now req.user will be acessed from anywhere
-    
-    next();
 
+    next();
   } catch (err) {
-    console.log('error from token: ',err.message)
-    return res.status(401).json({ errors: [{ msg: 'Token is not valid' }] });
+    console.log("error from token: ", err.message);
+    return res.status(401).json({ errors: [{ msg: "Token is not valid" }] });
   }
 };

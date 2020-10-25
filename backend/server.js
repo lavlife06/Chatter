@@ -1,11 +1,11 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const keys = require('./config/keys')
-const connectDB = require('./config/db');
-const User = require('./backend/models/User');
-const POST = require('./backend/models/Post');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const keys = require("./config/keys");
+const connectDB = require("./config/db");
+const User = require("./models/User");
+// const POST = require("./models/Post");
 const app = express();
 
 // Implementing cors
@@ -17,20 +17,14 @@ connectDB();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-require('./backend/routes/authRoutes/signup')(app);
-require('./backend/routes/authRoutes/login')(app);
-require('./backend/routes/authRoutes/googleAuth')(app);
-require('./backend/routes/profilepostsRoutes/profile')(app);
-require('./backend/routes/profilepostsRoutes/post')(app);
-require('./backend/routes/event')(app);
-require('./backend/routes/hostProfileRoutes/hostProfile')(app);
+require("./routes/signup")(app);
+require("./routes/login")(app);
 
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => {
-  console.log('Listen to Port to 3000');
+  console.log("Listen to Port to 3000");
 });
-
 
 // const io = require('socket.io')(server);
 
@@ -42,24 +36,24 @@ const server = app.listen(PORT, () => {
 //     if(liked){
 //       const decoded = jwt.verify(token, keys.jwtSecret);
 //       const user = decoded.user;
-      
+
 //       try {
 //         let post = await POST.findById(postId);
 //         // Check if the post has already been liked
 //         if (
 //           post.likes.filter((like) => like.user.toString() === user.id).length > 0
 //         ) {
-          
+
 //           post.likes = post.likes.filter((like) => like.user.toString() !== user.id);
 //           // Save in our global post
 //           await post.save();
-      
+
 //           socket.emit('changed like', post.likes);
 //         }
 //         else{
-          
+
 //           post.likes.push({ user: user.id, name: user.name });
-          
+
 //           await post.save();
 
 //           socket.emit('changed like', post.likes);
@@ -68,6 +62,6 @@ const server = app.listen(PORT, () => {
 //         console.error(err);
 //       }
 //     }
-    
+
 //   });
 // });
