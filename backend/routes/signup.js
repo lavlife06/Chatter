@@ -11,7 +11,7 @@ module.exports = (app) => {
     "/",
     // We want the info of user accordinf to the given below condition
     async (req, res) => {
-      let { name, email, password } = req.body;
+      let { name, email, password, uuid } = req.body;
 
       // Clear the spce between user firstname and lastname
       name = name.trim().split(" ").join("");
@@ -36,8 +36,8 @@ module.exports = (app) => {
           name,
           email,
           password,
-          avatar,
           tag,
+          uuid,
         });
 
         await user.save(); // In atlas data will be saved
@@ -46,6 +46,10 @@ module.exports = (app) => {
         let payload = {
           user: {
             id: user._id,
+            name,
+            email,
+            uuid,
+            tag,
           },
         };
 
