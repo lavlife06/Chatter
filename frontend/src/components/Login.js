@@ -1,43 +1,42 @@
 import React, { useRef } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-// import { v4 as uuidV4 } from "uuid";
+import { Link } from "react-router-dom";
+import { login } from "../reduxstuff/actions/auth";
 
-export default function Login({ onIdSubmit }) {
-  const idRef = useRef();
+const Login = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    onIdSubmit(idRef.current.value);
+    login({
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    });
   }
-
-  // function createNewId() {
-  //   onIdSubmit(uuidV4());
-  // }
 
   return (
     <Container
-      className="align-items-center d-flex"
-      style={{ height: "100vh" }}
+      className="align-items-center "
+      style={{ height: "100vh", marginTop: "10%" }}
     >
       <Form onSubmit={handleSubmit} className="w-100">
         <Form.Group>
-          <Form.Label>Enter Your Id</Form.Label>
-          <Form.Control type="text" ref={idRef} required />
+          <Form.Label>Enter Your Email</Form.Label>
+          <Form.Control type="email" ref={emailRef} required />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Enter Your Password</Form.Label>
+          <Form.Control type="password" ref={passwordRef} required />
         </Form.Group>
         <Button type="submit" className="mr-2">
           Login
         </Button>
-        <Button
-          onClick={
-            // createNewId
-            console.log("hii")
-          }
-          variant="secondary"
-        >
-          Create A New Id
-        </Button>
       </Form>
+      <p>
+        Don't have an account? <Link to="/signup">Signup</Link>
+      </p>
     </Container>
   );
-}
+};
+export default Login;
