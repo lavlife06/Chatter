@@ -8,7 +8,7 @@ const User = require("../models/User");
 // access Public
 module.exports = (app) => {
   app.post(
-    "/",
+    "/api/signup",
     // We want the info of user accordinf to the given below condition
     async (req, res) => {
       let { name, email, password, uuid } = req.body;

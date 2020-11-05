@@ -5,7 +5,7 @@ const keys = require("../config/keys");
 const User = require("../models/User");
 
 module.exports = (app) => {
-  app.get("/", verify, async (req, res) => {
+  app.get("/api/login", verify, async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select("-password");
       res.json(user);
@@ -15,7 +15,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post("/", async (req, res) => {
+  app.post("/api/login", async (req, res) => {
     let { email, password } = req.body;
     try {
       // let user = await User.findOne({ email: email })

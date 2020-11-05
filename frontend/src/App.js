@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import setAuthToken from "./reduxstuff/utils/setAuthToken";
 import store from "./reduxstuff/store";
 import { loadUser } from "./reduxstuff/actions/auth";
+import Navbar from "./components/Navbar";
+import Main from "./components/Main";
 
 const App = () => {
   useEffect(() => {
@@ -18,17 +20,16 @@ const App = () => {
   return (
     <Router>
       <Fragment>
-        {/* <Navbar /> */}
+        <Navbar />
         {/* <Route exact path="/" component={Landing} /> */}
-        <section className="container">
-          {/* <Alert /> */}
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Register} />
-            {/* <Route exact path="/profile/:id" component={Profile} /> */}
-            {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
-          </Switch>
-        </section>
+        {/* <Alert /> */}
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Register} />
+          <Route exact path="/main" component={Main} />
+          {/* <Route exact path="/profile/:id" component={Profile} /> */}
+          {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
+        </Switch>
       </Fragment>
     </Router>
   );
