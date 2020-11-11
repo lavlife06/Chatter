@@ -33,18 +33,16 @@ module.exports = (app) => {
       let payload = {
         user: {
           id: user._id,
+          name: user.name,
+          email: user.email,
+          tag: user.tag,
         },
       };
 
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.header("x-auth-token", token).json({ token });
-        }
-      );
+      jwt.sign(payload, keys.jwtSecret, { expiresIn: 360000 }, (err, token) => {
+        if (err) throw err;
+        res.header("x-auth-token", token).json({ token });
+      });
     } catch (err) {
       res.status(500).send("Server Error");
       console.error(err.message);

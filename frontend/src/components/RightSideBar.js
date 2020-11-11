@@ -1,4 +1,3 @@
-import { Button } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 
 const RightSideBar = ({ selectedUser }) => {
@@ -24,14 +23,14 @@ const RightSideBar = ({ selectedUser }) => {
             setChatText(e.target.value);
           }}
         />
-        <Button
+        <input
+          type="submit"
+          value="Submit"
           onClick={() => {
             setChat([...chat, chattext]);
             setChatText("");
           }}
-        >
-          Submit
-        </Button>
+        />
       </div>
     </Fragment>
   );

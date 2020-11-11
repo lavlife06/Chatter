@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import RightSideBar from "./RightSideBar";
-import SearchIcon from "@material-ui/icons/Search";
-import { Button } from "@material-ui/core";
 import io from "socket.io-client";
 
 let socket;
@@ -24,7 +22,7 @@ const Main = () => {
 
   useEffect(() => {
     // socket = io("localhost:5000");
-    socket.current.emit("joined/", { user: "lav" }, () => {});
+    socket.current.emit("joined/", () => {});
 
     return () => {
       socket.current.emit("disconnect");
@@ -52,7 +50,6 @@ const Main = () => {
       >
         <div>
           <div className>
-            <SearchIcon />
             <input
               type="search"
               name="search"
@@ -70,14 +67,13 @@ const Main = () => {
         <div>
           {searchedUser.map((user) => (
             <div>
-              <Button
+              <input
+                type="submit"
+                value={user}
                 onClick={() => {
                   setSelectedUser(user);
                 }}
-              >
-                {" "}
-                {user}
-              </Button>
+              />
             </div>
           ))}
         </div>

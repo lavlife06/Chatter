@@ -15,6 +15,7 @@ import setAuthToken from "../utils/setAuthToken";
 //  Load User
 export const loadUser = () => async (dispatch) => {
   // set header
+  console.log(localStorage.token);
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -35,16 +36,14 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Regiseter user
-export const register = ({ name, email, password, uuid }) => async (
-  dispatch
-) => {
+export const register = (name, email, password) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ name, email, password, uuid });
+  const body = JSON.stringify({ name, email, password });
 
   try {
     const res = await axios.post(
@@ -58,6 +57,7 @@ export const register = ({ name, email, password, uuid }) => async (
       payload: res.data,
     });
     dispatch(loadUser());
+    dispatch(createProfile());
   } catch (err) {
     console.log(err);
     // const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
@@ -108,6 +108,22 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({
       type: LOGIN_FAIL,
     });
+  }
+};
+
+// Regiseter user
+export const createProfile = () => async (dispatch) => {
+  try {
+    const res = await axios.post("http://127.0.0.1:5000/api/signup");
+  } catch (err) {
+    console.log(err);
+    // const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
+
+    // if (errors) {
+    //   errors.forEach((error) => {
+    //     dispatch(setAlert(error.msg, "danger"));
+    //   });
+    // }
   }
 };
 

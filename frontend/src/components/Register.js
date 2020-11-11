@@ -1,49 +1,86 @@
-import React, { useRef } from "react";
-import { Container, Form, Button } from "react-bootstrap";
-import { v4 as uuidV4 } from "uuid";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { register } from "../reduxstuff/actions/auth";
-const Register = () => {
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+import { useDispatch, useSelector } from "react-redux";
 
-  function handleSubmit(e) {
+const Register = () => {
+  const [formData, setformData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    register({
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      uuid: uuidV4(),
+    dispatch(register(formData.name, formData.email, formData.password));
+    setformData({
+      name: "",
+      email: "",
+      password: "",
     });
+  };
+
+  const changeHandler = (e) => {
+    setformData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to="/main" />;
   }
 
   return (
-    <Container
-      className="align-items-center "
-      style={{ height: "100vh", marginTop: "10%" }}
+    <div
+      style={{
+        marginRight: "20%",
+        marginLeft: "20%",
+        borderRadius: "5px",
+        backgroundColor: "#f2f2f2",
+        padding: "20px",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
-      <Form onSubmit={handleSubmit} className="w-100">
-        <Form.Group>
-          <Form.Label>Enter Your Name</Form.Label>
-          <Form.Control type="text" ref={nameRef} required />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Enter Your Email</Form.Label>
-          <Form.Control type="email" ref={emailRef} required />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Enter Your Password</Form.Label>
-          <Form.Control type="password" ref={passwordRef} required />
-        </Form.Group>
-        <Button type="submit" className="mr-2">
-          Singup
-        </Button>
-      </Form>
+      <form action="form" onSubmit={(e) => handleSubmit(e)}>
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Your name.."
+          value={formData.name}
+          onChange={(e) => changeHandler(e)}
+          style={{ width: "100%" }}
+        />
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Your email.."
+          value={formData.email}
+          onChange={(e) => changeHandler(e)}
+          style={{ width: "100%" }}
+        />
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Your password..."
+          value={formData.password}
+          onChange={(e) => changeHandler(e)}
+          style={{ width: "100%", marginBottom: "12px" }}
+        />
+        <input type="submit" value="SignUp" />
+      </form>
       <p>
         Already have an account? <Link to="/login">Login</Link>
       </p>
-    </Container>
+    </div>
   );
 };
 

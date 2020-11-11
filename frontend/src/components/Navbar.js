@@ -1,6 +1,11 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { logout } from "../reduxstuff/actions/auth";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+
   return (
     <div
       style={{
@@ -16,6 +21,14 @@ const Navbar = () => {
       }}
     >
       <h2 style={{ textAlign: "center" }}>LavChat</h2>
+      <Link
+        to="/login"
+        onClick={() => {
+          dispatch(logout());
+        }}
+      >
+        Logout
+      </Link>
     </div>
   );
 };

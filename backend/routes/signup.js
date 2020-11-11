@@ -11,10 +11,10 @@ module.exports = (app) => {
     "/api/signup",
     // We want the info of user accordinf to the given below condition
     async (req, res) => {
-      let { name, email, password, uuid } = req.body;
+      let { name, email, password } = req.body;
 
       // Clear the spce between user firstname and lastname
-      name = name.trim().split(" ").join("");
+      // name = name.trim().split(" ").join("");
 
       try {
         // let user = await User.findOne({ email: email })
@@ -37,7 +37,6 @@ module.exports = (app) => {
           email,
           password,
           tag,
-          uuid,
         });
 
         await user.save(); // In atlas data will be saved
@@ -46,16 +45,15 @@ module.exports = (app) => {
         let payload = {
           user: {
             id: user._id,
-            name,
-            email,
-            uuid,
-            tag,
+            name: user.name,
+            email: user.email,
+            tag: user.tag,
           },
         };
 
         jwt.sign(
           payload,
-          config.get("jwtSecret"),
+          keys.jwtSecret,
           { expiresIn: 360000 },
           (err, token) => {
             if (err) throw err;

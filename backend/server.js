@@ -31,9 +31,7 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
-  socket.join("joined", ({ user }, callback) => {
-    console.log(user);
-  });
+  socket.join("joined", (callback) => {});
 
   socket.on("disconnect", () => {
     console.log("User have left");
