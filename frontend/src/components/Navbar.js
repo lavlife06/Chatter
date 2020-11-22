@@ -20,7 +20,15 @@ const Navbar = () => {
         marginBottom: "10px",
       }}
     >
-      <h2 style={{ textAlign: "center" }}>LavChat</h2>
+      <h2
+        style={
+          {
+            /*textAlign: "center" */
+          }
+        }
+      >
+        LavChat
+      </h2>
       <Link
         to="/login"
         onClick={() => {

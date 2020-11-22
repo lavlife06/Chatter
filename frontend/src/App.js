@@ -8,6 +8,7 @@ import store from "./reduxstuff/store";
 import { loadUser } from "./reduxstuff/actions/auth";
 import Navbar from "./components/Navbar";
 import Main from "./components/Main";
+import "./App.css";
 
 const App = () => {
   useEffect(() => {

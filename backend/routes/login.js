@@ -29,6 +29,12 @@ module.exports = (app) => {
           .json({ errors: [{ msg: "Invalid credentials" }] });
       }
 
+      if (password !== user.password) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid credentials" }] });
+      }
+
       // Return jsonwebtokens
       let payload = {
         user: {
