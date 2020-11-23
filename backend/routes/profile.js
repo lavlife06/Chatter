@@ -66,20 +66,20 @@ module.exports = (app) => {
   // access Public
   // This is not for specific user because it returns multiple users almost matching with same name
   // This will be helpfull when someone searches for another player or organization
-  // app.get("/api/profile/user/:username", async (req, res) => {
-  //   try {
-  //     const profiles = await Profile.find({
-  //       name: { $regex: "^" + req.params.username, $options: "i" },
-  //     })
-  //       .sort({ followers: -1 })
-  //       .limit(10);
-  //     // This {{followers: -1}} means that users with the highest followers will be shown first
-  //     res.json(profiles);
-  //   } catch (err) {
-  //     console.error(err.message);
-  //     res.status(500).send("Server Error");
-  //   }
-  // });
+  app.get("/api/profile/user/:username", async (req, res) => {
+    try {
+      const profiles = await Profile.find({
+        name: { $regex: "^" + req.params.username, $options: "i" },
+      })
+        .sort({ followers: -1 })
+        .limit(10);
+      // This {{followers: -1}} means that users with the highest followers will be shown first
+      res.json(profiles);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  });
 
   // // @route    GET /api/profile/user/:user_id
   // // @desc     Get profile by user ID

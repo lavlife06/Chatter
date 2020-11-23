@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import RightSideBar from "./RightSideBar";
+import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
+import { getProfiles } from "../reduxstuff/actions/profile";
 let socket;
 
 const Main = () => {
@@ -9,8 +11,11 @@ const Main = () => {
   const [text, setText] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [groupMembers, setGroupMembers] = useState("");
+  const dispatch = useDispatch();
 
   socket = useRef(io("localhost:5000"));
+
+  const profiles = useSelector((state) => state.profile.profiles);
 
   const [users, setUsers] = useState([
     "lav",
@@ -58,9 +63,7 @@ const Main = () => {
               placeholder="Search the user/group"
               onChange={(e) => {
                 setText(e.target.value);
-                setSearchedUser(
-                  users.filter((name) => name === e.target.value)
-                );
+                dispatch(getProfiles(e.target.value));
               }}
             />
             <i

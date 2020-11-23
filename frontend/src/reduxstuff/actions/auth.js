@@ -6,11 +6,13 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CLEAR_PROFILE,
   // CLEAR_PROFILE,
 } from "./types";
 import axios from "axios";
 // import { setAlert } from './alert';
 import setAuthToken from "../utils/setAuthToken";
+import { createProfile } from "./profile";
 
 //  Load User
 export const loadUser = () => async (dispatch) => {
@@ -112,24 +114,8 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-// Regiseter user
-export const createProfile = () => async (dispatch) => {
-  try {
-    const res = await axios.post("http://127.0.0.1:5000/api/signup");
-  } catch (err) {
-    console.log(err);
-    // const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
-
-    // if (errors) {
-    //   errors.forEach((error) => {
-    //     dispatch(setAlert(error.msg, "danger"));
-    //   });
-    // }
-  }
-};
-
 // Logout / Clear Profile
 export const logout = () => (dispatch) => {
-  // dispatch({ type: CLEAR_PROFILE });
+  dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
 };
