@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 // import { setAlert } from './alert';
 import setAuthToken from "../utils/setAuthToken";
-import { createProfile } from "./profile";
+import { createProfile, getCurrentProfile } from "./profile";
 
 //  Load User
 export const loadUser = () => async (dispatch) => {
@@ -99,6 +99,7 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     dispatch(loadUser());
+    dispatch(getCurrentProfile());
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

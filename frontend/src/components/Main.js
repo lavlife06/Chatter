@@ -6,16 +6,17 @@ import { getProfiles } from "../reduxstuff/actions/profile";
 let socket;
 
 const Main = () => {
-  const [searchedUser, setSearchedUser] = useState([]);
+  const dispatch = useDispatch();
+
   const [searchedModalUser, setSearchedModalUser] = useState([]);
   const [text, setText] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [groupMembers, setGroupMembers] = useState("");
-  const dispatch = useDispatch();
 
   socket = useRef(io("localhost:5000"));
 
   const profiles = useSelector((state) => state.profile.profiles);
+  const myprofile = useSelector((state) => state.profile.myprofile);
 
   const [users, setUsers] = useState([
     "lav",
@@ -114,19 +115,33 @@ const Main = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          {searchedUser.map((user) => (
-            <div>
-              <input
-                type="submit"
-                value={user}
-                onClick={() => {
-                  setSelectedUser(user);
-                }}
-              />
-            </div>
-          ))}
+          <div>
+            {profiles && (
+              <div>
+                {profiles.map((user) => (
+                  <div>
+                    <input
+                      type="submit"
+                      value={user}
+                      onClick={() => {
+                        setSelectedUser(user);
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+            {/* {!profiles && ( */}
+            {/* <div> */}
+            {/* {myprofile.myRooms.map((room) => (
+          <div>{room.roomName}</div>
+        ))} */}
+            {/* </div> */}
+            {/* )} */}
+            {users.map((name) => (
+              <div>{name}</div>
+            ))}
+          </div>
         </div>
       </div>
       <div
