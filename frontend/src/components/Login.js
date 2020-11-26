@@ -12,6 +12,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const myprofile = useSelector((state) => state.profile.myprofile);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,8 +31,9 @@ const Login = () => {
     });
   };
   if (isAuthenticated) {
-    return <Redirect to="/main" />;
+    return <Redirect to="/check" />;
   }
+
   return (
     <div
       style={{

@@ -1,42 +1,46 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import RightSideBar from "./RightSideBar";
 import { useDispatch, useSelector } from "react-redux";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { getProfiles } from "../reduxstuff/actions/profile";
-let socket;
+import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
+import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
+// let socket;
 
 const Main = () => {
   const dispatch = useDispatch();
 
-  const [searchedModalUser, setSearchedModalUser] = useState([]);
-  const [text, setText] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
-  const [groupMembers, setGroupMembers] = useState("");
+  useEffect(() => {
+    dispatch(getMyRooms());
+  }, [getMyRooms]);
 
-  socket = useRef(io("localhost:5000"));
+  const [text, setText] = useState("");
+  const [groupName, setGroupName] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState("");
+
+  // socket = useRef(io("localhost:5000"));
 
   const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
+  const myRooms = useSelector((state) => state.room.myRooms);
 
-  const [users, setUsers] = useState([
-    "lav",
-    "karan",
-    "lavv",
-    "kkaran",
-    "bhavesh",
-    "bhavin",
+  const [groupMembers, setGroupMembers] = useState([
+    {
+      user: myprofile.user,
+      name: myprofile.name,
+    },
   ]);
+  console.log(groupMembers);
+  // useEffect(() => {
+  //   // socket = io("localhost:5000");
+  //   socket.current.emit("joined/", () => {});
 
-  useEffect(() => {
-    // socket = io("localhost:5000");
-    socket.current.emit("joined/", () => {});
+  //   return () => {
+  //     socket.current.emit("disconnect");
 
-    return () => {
-      socket.current.emit("disconnect");
-
-      socket.current.off();
-    };
-  }, []);
+  //     socket.current.off();
+  //   };
+  // }, []);
 
   return (
     <div
@@ -61,10 +65,10 @@ const Main = () => {
               type="search"
               name="search"
               value={text}
-              placeholder="Search the user/group"
+              placeholder="Search your Rooms"
               onChange={(e) => {
                 setText(e.target.value);
-                dispatch(getProfiles(e.target.value));
+                console.log("isko baadme dekh lenge");
               }}
             />
             <i
@@ -82,6 +86,7 @@ const Main = () => {
                   onClick={() => {
                     let modal = document.getElementById("myModal");
                     modal.style.display = "none";
+                    dispatch({ type: CLEAR_PROFILES });
                   }}
                 />
                 <input
@@ -91,55 +96,72 @@ const Main = () => {
                   placeholder="Search the user/group"
                   onChange={(e) => {
                     setText(e.target.value);
-                    setSearchedModalUser(
-                      users.filter((name) => name === e.target.value)
-                    );
+                    dispatch(getProfiles(e.target.value));
                   }}
                 />
                 <div>
-                  {searchedModalUser.map((user) => (
-                    <div>
-                      {user}
-                      <i
-                        class="fas fa-plus-circle CloseBtn"
-                        onClick={() => {
-                          setGroupMembers([...groupMembers, user]);
-                        }}
-                      >
-                        Add
-                      </i>
-                    </div>
-                  ))}
+                  {profiles &&
+                    profiles.map((person) => (
+                      <div>
+                        {person.name}
+                        <i
+                          class="fas fa-plus-circle CloseBtn"
+                          onClick={() => {
+                            if (myprofile.name === person.name) {
+                              alert(
+                                "You can't add yourself twice in same group"
+                              );
+                            } else {
+                              setGroupMembers([
+                                ...groupMembers,
+                                { user: person.user, name: person.name },
+                              ]);
+                            }
+                          }}
+                        >
+                          Add
+                        </i>
+                      </div>
+                    ))}
                 </div>
-                {groupMembers}
+                <div>
+                  GroupName:
+                  <input
+                    type="text"
+                    name="text"
+                    value={groupName}
+                    placeholder="Enter your group name here"
+                    onChange={(e) => {
+                      setGroupName(e.target.value);
+                    }}
+                  />
+                </div>
+                {groupMembers && (
+                  <div>
+                    {groupMembers.map((member) => (
+                      <div>{member.name}</div>
+                    ))}
+                  </div>
+                )}
+                <button
+                  onClick={() => {
+                    dispatch(createRoom(groupName, groupMembers));
+                  }}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
           <div>
-            {profiles && (
-              <div>
-                {profiles.map((user) => (
-                  <div>
-                    <input
-                      type="submit"
-                      value={user}
-                      onClick={() => {
-                        setSelectedUser(user);
-                      }}
-                    />
-                  </div>
-                ))}
+            {myRooms.map((room) => (
+              <div
+                onClick={() => {
+                  setSelectedRoom(room);
+                }}
+              >
+                {room.roomName}
               </div>
-            )}
-            {/* {!profiles && ( */}
-            {/* <div> */}
-            {/* {myprofile.myRooms.map((room) => (
-          <div>{room.roomName}</div>
-        ))} */}
-            {/* </div> */}
-            {/* )} */}
-            {users.map((name) => (
-              <div>{name}</div>
             ))}
           </div>
         </div>
@@ -153,7 +175,7 @@ const Main = () => {
           flexDirection: "column",
         }}
       >
-        <RightSideBar selectedUser={selectedUser} />
+        <RightSideBar selectedRoom={selectedRoom} />
       </div>
     </div>
   );

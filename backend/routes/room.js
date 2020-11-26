@@ -4,6 +4,44 @@ const Profile = require("../models/Profile");
 const Room = require("../models/Room");
 
 module.exports = (app) => {
+  app.get("/api/room/myRooms", verify, async (req, res) => {
+    try {
+      let rooms = await Room.find();
+      let myprofile = await Profile.findOne({
+        user: req.user.id,
+      });
+      console.log(rooms);
+      console.log(myprofile);
+      let myallrooms = [];
+      // myprofile.myRooms.forEach((item) => {
+      //   // let foundedroom = rooms.filter(
+      //   //   (roomitem) => roomitem._id === item.roomId
+      //   // );
+      //   rooms.forEach((roomitem) => {
+      //     console.log(roomitem._id);
+      //     console.log(item.roomId);
+      //     if (roomitem._id.toString() == item.roomId) {
+      //       console.log("entered");
+      //       myallrooms.push(roomitem);
+      //     }
+      //   });
+      //   console.log(myallrooms);
+      // });
+
+      myprofile.myRooms.map((item) => {
+        let foundedroom = rooms.filter(
+          (roomitem) => roomitem._id.toString() == item.roomId
+        );
+        myallrooms = [...myallrooms, ...foundedroom];
+      });
+
+      res.json(myallrooms);
+    } catch (err) {
+      res.status(500).send("Server Error");
+      console.error(err.message);
+    }
+  });
+
   app.post("/api/room/createroom", verify, async (req, res) => {
     const { roomName, roomMembers } = req.body;
     try {
@@ -21,7 +59,7 @@ module.exports = (app) => {
             user: memberDetail.user,
           });
 
-          memberProfile.myRooms.push({ roomId });
+          memberProfile.myRooms.push({ roomId, roomName });
 
           await memberProfile.save();
         } catch (err) {
@@ -109,19 +147,6 @@ module.exports = (app) => {
 
   //     await classroom.save();
   //     await student.save();
-
-  //     res.json(classroom);
-  //   } catch (err) {
-  //     res.status(500).send("Server Error");
-  //     console.error(err.message);
-  //   }
-  // });
-
-  // app.get("/api/classroom/:classroomId", verify, async (req, res) => {
-  //   try {
-  //     let classroom = await ClassRoom.findOne({
-  //       classRoomCode: req.params.classroomId,
-  //     });
 
   //     res.json(classroom);
   //   } catch (err) {

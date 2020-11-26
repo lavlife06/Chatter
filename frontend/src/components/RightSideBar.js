@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
 
-const RightSideBar = ({ selectedUser }) => {
+const RightSideBar = ({ selectedRoom }) => {
   const [chattext, setChatText] = useState("");
   const [chat, setChat] = useState(["hii", "kaise", "ho"]);
 
   return (
     <Fragment>
-      <div style={{ height: "10%" }}>{selectedUser}</div>
+      <div style={{ height: "10%" }}>{selectedRoom.roomName}</div>
       <div style={{ height: "80%", flexDirection: "column" }}>
         {chat.map((item) => (
           <div> {item}</div>

@@ -1,10 +1,10 @@
 import {
   CLEAR_PROFILE,
+  CLEAR_PROFILES,
   GET_PROFILE,
   GET_PROFILES,
   // GET_PROFILES,
   // PROFILE_ERROR,
-  // CLEAR_PROFILE,
   UPDATE_PROFILE,
   // GET_REPOS,
   // NO_REPOS,
@@ -26,7 +26,7 @@ const reducers = (state = initialState, action) => {
     case UPDATE_PROFILE:
       return {
         ...state,
-        profile: payload,
+        myprofile: payload,
         loading: false,
       };
     case GET_PROFILES:
@@ -43,6 +43,13 @@ const reducers = (state = initialState, action) => {
     //     profile: null,
     //   };
     case CLEAR_PROFILE:
+      return {
+        ...state,
+        profile: null,
+        repos: [],
+        loading: false,
+      };
+    case CLEAR_PROFILES:
       return {
         ...state,
         profile: null,

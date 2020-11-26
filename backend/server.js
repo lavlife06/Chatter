@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 require("./routes/signup")(app);
 require("./routes/login")(app);
 require("./routes/profile")(app);
+require("./routes/room")(app);
 
 const PORT = process.env.PORT || 5000;
 
