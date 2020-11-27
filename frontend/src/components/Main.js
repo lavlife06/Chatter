@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RightSideBar from "./RightSideBar";
 import { useDispatch, useSelector } from "react-redux";
-// import io from "socket.io-client";
+import io from "socket.io-client";
 import { getProfiles } from "../reduxstuff/actions/profile";
 import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
 import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
-// let socket;
+let socket;
 
-const Main = () => {
+const Main = ({ location }) => {
+  socket = useRef(io("localhost:5000"));
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,8 +19,6 @@ const Main = () => {
   const [text, setText] = useState("");
   const [groupName, setGroupName] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
-
-  // socket = useRef(io("localhost:5000"));
 
   const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
@@ -30,7 +30,7 @@ const Main = () => {
       name: myprofile.name,
     },
   ]);
-  console.log(groupMembers);
+
   // useEffect(() => {
   //   // socket = io("localhost:5000");
   //   socket.current.emit("joined/", () => {});
@@ -60,7 +60,7 @@ const Main = () => {
         }}
       >
         <div>
-          <div className>
+          <div>
             <input
               type="search"
               name="search"
@@ -175,7 +175,14 @@ const Main = () => {
           flexDirection: "column",
         }}
       >
-        <RightSideBar selectedRoom={selectedRoom} />
+        {selectedRoom && (
+          <RightSideBar
+            selectedRoom={selectedRoom}
+            socket={socket}
+            location={location}
+          />
+        )}
+        {!selectedRoom && <h1>Hey Join any room and start chatting</h1>}
       </div>
     </div>
   );

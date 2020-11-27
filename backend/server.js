@@ -32,7 +32,33 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
-  socket.join("joined", (callback) => {});
+  socket.on("joined", ({ name, room }, callback) => {
+    socket.join(room);
+
+    socket.emit("message", {
+      user: "admin",
+      text: `${name}, welcome to room ${room}.`,
+    });
+
+    socket.broadcast
+      .to(room)
+      .emit("message", { user: "admin", text: `${name} has joined!` });
+
+    // io.to(user.room).emit("roomData", {
+    //   room: user.room,
+    //   users: getUsersInRoom(user.room),
+    // });
+
+    // callback();
+  });
+
+  socket.on("sendMessage", ({ user, name, text, room }, callback) => {
+    io.to(room).emit("message", { name, message: text });
+
+    // callback();
+  });
+
+  // socket.join("joined", (callback) => {});
 
   socket.on("disconnect", () => {
     console.log("User have left");
