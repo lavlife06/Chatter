@@ -10,8 +10,7 @@ module.exports = (app) => {
       let myprofile = await Profile.findOne({
         user: req.user.id,
       });
-      console.log(rooms);
-      console.log(myprofile);
+
       let myallrooms = [];
       // myprofile.myRooms.forEach((item) => {
       //   // let foundedroom = rooms.filter(
@@ -74,27 +73,23 @@ module.exports = (app) => {
     }
   });
 
-  // app.post(
-  //   "/api/classroom/uploadfile/:classroomId",
-  //   verify,
-  //   async (req, res) => {
-  //     const { title, description, link } = req.body;
-  //     try {
-  //       let classroom = await ClassRoom.findOne({
-  //         classRoomCode: req.params.classroomId,
-  //       });
+  // app.post("/api/room/saveMessage/:roomId", verify, async (req, res) => {
+  //   const { title, description, link } = req.body;
+  //   try {
+  //     let classroom = await ClassRoom.findOne({
+  //       classRoomCode: req.params.classroomId,
+  //     });
 
-  //       classroom.fileLinks.push({ title, description, link });
+  //     classroom.fileLinks.push({ title, description, link });
 
-  //       await classroom.save();
+  //     await classroom.save();
 
-  //       res.json(classroom.fileLinks);
-  //     } catch (err) {
-  //       res.status(500).send("Server Error");
-  //       console.error(err.message);
-  //     }
+  //     res.json(classroom.fileLinks);
+  //   } catch (err) {
+  //     res.status(500).send("Server Error");
+  //     console.error(err.message);
   //   }
-  // );
+  // });
 
   // app.post(
   //   "/api/classroom/announcement/:classroomId",

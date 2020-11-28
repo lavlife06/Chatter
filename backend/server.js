@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("./config/keys");
 const connectDB = require("./config/db");
 const User = require("./models/User");
+const Room = require("./models/Room");
 const app = express();
 
 // Implementing cors
@@ -29,6 +30,22 @@ const server = app.listen(PORT, () => {
 
 const io = require("socket.io")(server);
 
+// io.use((socket, next) => {
+//   // Verificaitn of ttoken
+//   if (socket.handshake.query && socket.handshake.query.token) {
+//     jwt.verify(
+//       socket.handshake.query.token,
+//       keys.jwtSecret,
+//       function (err, decoded) {
+//         if (err) return next(new Error("Authentication error"));
+//         socket.decoded.user = decoded.user;
+//         next();
+//       }
+//     );
+//   } else {
+//     next(new Error("Authentication error"));
+//   }
+// });
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
@@ -36,13 +53,10 @@ io.on("connection", (socket) => {
     socket.join(room);
 
     socket.emit("message", {
-      user: "admin",
       text: `${name}, welcome to room ${room}.`,
     });
 
-    socket.broadcast
-      .to(room)
-      .emit("message", { user: "admin", text: `${name} has joined!` });
+    socket.broadcast.to(room).emit("message", { text: `${name} has joined!` });
 
     // io.to(user.room).emit("roomData", {
     //   room: user.room,
@@ -52,11 +66,23 @@ io.on("connection", (socket) => {
     // callback();
   });
 
-  socket.on("sendMessage", ({ user, name, text, room }, callback) => {
-    io.to(room).emit("message", { name, message: text });
+  socket.on(
+    "sendMessage",
+    async ({ user, name, text, room, roomId }, callback) => {
+      io.to(room).emit("message", { name, message: text });
+      try {
+        let chatRoom = await Room.findOne({
+          _id: roomId,
+        });
 
-    // callback();
-  });
+        chatRoom.chats.push({ user, name, text });
+
+        await chatRoom.save();
+      } catch (error) {
+        callback(error);
+      }
+    }
+  );
 
   // socket.join("joined", (callback) => {});
 

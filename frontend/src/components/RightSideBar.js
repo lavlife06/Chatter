@@ -1,7 +1,17 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
+let socket;
 
 const RightSideBar = ({ selectedRoom, socket, location }) => {
+  socket = useRef(
+    io("localhost:5000", {
+      query: {
+        token: localStorage.getItem("token"),
+      },
+    })
+  );
+
   useEffect(() => {
     setChats(selectedRoom.chats);
     console.log("inside useEffect for setChats");
@@ -15,7 +25,6 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
   const { user, name } = myprofile;
 
   useEffect(() => {
-    // socket = io("localhost:5000");
     socket.current.emit(
       "joined",
       { name, room: selectedRoom.roomName },
@@ -29,7 +38,7 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
 
       socket.current.off();
     };
-  }, [name, socket, selectedRoom]);
+  }, [selectedRoom]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -40,6 +49,7 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
         name,
         text: chattext,
         room: selectedRoom.roomName,
+        roomId: selectedRoom._id,
       });
     }
     setChatText("");

@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import RightSideBar from "./RightSideBar";
 import { useDispatch, useSelector } from "react-redux";
-import io from "socket.io-client";
 import { getProfiles } from "../reduxstuff/actions/profile";
 import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
 import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
-let socket;
 
 const Main = ({ location }) => {
-  socket = useRef(io("localhost:5000"));
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,17 +26,6 @@ const Main = ({ location }) => {
       name: myprofile.name,
     },
   ]);
-
-  // useEffect(() => {
-  //   // socket = io("localhost:5000");
-  //   socket.current.emit("joined/", () => {});
-
-  //   return () => {
-  //     socket.current.emit("disconnect");
-
-  //     socket.current.off();
-  //   };
-  // }, []);
 
   return (
     <div
@@ -176,11 +161,7 @@ const Main = ({ location }) => {
         }}
       >
         {selectedRoom && (
-          <RightSideBar
-            selectedRoom={selectedRoom}
-            socket={socket}
-            location={location}
-          />
+          <RightSideBar selectedRoom={selectedRoom} location={location} />
         )}
         {!selectedRoom && <h1>Hey Join any room and start chatting</h1>}
       </div>
