@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 let socket;
 
-const RightSideBar = ({ selectedRoom, socket, location }) => {
+const RightSideBar = ({ selectedRoom, location }) => {
   socket = useRef(
     io("localhost:5000", {
       query: {
@@ -59,6 +59,7 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
     socket.current.on("message", ({ user, name, text }) => {
       setChats((prevchats) => [...prevchats, { user, name, text }]);
     });
+
     console.log("inside useEffect for message");
     // socket.on("roomData", ({ users }) => {
     //   setUsers(users);
@@ -82,20 +83,54 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
       >
         <h1 style={{}}>{selectedRoom.roomName}</h1>
       </div>
-      <div style={{ height: "90%" }}>
+      <div style={{ height: "90%", overflow: "scroll" }}>
         {chats.map((item) => (
-          <div
-            style={{
-              display: "inline-block",
-              borderRadius: "5%",
-              borderWidth: "1px",
-              borderColor: "black",
-              borderStyle: "solid",
-            }}
-          >
-            {" "}
-            {item.text}
-          </div>
+          <Fragment>
+            {item.name === name ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <strong
+                  style={{
+                    borderRadius: "5%",
+                    borderWidth: "1px",
+                    borderColor: "black",
+                    borderStyle: "solid",
+                    fontWeight: "normal",
+                    padding: "5px",
+                    marginBottom: "3px",
+                  }}
+                >
+                  {" "}
+                  {item.text}
+                </strong>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <strong
+                  style={{
+                    borderRadius: "5%",
+                    borderWidth: "1px",
+                    borderColor: "black",
+                    borderStyle: "solid",
+                    fontWeight: "normal",
+                    padding: "5px",
+                  }}
+                >
+                  {" "}
+                  {item.text}
+                </strong>
+              </div>
+            )}
+          </Fragment>
         ))}
       </div>
       <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
