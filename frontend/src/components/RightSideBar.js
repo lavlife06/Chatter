@@ -27,7 +27,7 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
   useEffect(() => {
     socket.current.emit(
       "joined",
-      { name, room: selectedRoom.roomName },
+      { user, name, room: selectedRoom.roomName },
       ({ welcomeMessage }) => {
         alert(welcomeMessage);
       }
@@ -56,8 +56,8 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
   };
 
   useEffect(() => {
-    socket.current.on("message", (chattext) => {
-      setChats((prevchats) => [...prevchats, { user, name, text: chattext }]);
+    socket.current.on("message", ({ user, name, text }) => {
+      setChats((prevchats) => [...prevchats, { user, name, text }]);
     });
     console.log("inside useEffect for message");
     // socket.on("roomData", ({ users }) => {
@@ -70,16 +70,35 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
 
   return (
     <Fragment>
-      <div style={{ height: "10%" }}>
-        <h1 style={{ textAlign: "center" }}>{selectedRoom.roomName}</h1>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "20px",
+          marginTop: "8px",
+          marginBottom: "8px",
+        }}
+      >
+        <h1 style={{}}>{selectedRoom.roomName}</h1>
       </div>
-      <div style={{ height: "80%", flexDirection: "column" }}>
-        {/* {chats.map((item) => (
-          <div> {item.text}</div>
-        ))} */}
-        Hii
+      <div style={{ height: "90%" }}>
+        {chats.map((item) => (
+          <div
+            style={{
+              display: "inline-block",
+              borderRadius: "5%",
+              borderWidth: "1px",
+              borderColor: "black",
+              borderStyle: "solid",
+            }}
+          >
+            {" "}
+            {item.text}
+          </div>
+        ))}
       </div>
-      <div style={{ height: "10%" }}>
+      <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
         Chat:
         <input
           type="text"
@@ -89,6 +108,7 @@ const RightSideBar = ({ selectedRoom, socket, location }) => {
           onChange={(e) => {
             setChatText(e.target.value);
           }}
+          style={{ flex: 1 }}
         />
         <input
           type="submit"

@@ -153,6 +153,7 @@ const Main = ({ location }) => {
       </div>
       <div
         style={{
+          display: "flex",
           flex: 3,
           borderWidth: "1px",
           borderColor: "black",
