@@ -1,21 +1,50 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-let socket;
+import { GET_ROOM_BY_ID } from "../reduxstuff/actions/types";
 
-const RightSideBar = ({ selectedRoom, location }) => {
-  socket = useRef(
-    io("localhost:5000", {
-      query: {
-        token: localStorage.getItem("token"),
-      },
-    })
-  );
+const RightSideBar = ({ selectedRoom, location, socket }) => {
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(true);
+
+  const myParticularRoom = useSelector((state) => state.room.particularRoom);
 
   useEffect(() => {
-    setChats(selectedRoom.chats);
-    console.log("inside useEffect for setChats");
-  }, [selectedRoom]);
+    socket.current.on("getRoomById", ({ room }) => {
+      dispatch({ type: GET_ROOM_BY_ID, payload: room });
+    });
+    if (myParticularRoom) {
+      if (myParticularRoom.roomName == selectedRoom.roomName) {
+        setLoading(false);
+        setChats(myParticularRoom.chats);
+      }
+    }
+  }, [myParticularRoom]);
+
+  useEffect(() => {
+    if (myParticularRoom) {
+      socket.current.emit(
+        "joinedRoom",
+        { user, name, room: myParticularRoom.roomName },
+        ({ welcomeMessage }) => {
+          alert(welcomeMessage);
+        }
+      );
+      console.log("inside useEffect for joined");
+    }
+    return () => {
+      if (myParticularRoom) {
+        socket.current.emit("leaveRoom", {
+          user,
+          name,
+          room: myParticularRoom.roomName,
+        });
+        socket.current.emit("disconnect");
+        console.log("inside unmount of RightSideBar");
+        socket.current.off("joinedRoom");
+      }
+    };
+  }, [myParticularRoom]);
 
   const [chattext, setChatText] = useState("");
   const [chats, setChats] = useState([]);
@@ -23,22 +52,6 @@ const RightSideBar = ({ selectedRoom, location }) => {
   const myprofile = useSelector((state) => state.profile.myprofile);
 
   const { user, name } = myprofile;
-
-  useEffect(() => {
-    socket.current.emit(
-      "joined",
-      { user, name, room: selectedRoom.roomName },
-      ({ welcomeMessage }) => {
-        alert(welcomeMessage);
-      }
-    );
-    console.log("inside useEffect for joined");
-    return () => {
-      socket.current.emit("disconnect");
-
-      socket.current.off();
-    };
-  }, [selectedRoom]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -48,27 +61,32 @@ const RightSideBar = ({ selectedRoom, location }) => {
         user,
         name,
         text: chattext,
-        room: selectedRoom.roomName,
-        roomId: selectedRoom._id,
+        room: myParticularRoom.roomName,
+        roomId: myParticularRoom._id,
       });
     }
     setChatText("");
   };
 
   useEffect(() => {
-    socket.current.on("message", ({ user, name, text }) => {
-      setChats((prevchats) => [...prevchats, { user, name, text }]);
-    });
+    if (myParticularRoom) {
+      socket.current.on("message", ({ user, name, text }) => {
+        setChats((prevchats) => [...prevchats, { user, name, text }]);
+      });
 
-    console.log("inside useEffect for message");
-    // socket.on("roomData", ({ users }) => {
-    //   setUsers(users);
-    // });
-  }, [setChats]);
+      console.log("inside useEffect for message");
+    }
 
-  console.log(chats);
-  console.log(chattext);
-
+    return () => {
+      if (myParticularRoom) {
+        socket.current.off("message");
+        console.log("inside unmount of off.message(RightSideBar)");
+      }
+    };
+  }, [chats]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Fragment>
       <div
@@ -81,7 +99,7 @@ const RightSideBar = ({ selectedRoom, location }) => {
           marginBottom: "8px",
         }}
       >
-        <h1 style={{}}>{selectedRoom.roomName}</h1>
+        <h1 style={{}}>{myParticularRoom.roomName}</h1>
       </div>
       <div style={{ height: "90%", overflow: "scroll" }}>
         {chats.map((item) => (

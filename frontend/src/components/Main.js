@@ -4,10 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProfiles } from "../reduxstuff/actions/profile";
 import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
 import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
+import io from "socket.io-client";
+let socket;
 
 const Main = ({ location }) => {
   const dispatch = useDispatch();
+  // const [roomChats, setRoomChats] = useState("");
 
+  socket = useRef(
+    io("localhost:5000", {
+      // query: {
+      //   token: localStorage.getItem("token"),
+      // },
+    })
+  );
   useEffect(() => {
     dispatch(getMyRooms());
   }, [getMyRooms]);
@@ -19,6 +29,18 @@ const Main = ({ location }) => {
   const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
   const myRooms = useSelector((state) => state.room.myRooms);
+
+  useEffect(() => {
+    socket.current.emit("joined", { name: myprofile.name }, ({ wlcmsg }) => {
+      alert(wlcmsg);
+    });
+    console.log("inside useEffect for joined");
+    return () => {
+      socket.current.emit("disconnect");
+
+      socket.current.off();
+    };
+  }, []);
 
   const [groupMembers, setGroupMembers] = useState([
     {
@@ -142,6 +164,14 @@ const Main = ({ location }) => {
             {myRooms.map((room) => (
               <div
                 onClick={() => {
+                  // if (selectedRoom.roomName !== "") {
+                  //   socket.current.emit("leaveRoom", {
+                  //     user: myprofile.user,
+                  //     name: myprofile.name,
+                  //     room: selectedRoom.roomName,
+                  //   });
+                  // }
+                  socket.current.emit("getRoomById", { roomId: room._id });
                   setSelectedRoom(room);
                 }}
               >
@@ -162,7 +192,11 @@ const Main = ({ location }) => {
         }}
       >
         {selectedRoom && (
-          <RightSideBar selectedRoom={selectedRoom} location={location} />
+          <RightSideBar
+            selectedRoom={selectedRoom}
+            location={location}
+            socket={socket}
+          />
         )}
         {!selectedRoom && <h1>Hey Join any room and start chatting</h1>}
       </div>

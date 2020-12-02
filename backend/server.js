@@ -49,8 +49,21 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
-  socket.on("joined", ({ user, name, room }, callback) => {
+  socket.on("joined", ({ name }, callback) => {
+    callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
+  });
+
+  socket.on("leaveRoom", ({ user, name, room }) => {
+    socket.broadcast
+      .to(room)
+      .emit("message", { user, name, text: `${name} has left the room!` });
+
+    socket.leave(room);
+  });
+
+  socket.on("joinedRoom", ({ user, name, room }, callback) => {
     socket.join(room);
+    console.log(socket.rooms);
 
     socket.emit("message", {
       user,
@@ -87,6 +100,15 @@ io.on("connection", (socket) => {
       }
     }
   );
+
+  socket.on("getRoomById", async ({ roomId }, callback) => {
+    try {
+      const room = await Room.findOne({ _id: roomId });
+      socket.emit("getRoomById", { room });
+    } catch (error) {
+      callback(error);
+    }
+  });
 
   // socket.join("joined", (callback) => {});
 
