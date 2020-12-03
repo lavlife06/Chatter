@@ -113,6 +113,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
               >
                 <strong
                   style={{
+                    backgroundColor: "limegreen",
                     borderRadius: "5%",
                     borderWidth: "1px",
                     borderColor: "black",
@@ -135,6 +136,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
               >
                 <strong
                   style={{
+                    backgroundColor: "limegreen",
                     borderRadius: "5%",
                     borderWidth: "1px",
                     borderColor: "black",

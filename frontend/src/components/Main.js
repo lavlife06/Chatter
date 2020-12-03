@@ -56,14 +56,14 @@ const Main = ({ location }) => {
         marginLeft: "10%",
         marginRight: "10%",
         height: "80vh",
-        // backgroundColor: "lightcoral",
+        backgroundColor: "dark",
       }}
     >
       <div
         style={{
           flexDirection: "row",
           borderWidth: "1px",
-          borderColor: "black",
+          borderColor: "limegreen",
           borderStyle: "solid",
         }}
       >
@@ -168,6 +168,7 @@ const Main = ({ location }) => {
                   socket.current.emit("getRoomById", { roomId: room._id });
                   setSelectedRoom(room);
                 }}
+                style={{ borderColor: "limegreen", color: "yellow" }}
               >
                 {room.roomName}
               </div>
