@@ -56,6 +56,7 @@ const Main = ({ location }) => {
         marginLeft: "10%",
         marginRight: "10%",
         height: "80vh",
+        // backgroundColor: "lightcoral",
       }}
     >
       <div
@@ -164,13 +165,6 @@ const Main = ({ location }) => {
             {myRooms.map((room) => (
               <div
                 onClick={() => {
-                  // if (selectedRoom.roomName !== "") {
-                  //   socket.current.emit("leaveRoom", {
-                  //     user: myprofile.user,
-                  //     name: myprofile.name,
-                  //     room: selectedRoom.roomName,
-                  //   });
-                  // }
                   socket.current.emit("getRoomById", { roomId: room._id });
                   setSelectedRoom(room);
                 }}

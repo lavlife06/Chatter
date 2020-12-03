@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { register } from "../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "./Spinner";
 
 const Register = () => {
   const [formData, setformData] = useState({
@@ -13,6 +14,7 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const myprofile = useSelector((state) => state.profile.myprofile);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,9 +32,8 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
-
   if (isAuthenticated) {
-    return <Redirect to="/main" />;
+    return <Redirect to="/check" />;
   }
 
   return (
@@ -45,6 +46,7 @@ const Register = () => {
         padding: "20px",
         display: "flex",
         flexDirection: "column",
+        backgroundColor: "aqua",
       }}
     >
       <form action="form" onSubmit={(e) => handleSubmit(e)}>
@@ -78,7 +80,10 @@ const Register = () => {
         <input type="submit" value="SignUp" />
       </form>
       <p>
-        Already have an account? <Link to="/login">Login</Link>
+        Already have an account?{" "}
+        <Link to="/login" style={{ display: "inline-block" }}>
+          Login
+        </Link>
       </p>
     </div>
   );

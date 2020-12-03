@@ -44,6 +44,7 @@ const Login = () => {
         padding: "20px",
         display: "flex",
         flexDirection: "column",
+        backgroundColor: "aqua",
       }}
     >
       <form action="form" onSubmit={(e) => handleSubmit(e)}>
@@ -68,7 +69,10 @@ const Login = () => {
         <input type="submit" value="Login" />
       </form>
       <p>
-        Don't have an account? <Link to="/signup">Signup</Link>
+        Don't have an account?{" "}
+        <Link to="/signup" style={{ display: "inline-block" }}>
+          Signup
+        </Link>
       </p>
     </div>
   );

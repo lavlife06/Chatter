@@ -1,3 +1,20 @@
+:root {
+  --primary-color: #17a2b8;
+  --dark-color: #343a40;
+  --light-color: #f4f4f4;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+}
+body {
+  background-image: url("./img/unsplashimg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  /* height: 100vh; */
+  /* padding-bottom: 20px; */
+}
+
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -34,4 +51,15 @@
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-weight: bold;
 }

@@ -1,16 +1,21 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../reduxstuff/actions/auth";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
     <div
       style={{
+        display: "flex",
+        flexDirection: "row",
         marginRight: "10%",
         marginLeft: "10%",
+        paddingRight: "10px",
+        paddingLeft: "10px",
         borderWidth: "2px",
         borderColor: "black",
         borderStyle: "solid",
@@ -21,22 +26,46 @@ const Navbar = () => {
       }}
     >
       <h2
-        style={
-          {
-            /*textAlign: "center" */
-          }
-        }
-      >
-        LavChat
-      </h2>
-      <Link
-        to="/login"
-        onClick={() => {
-          dispatch(logout());
+        style={{
+          /*textAlign: "center" */
+          flex: 5,
         }}
       >
-        Logout
-      </Link>
+        LavChatApp
+      </h2>
+      {!isAuthenticated && (
+        <Fragment>
+          <Link
+            className
+            to="/signup"
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
+            SignUp
+          </Link>
+          <Link
+            to="/login"
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
+            Login
+          </Link>
+        </Fragment>
+      )}
+      {isAuthenticated && (
+        <Fragment>
+          <Link
+            to="/login"
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
+            Logout
+          </Link>
+        </Fragment>
+      )}
     </div>
   );
 };
