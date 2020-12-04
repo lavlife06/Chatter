@@ -88,6 +88,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
     return <div>Loading...</div>;
   }
   return (
+    // <div style={{ padding: "2px" }}>
     <Fragment>
       <div
         style={{
@@ -99,9 +100,9 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
           marginBottom: "8px",
         }}
       >
-        <h1 style={{}}>{myParticularRoom.roomName}</h1>
+        <h1 style={{ color: "limegreen" }}>{myParticularRoom.roomName}</h1>
       </div>
-      <div style={{ height: "90%", overflow: "scroll" }}>
+      <div style={{ height: "90%", overflowY: "scroll" }}>
         {chats.map((item) => (
           <Fragment>
             {item.name === name ? (
@@ -113,14 +114,15 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
               >
                 <strong
                   style={{
-                    backgroundColor: "limegreen",
-                    borderRadius: "5%",
+                    // backgroundColor: "limegreen",
+                    borderRadius: "10%",
                     borderWidth: "1px",
-                    borderColor: "black",
+                    borderColor: "limegreen",
                     borderStyle: "solid",
                     fontWeight: "normal",
                     padding: "5px",
                     marginBottom: "3px",
+                    color: "yellow",
                   }}
                 >
                   {" "}
@@ -136,13 +138,15 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
               >
                 <strong
                   style={{
-                    backgroundColor: "limegreen",
-                    borderRadius: "5%",
+                    // backgroundColor: "limegreen",
+                    borderRadius: "10%",
                     borderWidth: "1px",
-                    borderColor: "black",
+                    borderColor: "limegreen",
                     borderStyle: "solid",
                     fontWeight: "normal",
                     padding: "5px",
+                    marginBottom: "3px",
+                    color: "yellow",
                   }}
                 >
                   {" "}
@@ -154,7 +158,15 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
         ))}
       </div>
       <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
-        Chat:
+        <strong
+          style={{
+            color: "limegreen",
+            paddingLeft: "2px",
+            paddingRight: "2px",
+          }}
+        >
+          Chat:
+        </strong>
         <input
           type="text"
           name="text"
@@ -168,6 +180,13 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
         <input
           type="submit"
           value="Submit"
+          style={{
+            color: "limegreen",
+            backgroundColor: "black",
+            fontSize: "15px",
+            fontWeight: "bold",
+            paddingBottom: "1px",
+          }}
           onClick={(e) => {
             sendMessage(e);
           }}
