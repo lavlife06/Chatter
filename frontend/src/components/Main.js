@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import RightSideBar from "./RightSideBar";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfiles } from "../reduxstuff/actions/profile";
@@ -102,7 +102,7 @@ const Main = ({ location }) => {
               modal.style.display = "block";
             }}
           />
-          <div id="myModal" className="modal">
+          <div style={{ fontSize: "20px" }} id="myModal" className="modal">
             <div className="modal-content">
               <i
                 className="fas fa-times CloseBtn"
@@ -112,23 +112,66 @@ const Main = ({ location }) => {
                   dispatch({ type: CLEAR_PROFILES });
                 }}
               />
+              <div>
+                <strong>GroupName:</strong>
+                <input
+                  type="text"
+                  name="text"
+                  style={{ borderStyle: "none" }}
+                  value={groupName}
+                  placeholder="Enter your group name here"
+                  onChange={(e) => {
+                    setGroupName(e.target.value);
+                  }}
+                />
+              </div>
+              <hr style={{ height: "2px", backgroundColor: "black" }} />
+
+              <label for="search">Users:</label>
               <input
                 type="search"
                 name="search"
                 value={text}
-                placeholder="Search the user/group"
+                style={{ borderStyle: "none" }}
+                placeholder="Search Users here"
                 onChange={(e) => {
                   setText(e.target.value);
                   dispatch(getProfiles(e.target.value));
                 }}
               />
-              <div>
+              <hr />
+              <div style={{ overflowY: "scroll", maxHeight: "150px" }}>
+                <div
+                  style={{
+                    fontSize: "17px",
+                    color: "gray",
+                    marginBottom: "3px",
+                  }}
+                >
+                  Suggested
+                </div>
                 {profiles &&
                   profiles.map((person) => (
                     <div>
-                      {person.name}
                       <i
-                        class="fas fa-plus-circle CloseBtn"
+                        class="fas fa-user-circle"
+                        style={{ fontSize: "25px", marginRight: "7px" }}
+                      />
+                      <strong
+                        style={{
+                          // fontWeight: "normal",
+                          fontSize: "25px",
+                        }}
+                      >
+                        {person.name}
+                      </strong>
+                      <i
+                        class="fas fa-plus-circle"
+                        style={{
+                          fontSize: "25px",
+                          paddingRight: "3px",
+                          float: "right",
+                        }}
                         onClick={() => {
                           if (myprofile.name === person.name) {
                             alert("You can't add yourself twice in same group");
@@ -139,38 +182,53 @@ const Main = ({ location }) => {
                             ]);
                           }
                         }}
-                      >
-                        Add
-                      </i>
+                      />
                     </div>
                   ))}
               </div>
-              <div>
-                GroupName:
-                <input
-                  type="text"
-                  name="text"
-                  value={groupName}
-                  placeholder="Enter your group name here"
-                  onChange={(e) => {
-                    setGroupName(e.target.value);
-                  }}
-                />
-              </div>
+
               {groupMembers && (
-                <div>
-                  {groupMembers.map((member) => (
-                    <div>{member.name}</div>
-                  ))}
-                </div>
+                <Fragment>
+                  <div style={{ overflowY: "scroll", maxHeight: "150px" }}>
+                    <div
+                      style={{
+                        fontSize: "17px",
+                        color: "gray",
+                        marginBottom: "3px",
+                      }}
+                    >
+                      GroupMembers:
+                    </div>
+
+                    {groupMembers.map((member) => (
+                      <div>
+                        <i
+                          class="fas fa-user-circle"
+                          style={{ fontSize: "25px", marginRight: "7px" }}
+                        />
+                        <strong
+                          style={{
+                            // fontWeight: "normal",
+                            fontSize: "25px",
+                          }}
+                        >
+                          {member.name}
+                        </strong>
+                      </div>
+                    ))}
+                  </div>
+                </Fragment>
               )}
-              <button
-                onClick={() => {
-                  dispatch(createRoom(groupName, groupMembers));
-                }}
-              >
-                Save
-              </button>
+              <div style={{ textAlign: "center" }}>
+                <button
+                  style={{}}
+                  onClick={() => {
+                    dispatch(createRoom(groupName, groupMembers));
+                  }}
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
           <div>

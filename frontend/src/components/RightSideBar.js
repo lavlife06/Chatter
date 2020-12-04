@@ -149,7 +149,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
                     color: "yellow",
                   }}
                 >
-                  {" "}
+                  <div style={{ color: "deepskyblue" }}>{item.name}</div>
                   {item.text}
                 </strong>
               </div>
