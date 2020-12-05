@@ -73,6 +73,39 @@ module.exports = (app) => {
     }
   });
 
+  // PrivateRoomMessage
+  app.post("/api/room/createPrivateChatroom", verify, async (req, res) => {
+    const { roomMembers } = req.body;
+    try {
+      let room = new Room({
+        user: req.user.id,
+        roomMembers,
+      });
+
+      await room.save();
+
+      roomMembers.forEach(async (memberDetail) => {
+        let roomId = room._id;
+        try {
+          let memberProfile = await Profile.findOne({
+            user: memberDetail.user,
+          });
+
+          memberProfile.myPrivateChatRooms.push({ roomId });
+
+          await memberProfile.save();
+        } catch (err) {
+          console.error(err.message);
+        }
+      });
+
+      res.json(room);
+    } catch (err) {
+      res.status(500).send("Server Error");
+      console.error(err.message);
+    }
+  });
+
   // app.post("/api/room/saveMessage/:roomId", verify, async (req, res) => {
   //   const { title, description, link } = req.body;
   //   try {

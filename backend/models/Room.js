@@ -6,7 +6,7 @@ const RoomSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  roomName: String,
+  roomName: { type: String, default: "" },
   roomMembers: [
     {
       user: {

@@ -49,6 +49,14 @@ const profileSchema = new Schema({
       roomName: String,
     },
   ],
+  myPrivateChatRooms: [
+    {
+      roomId: {
+        type: Schema.Types.ObjectId,
+        ref: "Room",
+      },
+    },
+  ],
   // profileviewers: {
   //   type: String,
   // },
