@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 
-const RightSideBar = ({ selectedRoom, location, socket }) => {
+const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -196,4 +196,4 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
   );
 };
 
-export default RightSideBar;
+export default RightSideBarGrpChat;

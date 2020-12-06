@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
+import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/room";
 
-const RightSideBar = ({ selectedRoom, location, socket }) => {
+const RightSideBarPriChat = ({ selectedRoom, location, socket }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
       dispatch({ type: GET_ROOM_BY_ID, payload: room });
     });
     if (myParticularRoom) {
-      if (myParticularRoom.roomName == selectedRoom.roomName) {
+      if (myParticularRoom.roomName == selectedRoom.name) {
         setLoading(false);
         setChats(myParticularRoom.chats);
       }
@@ -40,7 +40,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
           room: myParticularRoom.roomName,
         });
         socket.current.emit("disconnect");
-        console.log("inside unmount of RightSideBar");
+        console.log("inside unmount of RightSideBarPriChat");
         socket.current.off("joinedRoom");
       }
     };
@@ -80,7 +80,7 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
     return () => {
       if (myParticularRoom) {
         socket.current.off("message");
-        console.log("inside unmount of off.message(RightSideBar)");
+        console.log("inside unmount of off.message(RightSideBarPriChat)");
       }
     };
   }, [chats]);
@@ -196,4 +196,4 @@ const RightSideBar = ({ selectedRoom, location, socket }) => {
   );
 };
 
-export default RightSideBar;
+export default RightSideBarPriChat;

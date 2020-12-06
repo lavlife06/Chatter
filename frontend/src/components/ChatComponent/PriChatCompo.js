@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import RightSideBar from "./RightSideBar";
+import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfiles } from "../reduxstuff/actions/profile";
-import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
-import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
+import { createPriChatRoom } from "../../reduxstuff/actions/room";
+// import { getProfiles } from "../reduxstuff/actions/profile";
+// import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
+// import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
+import RightSideBarPriChat from "./RightSideBarPriChat";
 
 const PriChatCompo = ({ location, socket }) => {
   const dispatch = useDispatch();
@@ -14,19 +15,7 @@ const PriChatCompo = ({ location, socket }) => {
 
   const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
-  const myRooms = useSelector((state) => state.room.myRooms);
-
-  useEffect(() => {
-    socket.current.emit("joined", { name: myprofile.name }, ({ wlcmsg }) => {
-      alert(wlcmsg);
-    });
-    console.log("inside useEffect for joined");
-    return () => {
-      socket.current.emit("disconnect");
-
-      socket.current.off();
-    };
-  }, []);
+  const myPriChatRooms = useSelector((state) => state.room.myPriChatRooms);
 
   const [groupMembers, setGroupMembers] = useState([
     {
@@ -63,27 +52,63 @@ const PriChatCompo = ({ location, socket }) => {
               console.log("isko baadme dekh lenge");
             }}
           />
-          {/* <i
-          className="fas fa-bars"
-          style={{
-            color: "yellow",
-            paddingLeft: "3px",
-            paddingRight: "2px",
-            marginTop: "auto",
-            marginBottom: "auto",
-          }}
-          id="modalBtn"
-          onClick={() => {
-            let modal = document.getElementById("myModal");
-            modal.style.display = "block";
-          }}
-        /> */}
+          {profiles &&
+            profiles.map((person) => (
+              <div>
+                <i
+                  class="fas fa-user-circle"
+                  style={{ fontSize: "25px", marginRight: "7px" }}
+                />
+                <strong
+                  style={{
+                    // fontWeight: "normal",
+                    fontSize: "25px",
+                  }}
+                >
+                  {person.name}
+                </strong>
+                <button
+                  style={{
+                    fontSize: "25px",
+                    paddingRight: "3px",
+                    float: "right",
+                  }}
+                  onClick={() => {
+                    let theSelectedRoom = myprofile.myPrivateChatRooms.filter(
+                      (myRoom) => myRoom.user == person.user
+                    );
+
+                    if (myprofile.name === person.name) {
+                      alert("You can't message");
+                    } else if (theSelectedRoom.length === 0) {
+                      dispatch(
+                        createPriChatRoom(person.name, [
+                          ...groupMembers,
+                          { user: person.user, name: person.name },
+                        ])
+                      );
+                      setGroupMembers([
+                        ...groupMembers,
+                        { user: person.user, name: person.name },
+                      ]);
+                    } else {
+                      socket.current.emit("getRoomById", {
+                        roomId: theSelectedRoom[0].roomId,
+                      });
+                      setSelectedRoom(theSelectedRoom[0]);
+                    }
+                  }}
+                >
+                  Message
+                </button>
+              </div>
+            ))}
           <div>
-            {myRooms.map((room) => (
+            {myPriChatRooms.map((roomInfo) => (
               <div
                 onClick={() => {
-                  socket.current.emit("getRoomById", { roomId: room._id });
-                  setSelectedRoom(room);
+                  socket.current.emit("getRoomById", { roomId: roomInfo._id });
+                  setSelectedRoom(roomInfo.chatRoom);
                 }}
                 style={{
                   borderBottomColor: "limegreen",
@@ -94,7 +119,7 @@ const PriChatCompo = ({ location, socket }) => {
                   textAlign: "center",
                 }}
               >
-                {room.roomName}
+                {roomInfo.roomname}
               </div>
             ))}
           </div>
@@ -112,7 +137,7 @@ const PriChatCompo = ({ location, socket }) => {
         }}
       >
         {selectedRoom && (
-          <RightSideBar
+          <RightSideBarPriChat
             selectedRoom={selectedRoom}
             location={location}
             socket={socket}
@@ -120,7 +145,7 @@ const PriChatCompo = ({ location, socket }) => {
         )}
         {!selectedRoom && (
           <h1 style={{ marginLeft: "5px", color: "limegreen" }}>
-            Hey Join any room and start chatting
+            Hey why don't you start chatting
           </h1>
         )}
       </div>
