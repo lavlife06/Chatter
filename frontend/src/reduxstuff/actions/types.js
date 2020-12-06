@@ -28,3 +28,4 @@ export const CREATE_ROOM = "CREATE_ROOM";
 export const GET_MYROOMS = "GET_MYROOMS";
 export const GET_ROOM_BY_ID = "GET_ROOM_BY_ID";
 export const CLEAR_ROOMS = "CLEAR_ROOMS";
+export const CREATE_PRICHATROOM = "CREATE_PRICHATROOM";

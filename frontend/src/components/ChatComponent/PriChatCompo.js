@@ -4,27 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProfiles } from "../reduxstuff/actions/profile";
 import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
 import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
-import io from "socket.io-client";
-let socket;
 
-const PriChatCompo = ({ location }) => {
+const PriChatCompo = ({ location, socket }) => {
   const dispatch = useDispatch();
   // const [roomChats, setRoomChats] = useState("");
 
-  socket = useRef(
-    io("localhost:5000", {
-      // query: {
-      //   token: localStorage.getItem("token"),
-      // },
-    })
-  );
-  useEffect(() => {
-    dispatch(getMyRooms());
-  }, [getMyRooms]);
-
-  const [showGroupChat, setShowGroupChat] = useState(true);
   const [text, setText] = useState("");
-  const [groupName, setGroupName] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
 
   const profiles = useSelector((state) => state.profile.profiles);

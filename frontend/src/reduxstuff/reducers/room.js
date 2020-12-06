@@ -3,11 +3,12 @@ import {
   GET_MYROOMS,
   GET_ROOM_BY_ID,
   CLEAR_ROOMS,
+  CREATE_PRICHATROOM,
 } from "../actions/types";
 
 const initialState = {
   myRooms: [],
-  myPriChatRooms: [],
+  myPriChatRooms: [{ chatRoom: {}, roomname: "" }],
   particularRoom: null,
 };
 
@@ -26,6 +27,15 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         myRooms: [payload, ...state.myRooms],
+        loading: false,
+      };
+    case CREATE_PRICHATROOM:
+      return {
+        ...state,
+        myPriChatRooms: [
+          ...state.myPriChatRooms,
+          { chatRoom: payload.theCreatedRoom, roomname: payload.roomName },
+        ],
         loading: false,
       };
     case GET_ROOM_BY_ID:
