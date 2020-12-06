@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { login } from "../reduxstuff/actions/auth";
+import { login } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./Spinner";
 

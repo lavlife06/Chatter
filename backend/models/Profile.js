@@ -55,6 +55,10 @@ const profileSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Room",
       },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
     },
   ],
   // profileviewers: {

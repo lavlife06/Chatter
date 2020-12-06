@@ -7,7 +7,7 @@ import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
 import io from "socket.io-client";
 let socket;
 
-const Main = ({ location }) => {
+const GrpChatCompo = ({ location }) => {
   const dispatch = useDispatch();
   // const [roomChats, setRoomChats] = useState("");
 
@@ -70,14 +70,14 @@ const Main = ({ location }) => {
           borderColor: "limegreen",
         }}
       >
-        {/* <div
+        <div
           style={{
             borderColor: "limegreen",
             borderWidth: "1px",
             margin: "2px",
           }}
-        > */}
-        {/* <input
+        >
+          <input
             type="search"
             name="search"
             value={text}
@@ -87,41 +87,23 @@ const Main = ({ location }) => {
               setText(e.target.value);
               console.log("isko baadme dekh lenge");
             }}
-          /> */}
-        <div className="tab">
-          <button
-            className="tablinks"
-            onclick={() => {
-              setShowGroupChat(true);
+          />
+          <i
+            className="fas fa-bars"
+            style={{
+              color: "yellow",
+              paddingLeft: "3px",
+              paddingRight: "2px",
+              marginTop: "auto",
+              marginBottom: "auto",
             }}
-          >
-            GroupChat
-          </button>
-          <button
-            className="tablinks"
-            onclick={() => {
-              setShowGroupChat(false);
+            id="modalBtn"
+            onClick={() => {
+              let modal = document.getElementById("myModal");
+              modal.style.display = "block";
             }}
-          >
-            PrivateChat
-          </button>
-        </div>
-        <i
-          className="fas fa-bars"
-          style={{
-            color: "yellow",
-            paddingLeft: "3px",
-            paddingRight: "2px",
-            marginTop: "auto",
-            marginBottom: "auto",
-          }}
-          id="modalBtn"
-          onClick={() => {
-            let modal = document.getElementById("myModal");
-            modal.style.display = "block";
-          }}
-        />
-        {/* <div style={{ fontSize: "20px" }} id="myModal" className="modal">
+          />
+          <div style={{ fontSize: "20px" }} id="myModal" className="modal">
             <div className="modal-content">
               <i
                 className="fas fa-times CloseBtn"
@@ -249,8 +231,8 @@ const Main = ({ location }) => {
                 </button>
               </div>
             </div>
-          </div> */}
-        {/* <div>
+          </div>
+          <div>
             {myRooms.map((room) => (
               <div
                 onClick={() => {
@@ -269,8 +251,8 @@ const Main = ({ location }) => {
                 {room.roomName}
               </div>
             ))}
-          </div> */}
-        {/* </div> */}
+          </div>
+        </div>
       </div>
       <div
         style={{
@@ -300,4 +282,4 @@ const Main = ({ location }) => {
   );
 };
 
-export default Main;
+export default GrpChatCompo;

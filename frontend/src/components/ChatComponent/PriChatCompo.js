@@ -7,7 +7,7 @@ import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
 import io from "socket.io-client";
 let socket;
 
-const Main = ({ location }) => {
+const PriChatCompo = ({ location }) => {
   const dispatch = useDispatch();
   // const [roomChats, setRoomChats] = useState("");
 
@@ -300,4 +300,4 @@ const Main = ({ location }) => {
   );
 };
 
-export default Main;
+export default PriChatCompo;

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../reduxstuff/actions/auth";
+import { logout } from "../../reduxstuff/actions/auth";
 
 const Navbar = () => {
   const dispatch = useDispatch();

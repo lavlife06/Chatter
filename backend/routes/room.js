@@ -91,7 +91,10 @@ module.exports = (app) => {
             user: memberDetail.user,
           });
 
-          memberProfile.myPrivateChatRooms.push({ roomId });
+          memberProfile.myPrivateChatRooms.push({
+            roomId,
+            user: memberProfile.user,
+          });
 
           await memberProfile.save();
         } catch (err) {

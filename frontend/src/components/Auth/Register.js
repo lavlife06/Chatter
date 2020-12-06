@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { login } from "../reduxstuff/actions/auth";
+import { register } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../Layout/Spinner";
 
-const Login = () => {
+const Register = () => {
   const [formData, setformData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -16,9 +18,9 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(login(formData.email, formData.password));
+    dispatch(register(formData.name, formData.email, formData.password));
     setformData({
+      name: "",
       email: "",
       password: "",
     });
@@ -48,6 +50,15 @@ const Login = () => {
       }}
     >
       <form action="form" onSubmit={(e) => handleSubmit(e)}>
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Your name.."
+          value={formData.name}
+          onChange={(e) => changeHandler(e)}
+          style={{ width: "100%" }}
+        />
         <label>Email</label>
         <input
           type="email"
@@ -66,15 +77,16 @@ const Login = () => {
           onChange={(e) => changeHandler(e)}
           style={{ width: "100%", marginBottom: "12px" }}
         />
-        <input type="submit" value="Login" />
+        <input type="submit" value="SignUp" />
       </form>
       <p>
-        Don't have an account?{" "}
-        <Link to="/signup" style={{ display: "inline-block" }}>
-          Signup
+        Already have an account?{" "}
+        <Link to="/login" style={{ display: "inline-block" }}>
+          Login
         </Link>
       </p>
     </div>
   );
 };
-export default Login;
+
+export default Register;
