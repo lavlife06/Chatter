@@ -11,7 +11,8 @@ module.exports = (app) => {
         user: req.user.id,
       });
 
-      let myallrooms = [];
+      let myGrpChatallrooms = [];
+      let myPriChatallrooms = [];
       // myprofile.myRooms.forEach((item) => {
       //   // let foundedroom = rooms.filter(
       //   //   (roomitem) => roomitem._id === item.roomId
@@ -21,20 +22,27 @@ module.exports = (app) => {
       //     console.log(item.roomId);
       //     if (roomitem._id.toString() == item.roomId) {
       //       console.log("entered");
-      //       myallrooms.push(roomitem);
+      //       myGrpChatallrooms.push(roomitem);
       //     }
       //   });
-      //   console.log(myallrooms);
+      //   console.log(myGrpChatallrooms);
       // });
 
       myprofile.myRooms.map((item) => {
         let foundedroom = rooms.filter(
           (roomitem) => roomitem._id.toString() == item.roomId
         );
-        myallrooms = [...myallrooms, ...foundedroom];
+        myGrpChatallrooms = [...myGrpChatallrooms, ...foundedroom];
       });
 
-      res.json(myallrooms);
+      myprofile.myPrivateChatRooms.map((item) => {
+        let foundedroom = rooms.filter(
+          (roomitem) => roomitem._id.toString() == item.roomId
+        );
+        myPriChatallrooms = [...myPriChatallrooms, ...foundedroom];
+      });
+
+      res.json({ myGrpChatallrooms, myPriChatallrooms });
     } catch (err) {
       res.status(500).send("Server Error");
       console.error(err.message);
@@ -73,7 +81,7 @@ module.exports = (app) => {
     }
   });
 
-  // PrivateRoomMessage
+  //for PrivateRoomMessage
   app.post("/api/room/createPrivateChatroom", verify, async (req, res) => {
     const { roomMembers } = req.body;
     try {
@@ -84,7 +92,7 @@ module.exports = (app) => {
 
       await room.save();
 
-      roomMembers.forEach(async (memberDetail) => {
+      roomMembers.forEach(async (memberDetail, index) => {
         let roomId = room._id;
         try {
           let memberProfile = await Profile.findOne({
@@ -93,7 +101,8 @@ module.exports = (app) => {
 
           memberProfile.myPrivateChatRooms.push({
             roomId,
-            user: memberProfile.user,
+            user: roomMembers[!index].user,
+            name: roomMembers[!index].name,
           });
 
           await memberProfile.save();

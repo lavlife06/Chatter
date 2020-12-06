@@ -1,0 +1,24 @@
+      {/* <div
+        style={{
+          display: "flex",
+          flex: 3,
+          borderWidth: "1px",
+          borderColor: "limegreen",
+          borderStyle: "solid",
+          flexDirection: "column",
+          padding: "2px",
+        }}
+      > */}
+      {/* {selectedRoom && (
+          <RightSideBar
+            selectedRoom={selectedRoom}
+            location={location}
+            socket={socket}
+          />
+        )}
+        {!selectedRoom && (
+          <h1 style={{ marginLeft: "5px", color: "limegreen" }}>
+            Hey Join any room and start chatting
+          </h1>
+        )} */}
+      {/* </div> */}

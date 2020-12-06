@@ -18,7 +18,7 @@ export const getMyRooms = () => async (dispatch) => {
   }
 };
 
-// Login user
+// Create room
 export const createRoom = (roomName, roomMembers) => async (dispatch) => {
   const config = {
     headers: {

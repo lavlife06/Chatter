@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   myRooms: [],
+  myPriChatRooms: [],
   particularRoom: null,
 };
 
@@ -17,7 +18,8 @@ const reducers = (state = initialState, action) => {
     case GET_MYROOMS:
       return {
         ...state,
-        myRooms: payload,
+        myRooms: payload.myGrpChatallrooms,
+        myPriChatRooms: payload.myPriChatallrooms,
         loading: false,
       };
     case CREATE_ROOM:

@@ -1,28 +1,13 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
-import RightSideBar from "./RightSideBar";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfiles } from "../reduxstuff/actions/profile";
-import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
-import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
-import io from "socket.io-client";
-let socket;
+import RightSideBarGrpChat from "./RightSideBarGrpChat";
+import { getProfiles } from "../../reduxstuff/actions/profile";
+import { CLEAR_PROFILES } from "../../reduxstuff/actions/types";
+import { createRoom } from "../../reduxstuff/actions/room";
 
-const GrpChatCompo = ({ location }) => {
+const GrpChatCompo = ({ location, socket }) => {
   const dispatch = useDispatch();
-  // const [roomChats, setRoomChats] = useState("");
 
-  socket = useRef(
-    io("localhost:5000", {
-      // query: {
-      //   token: localStorage.getItem("token"),
-      // },
-    })
-  );
-  useEffect(() => {
-    dispatch(getMyRooms());
-  }, [getMyRooms]);
-
-  const [showGroupChat, setShowGroupChat] = useState(true);
   const [text, setText] = useState("");
   const [groupName, setGroupName] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
@@ -31,17 +16,17 @@ const GrpChatCompo = ({ location }) => {
   const myprofile = useSelector((state) => state.profile.myprofile);
   const myRooms = useSelector((state) => state.room.myRooms);
 
-  useEffect(() => {
-    socket.current.emit("joined", { name: myprofile.name }, ({ wlcmsg }) => {
-      alert(wlcmsg);
-    });
-    console.log("inside useEffect for joined");
-    return () => {
-      socket.current.emit("disconnect");
+  // useEffect(() => {
+  //   socket.current.emit("joined", { name: myprofile.name }, ({ wlcmsg }) => {
+  //     alert(wlcmsg);
+  //   });
+  //   console.log("inside useEffect for joined");
+  //   return () => {
+  //     socket.current.emit("disconnect");
 
-      socket.current.off();
-    };
-  }, []);
+  //     socket.current.off();
+  //   };
+  // }, []);
 
   const [groupMembers, setGroupMembers] = useState([
     {
@@ -51,17 +36,7 @@ const GrpChatCompo = ({ location }) => {
   ]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        marginLeft: "10%",
-        marginRight: "10%",
-        height: "80vh",
-        backgroundColor: "black",
-        borderColor: "limegreen",
-        borderWidth: "1px",
-      }}
-    >
+    <Fragment>
       <div
         style={{
           flexDirection: "row",
@@ -266,7 +241,7 @@ const GrpChatCompo = ({ location }) => {
         }}
       >
         {selectedRoom && (
-          <RightSideBar
+          <RightSideBarGrpChat
             selectedRoom={selectedRoom}
             location={location}
             socket={socket}
@@ -278,7 +253,7 @@ const GrpChatCompo = ({ location }) => {
           </h1>
         )}
       </div>
-    </div>
+    </Fragment>
   );
 };
 
