@@ -46,14 +46,12 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         profile: null,
-        repos: [],
         loading: false,
       };
     case CLEAR_PROFILES:
       return {
         ...state,
-        profile: null,
-        repos: [],
+        profiles: null,
         loading: false,
       };
     // case GET_REPOS:

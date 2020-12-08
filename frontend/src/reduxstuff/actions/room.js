@@ -1,5 +1,6 @@
 import { CREATE_PRICHATROOM, CREATE_ROOM, GET_MYROOMS } from "./types";
 import axios from "axios";
+import { getCurrentProfile } from "./profile";
 // import { setAlert } from './alert';
 // import setAuthToken from "../utils/setAuthToken";
 // import { createProfile, getCurrentProfile } from "./profile";

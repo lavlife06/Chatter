@@ -70,9 +70,9 @@ module.exports = (app) => {
     try {
       const profiles = await Profile.find({
         name: { $regex: "^" + req.params.username, $options: "i" },
-      })
-        .sort({ followers: -1 })
-        .limit(10);
+      });
+      // .sort({ followers: -1 })
+      // .limit(10);
       // This {{followers: -1}} means that users with the highest followers will be shown first
       res.json(profiles);
     } catch (err) {

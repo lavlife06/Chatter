@@ -130,7 +130,7 @@ const GrpChatCompo = ({ location, socket }) => {
                   profiles.map((person) => (
                     <div>
                       <i
-                        class="fas fa-user-circle"
+                        className="fas fa-user-circle"
                         style={{ fontSize: "25px", marginRight: "7px" }}
                       />
                       <strong
@@ -142,7 +142,7 @@ const GrpChatCompo = ({ location, socket }) => {
                         {person.name}
                       </strong>
                       <i
-                        class="fas fa-plus-circle"
+                        className="fas fa-plus-circle"
                         style={{
                           fontSize: "25px",
                           paddingRight: "3px",
@@ -179,7 +179,7 @@ const GrpChatCompo = ({ location, socket }) => {
                     {groupMembers.map((member) => (
                       <div>
                         <i
-                          class="fas fa-user-circle"
+                          className="fas fa-user-circle"
                           style={{ fontSize: "25px", marginRight: "7px" }}
                         />
                         <strong

@@ -59,16 +59,18 @@ const Main = ({ location }) => {
         <div className="tab">
           <button
             className="tablinks"
-            onclick={() => {
+            onClick={() => {
               setShowGroupChat(true);
+              console.log("groupchat clicked");
             }}
           >
             GroupChat
           </button>
           <button
             className="tablinks"
-            onclick={() => {
+            onClick={() => {
               setShowGroupChat(false);
+              console.log("prichat clicked");
             }}
           >
             PrivateChat

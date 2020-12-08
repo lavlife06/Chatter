@@ -1,16 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, Fragment, useEffect } from "react";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import setAuthToken from "./reduxstuff/utils/setAuthToken";
 import store from "./reduxstuff/store";
 import { loadUser } from "./reduxstuff/actions/auth";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Layout/Navbar";
 import Main from "./components/Main";
 import "./App.css";
-import Landing from "./components/Landing";
-import Check from "./components/Check";
+import Landing from "./components/Layout/Landing";
+import Check from "./components/Layout/Check";
 
 const App = () => {
   useEffect(() => {

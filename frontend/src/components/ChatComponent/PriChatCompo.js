@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getProfiles } from "../../reduxstuff/actions/profile";
 import { createPriChatRoom } from "../../reduxstuff/actions/room";
 // import { getProfiles } from "../reduxstuff/actions/profile";
 // import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
@@ -46,23 +47,24 @@ const PriChatCompo = ({ location, socket }) => {
             name="search"
             value={text}
             style={{ borderRadius: "5px" }}
-            placeholder="Search your Rooms"
+            placeholder="Search for users and chat with them"
             onChange={(e) => {
               setText(e.target.value);
-              console.log("isko baadme dekh lenge");
+              dispatch(getProfiles(e.target.value));
             }}
           />
           {profiles &&
             profiles.map((person) => (
               <div>
                 <i
-                  class="fas fa-user-circle"
+                  className="fas fa-user-circle"
                   style={{ fontSize: "25px", marginRight: "7px" }}
                 />
                 <strong
                   style={{
                     // fontWeight: "normal",
                     fontSize: "25px",
+                    color: "limegreen",
                   }}
                 >
                   {person.name}

@@ -8,6 +8,7 @@ import {
   LOGOUT,
   CLEAR_PROFILE,
   CLEAR_ROOMS,
+  CLEAR_PROFILES,
   // CLEAR_PROFILE,
 } from "./types";
 import axios from "axios";
@@ -119,6 +120,7 @@ export const login = (email, password) => async (dispatch) => {
 // Logout / Clear Profile
 export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
+  dispatch({ type: CLEAR_PROFILES });
   dispatch({ type: CLEAR_ROOMS });
   dispatch({ type: LOGOUT });
 };
