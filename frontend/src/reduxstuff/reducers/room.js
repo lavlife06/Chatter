@@ -33,8 +33,8 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         myPriChatRooms: [
-          ...state.myPriChatRooms,
           { chatRoom: payload.theCreatedRoom, roomname: payload.roomName },
+          ...state.myPriChatRooms,
         ],
         loading: false,
       };

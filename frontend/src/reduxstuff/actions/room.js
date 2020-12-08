@@ -73,6 +73,7 @@ export const createPriChatRoom = (roomName, roomMembers) => async (
       type: CREATE_PRICHATROOM,
       payload: { theCreatedRoom: res.data, roomName },
     });
+    dispatch(getCurrentProfile());
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

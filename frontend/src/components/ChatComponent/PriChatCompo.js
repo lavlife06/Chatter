@@ -79,7 +79,7 @@ const PriChatCompo = ({ location, socket }) => {
                     );
 
                     if (myprofile.name === person.name) {
-                      alert("You can't message");
+                      alert("You can't message your own account");
                     } else if (theSelectedRoom.length === 0) {
                       dispatch(
                         createPriChatRoom(person.name, [
