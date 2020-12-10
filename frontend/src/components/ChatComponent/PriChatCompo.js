@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfiles } from "../../reduxstuff/actions/profile";
 import { createPriChatRoom } from "../../reduxstuff/actions/room";
+import { CLEAR_PROFILES } from "../../reduxstuff/actions/types";
 // import { getProfiles } from "../reduxstuff/actions/profile";
 // import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
 // import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
@@ -12,7 +13,7 @@ const PriChatCompo = ({ location, socket }) => {
   // const [roomChats, setRoomChats] = useState("");
 
   const [text, setText] = useState("");
-  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
@@ -53,6 +54,15 @@ const PriChatCompo = ({ location, socket }) => {
               dispatch(getProfiles(e.target.value));
             }}
           />
+          <button
+            style={{ display: "inline" }}
+            onClick={() => {
+              setText("");
+              dispatch({ type: CLEAR_PROFILES });
+            }}
+          >
+            &#10006;
+          </button>
           {profiles &&
             profiles.map((person) => (
               <div>
@@ -79,7 +89,7 @@ const PriChatCompo = ({ location, socket }) => {
                     let theSelectedRoom = myprofile.myPrivateChatRooms.filter(
                       (myRoom) => myRoom.user == person.user
                     );
-
+                    console.log(theSelectedRoom);
                     if (myprofile.name === person.name) {
                       alert("You can't message your own account");
                     } else if (theSelectedRoom.length === 0) {
@@ -93,11 +103,18 @@ const PriChatCompo = ({ location, socket }) => {
                         ...groupMembers,
                         { user: person.user, name: person.name },
                       ]);
+                      setText("");
+                      dispatch({ type: CLEAR_PROFILES });
                     } else {
                       socket.current.emit("getRoomById", {
                         roomId: theSelectedRoom[0].roomId,
                       });
-                      setSelectedRoom(theSelectedRoom[0]);
+                      setSelectedRoom({
+                        chatroominfo: theSelectedRoom[0],
+                        roomname: person.name,
+                      });
+                      setText("");
+                      dispatch({ type: CLEAR_PROFILES });
                     }
                   }}
                 >
@@ -105,26 +122,64 @@ const PriChatCompo = ({ location, socket }) => {
                 </button>
               </div>
             ))}
-          <div>
-            {myPriChatRooms.map((roomInfo) => (
-              <div
-                onClick={() => {
-                  socket.current.emit("getRoomById", { roomId: roomInfo._id });
-                  setSelectedRoom(roomInfo.chatRoom);
-                }}
-                style={{
-                  borderBottomColor: "limegreen",
-                  color: "yellow",
-                  borderBottomWidth: "1px",
-                  borderBottomStyle: "solid",
-                  fontSize: "20px",
-                  textAlign: "center",
-                }}
-              >
-                {roomInfo.roomname}
-              </div>
-            ))}
-          </div>
+          {profiles.length == 0 ? (
+            <div>
+              {myPriChatRooms.map((roomInfo) => (
+                <div
+                  onClick={() => {
+                    console.log(roomInfo.chatRoom._id);
+                    socket.current.emit("getRoomById", {
+                      roomId: roomInfo.chatRoom._id,
+                    });
+                    setSelectedRoom({
+                      chatroominfo: roomInfo.chatRoom,
+                      roomname: roomInfo.roomname,
+                    });
+                  }}
+                  style={{
+                    borderBottomColor: "limegreen",
+                    color: "yellow",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    fontSize: "20px",
+                    textAlign: "center",
+                  }}
+                >
+                  {roomInfo.roomname}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <></>
+          )}
+          {/* {!profiles && (
+            <div>
+              {myPriChatRooms.map((roomInfo) => (
+                <div
+                  onClick={() => {
+                    console.log(roomInfo.chatRoom._id);
+                    socket.current.emit("getRoomById", {
+                      roomId: roomInfo.chatRoom._id,
+                    });
+                    setSelectedRoom({
+                      chatroominfo: roomInfo.chatRoom,
+                      roomname: roomInfo.roomname,
+                    });
+                  }}
+                  style={{
+                    borderBottomColor: "limegreen",
+                    color: "yellow",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    fontSize: "20px",
+                    textAlign: "center",
+                  }}
+                >
+                  {roomInfo.roomname}
+                </div>
+              ))}
+            </div>
+          )} */}
         </div>
       </div>
       <div
@@ -143,6 +198,7 @@ const PriChatCompo = ({ location, socket }) => {
             selectedRoom={selectedRoom}
             location={location}
             socket={socket}
+            myprofile={myprofile}
           />
         )}
         {!selectedRoom && (

@@ -39,7 +39,10 @@ module.exports = (app) => {
         let foundedroom = rooms.filter(
           (roomitem) => roomitem._id.toString() == item.roomId
         );
-        myPriChatallrooms = [...myPriChatallrooms, ...foundedroom];
+        myPriChatallrooms = [
+          ...myPriChatallrooms,
+          { chatRoom: foundedroom[0], roomname: item.name },
+        ];
       });
 
       res.json({ myGrpChatallrooms, myPriChatallrooms });
@@ -92,18 +95,29 @@ module.exports = (app) => {
 
       await room.save();
 
+      let theRoomMembers = [...roomMembers];
+
       roomMembers.forEach(async (memberDetail, index) => {
         let roomId = room._id;
+
         try {
           let memberProfile = await Profile.findOne({
             user: memberDetail.user,
           });
 
-          memberProfile.myPrivateChatRooms.push({
-            roomId,
-            user: roomMembers[!index].user,
-            name: roomMembers[!index].name,
-          });
+          if (index == 0) {
+            memberProfile.myPrivateChatRooms.push({
+              roomId,
+              user: theRoomMembers[1].user,
+              name: theRoomMembers[1].name,
+            });
+          } else {
+            memberProfile.myPrivateChatRooms.push({
+              roomId,
+              user: theRoomMembers[0].user,
+              name: theRoomMembers[0].name,
+            });
+          }
 
           await memberProfile.save();
         } catch (err) {

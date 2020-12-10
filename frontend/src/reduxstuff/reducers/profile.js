@@ -11,7 +11,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  myprofile: null,
+  myprofile: {},
   profiles: [],
   repos: [],
   loading: true,
@@ -45,13 +45,13 @@ const reducers = (state = initialState, action) => {
     case CLEAR_PROFILE:
       return {
         ...state,
-        profile: null,
+        profile: {},
         loading: false,
       };
     case CLEAR_PROFILES:
       return {
         ...state,
-        profiles: null,
+        profiles: [],
         loading: false,
       };
     // case GET_REPOS:

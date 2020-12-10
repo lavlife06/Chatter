@@ -2,30 +2,38 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 
-const RightSideBarPriChat = ({ selectedRoom, location, socket }) => {
+const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
   const dispatch = useDispatch();
+  const [chattext, setChatText] = useState("");
+  const [chats, setChats] = useState([]);
 
+  const { user, name } = myprofile;
   const [loading, setLoading] = useState(true);
 
-  const myParticularRoom = useSelector((state) => state.room.particularRoom);
+  const particularRoom = useSelector((state) => state.room.particularRoom);
 
   useEffect(() => {
     socket.current.on("getRoomById", ({ room }) => {
       dispatch({ type: GET_ROOM_BY_ID, payload: room });
     });
-    if (myParticularRoom) {
-      if (myParticularRoom.roomName == selectedRoom.name) {
-        setLoading(false);
-        setChats(myParticularRoom.chats);
-      }
-    }
-  }, [myParticularRoom]);
+    console.log("dispatch for get_room_byid triggered");
+  }, [particularRoom]);
 
   useEffect(() => {
-    if (myParticularRoom) {
+    console.log(selectedRoom);
+    if (particularRoom) {
+      if (particularRoom._id == selectedRoom.chatroominfo._id) {
+        setLoading(false);
+        setChats(particularRoom.chats);
+      }
+    }
+  }, [particularRoom]);
+
+  useEffect(() => {
+    if (particularRoom) {
       socket.current.emit(
         "joinedRoom",
-        { user, name, room: myParticularRoom.roomName },
+        { user, name, room: particularRoom.roomName },
         ({ welcomeMessage }) => {
           alert(welcomeMessage);
         }
@@ -33,25 +41,18 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket }) => {
       console.log("inside useEffect for joined");
     }
     return () => {
-      if (myParticularRoom) {
+      if (particularRoom) {
         socket.current.emit("leaveRoom", {
           user,
           name,
-          room: myParticularRoom.roomName,
+          room: particularRoom.roomName,
         });
         socket.current.emit("disconnect");
         console.log("inside unmount of RightSideBarPriChat");
         socket.current.off("joinedRoom");
       }
     };
-  }, [myParticularRoom]);
-
-  const [chattext, setChatText] = useState("");
-  const [chats, setChats] = useState([]);
-
-  const myprofile = useSelector((state) => state.profile.myprofile);
-
-  const { user, name } = myprofile;
+  }, [particularRoom]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -61,15 +62,15 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket }) => {
         user,
         name,
         text: chattext,
-        room: myParticularRoom.roomName,
-        roomId: myParticularRoom._id,
+        room: particularRoom.roomName,
+        roomId: particularRoom._id,
       });
     }
     setChatText("");
   };
 
   useEffect(() => {
-    if (myParticularRoom) {
+    if (particularRoom) {
       socket.current.on("message", ({ user, name, text }) => {
         setChats((prevchats) => [...prevchats, { user, name, text }]);
       });
@@ -78,7 +79,7 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket }) => {
     }
 
     return () => {
-      if (myParticularRoom) {
+      if (particularRoom) {
         socket.current.off("message");
         console.log("inside unmount of off.message(RightSideBarPriChat)");
       }
@@ -100,7 +101,7 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket }) => {
           marginBottom: "8px",
         }}
       >
-        <h1 style={{ color: "limegreen" }}>{myParticularRoom.roomName}</h1>
+        <h1 style={{ color: "limegreen" }}>{selectedRoom.roomname}</h1>
       </div>
       <div style={{ height: "90%", overflowY: "scroll" }}>
         {chats.map((item) => (

@@ -4,6 +4,10 @@ import { getMyRooms } from "../reduxstuff/actions/room";
 import io from "socket.io-client";
 import GrpChatCompo from "./ChatComponent/GrpChatCompo";
 import PriChatCompo from "./ChatComponent/PriChatCompo";
+import {
+  CLEAR_PARTICULAR_ROOM,
+  CLEAR_PROFILES,
+} from "../reduxstuff/actions/types";
 let socket;
 
 const Main = ({ location }) => {
@@ -60,6 +64,7 @@ const Main = ({ location }) => {
           <button
             className="tablinks"
             onClick={() => {
+              dispatch({ type: CLEAR_PARTICULAR_ROOM });
               setShowGroupChat(true);
               console.log("groupchat clicked");
             }}
@@ -69,6 +74,7 @@ const Main = ({ location }) => {
           <button
             className="tablinks"
             onClick={() => {
+              dispatch({ type: CLEAR_PARTICULAR_ROOM });
               setShowGroupChat(false);
               console.log("prichat clicked");
             }}
