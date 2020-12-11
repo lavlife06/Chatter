@@ -6,6 +6,10 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  socketId: {
+    type: String,
+    default: "",
+  },
   email: {
     type: String,
     required: true,
@@ -22,24 +26,24 @@ const profileSchema = new Schema({
     type: String,
     default: "",
   },
-  numoffollowers: { type: Number },
-  numoffollowing: { type: Number },
-  followers: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    },
-  ],
-  following: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    },
-  ],
+  // numoffollowers: { type: Number },
+  // numoffollowing: { type: Number },
+  // followers: [
+  //   {
+  //     user: {
+  //       type: Schema.Types.ObjectId,
+  //       ref: "User",
+  //     },
+  //   },
+  // ],
+  // following: [
+  //   {
+  //     user: {
+  //       type: Schema.Types.ObjectId,
+  //       ref: "User",
+  //     },
+  //   },
+  // ],
   myRooms: [
     {
       roomId: {
@@ -61,6 +65,10 @@ const profileSchema = new Schema({
       },
       name: {
         type: String,
+      },
+      socketId: {
+        type: String,
+        default: "",
       },
     },
   ],

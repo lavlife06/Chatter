@@ -5,6 +5,7 @@ import {
   GET_PROFILES,
   // GET_PROFILES,
   PROFILE_ERROR,
+  UPDATE_PROFILE,
   // UPDATE_PROFILE,
   // CLEAR_PROFILE,
   // ACCOUNT_DELETED,
@@ -68,6 +69,44 @@ export const createProfile = () => async (dispatch) => {
 
     dispatch({
       type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => {
+        // dispatch(setAlert(error.msg, "danger"));
+        alert(error.msg);
+      });
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Create or update profile
+export const updateProfile = (socketId) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const body = JSON.stringify({ socketId });
+
+    const res = await axios.post(
+      "http://127.0.0.1:5000/api/profile/me",
+      body,
+      config
+    );
+
+    dispatch({
+      type: UPDATE_PROFILE,
       payload: res.data,
     });
   } catch (err) {

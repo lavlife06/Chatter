@@ -8,6 +8,7 @@ import {
   CLEAR_PARTICULAR_ROOM,
   CLEAR_PROFILES,
 } from "../reduxstuff/actions/types";
+import { updateProfile } from "../reduxstuff/actions/profile";
 let socket;
 
 const Main = ({ location }) => {
@@ -29,9 +30,20 @@ const Main = ({ location }) => {
   const myprofile = useSelector((state) => state.profile.myprofile);
 
   useEffect(() => {
-    socket.current.emit("joined", { name: myprofile.name }, ({ wlcmsg }) => {
-      alert(wlcmsg);
-    });
+    socket.current.emit(
+      "joined",
+      {
+        name: myprofile.name,
+        user: myprofile.user,
+        socketId: myprofile.socketId,
+      },
+      ({ wlcmsg, socketId }) => {
+        alert(wlcmsg);
+        if (socketId) {
+          dispatch(updateProfile(socketId));
+        }
+      }
+    );
     console.log("inside useEffect for joined");
     return () => {
       socket.current.emit("disconnect");

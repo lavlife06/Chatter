@@ -31,7 +31,7 @@ module.exports = (app) => {
   // access Private
   app.post("/api/profile/me", verify, async (req, res) => {
     // build profile object
-    // const { bio } = req.body;
+    const { socketId } = req.body;
 
     let profileFields = {};
 
@@ -42,7 +42,7 @@ module.exports = (app) => {
     profileFields.name = req.user.name;
     profileFields.email = req.user.email;
 
-    // if (name) profileFields.name = name;
+    if (socketId) profileFields.socketId = socketId;
     // if (email) profileFields.email = email;
     profileFields.tag = `@${req.user.name}`;
 

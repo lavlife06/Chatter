@@ -17,6 +17,10 @@ const RoomSchema = new mongoose.Schema({
         type: String,
         default: "",
       },
+      socketId: {
+        type: String,
+        default: "",
+      },
     },
   ],
   date: {

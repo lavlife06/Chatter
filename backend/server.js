@@ -49,8 +49,19 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
-  socket.on("joined", ({ name }, callback) => {
-    callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
+  socket.on("joined", ({ name, user, socketId }, callback) => {
+    if (socketId) {
+      console.log(socketId);
+      console.log(`I am the socketid before change ${socket.id}`);
+      socket.id = socketId;
+      callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
+      console.log(`I am the socketid after change ${socket.id}`);
+    } else {
+      callback({
+        wlcmsg: `Welcome ${name} to LavChatApp`,
+        socketId: socket.id,
+      });
+    }
   });
 
   socket.on("leaveRoom", ({ user, name, room }) => {
@@ -62,6 +73,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinedRoom", ({ user, name, room }, callback) => {
+    console.log(`printed socketid from joinedRoom event:${socket.id}`);
     socket.join(room);
     console.log(socket.rooms);
 
@@ -100,6 +112,24 @@ io.on("connection", (socket) => {
       }
     }
   );
+
+  // socket.on(
+  //   "createdNewPrivateRoom",
+  //   async ({ user, name, text, room, roomId }, callback) => {
+  //     io.to(room).emit("message", { user, name, text });
+  //     try {
+  //       let chatRoom = await Room.findOne({
+  //         _id: roomId,
+  //       });
+
+  //       chatRoom.chats.push({ user, name, text });
+
+  //       await chatRoom.save();
+  //     } catch (error) {
+  //       callback(error);
+  //     }
+  //   }
+  // );
 
   socket.on("getRoomById", async ({ roomId }, callback) => {
     try {
