@@ -9,7 +9,7 @@ const Check = () => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const myprofile = useSelector((state) => state.profile.myprofile);
-
+  console.log(myprofile);
   if (isAuthenticated && !myprofile) {
     return <Spinner />;
   } else if (isAuthenticated && myprofile) {
