@@ -66,10 +66,6 @@ const profileSchema = new Schema({
       name: {
         type: String,
       },
-      socketId: {
-        type: String,
-        default: "",
-      },
     },
   ],
   // profileviewers: {

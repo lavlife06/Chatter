@@ -1,55 +1,32 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
+import { updateProfile } from "../../reduxstuff/actions/profile";
 
-const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
+const RightSideBarGrpChat = ({ location, socket }) => {
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
-
-  const myParticularRoom = useSelector((state) => state.room.particularRoom);
+  const myprofile = useSelector((state) => state.profile.myprofile);
 
   useEffect(() => {
-    socket.on("getRoomById", ({ room }) => {
-      dispatch({ type: GET_ROOM_BY_ID, payload: room });
+    // console.log(`my name ${name},my socketId: ${socket.id},from frontend`);
+    socket.emit("tjoinedRoom", { user, name }, ({ welcomeMessage }) => {
+      alert(welcomeMessage);
     });
-    if (myParticularRoom) {
-      if (myParticularRoom.roomName == selectedRoom.roomName) {
-        setLoading(false);
-        setChats(myParticularRoom.chats);
-      }
-    }
-  }, [myParticularRoom]);
-
-  useEffect(() => {
-    if (myParticularRoom) {
-      socket.emit(
-        "joinedRoom",
-        { user, name, room: myParticularRoom.roomName },
-        ({ welcomeMessage }) => {
-          alert(welcomeMessage);
-        }
-      );
-      console.log("inside useEffect for joined");
-    }
-    return () => {
-      if (myParticularRoom) {
-        socket.emit("leaveRoom", {
-          user,
-          name,
-          room: myParticularRoom.roomName,
-        });
-        socket.emit("disconnect");
-        console.log("inside unmount of RightSideBar");
-        socket.off("joinedRoom");
-      }
-    };
-  }, [myParticularRoom]);
+    console.log("inside useEffect for joined");
+    // return () => {
+    //   socket.emit("leaveRoom", {
+    //     user,
+    //     name,
+    //   });
+    //   socket.emit("disconnect");
+    //   console.log("inside unmount of RightSideBar");
+    //   socket.off("joinedRoom");
+    // };
+  }, [location]);
 
   const [chattext, setChatText] = useState("");
   const [chats, setChats] = useState([]);
-
-  const myprofile = useSelector((state) => state.profile.myprofile);
+  const [rooms, setRooms] = useState([]);
 
   const { user, name } = myprofile;
 
@@ -57,36 +34,41 @@ const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
     e.preventDefault();
 
     if (chattext) {
-      socket.emit("sendMessage", {
+      socket.emit("tsendMessage", {
         user,
         name,
         text: chattext,
-        room: myParticularRoom.roomName,
-        roomId: myParticularRoom._id,
       });
     }
     setChatText("");
   };
 
   useEffect(() => {
-    if (myParticularRoom) {
-      socket.on("message", ({ user, name, text }) => {
-        setChats((prevchats) => [...prevchats, { user, name, text }]);
-      });
-
-      console.log("inside useEffect for message");
-    }
+    socket.on("tcreateroom", ({ room }) => {
+      setRooms((prevrooms) => [...prevrooms, room]);
+      console.log(room);
+    });
+    console.log("inside useEffect for message");
 
     return () => {
-      if (myParticularRoom) {
-        socket.off("message");
-        console.log("inside unmount of off.message(RightSideBar)");
-      }
+      socket.off("tcreateroom");
+      console.log("inside unmount of off.message(RightSideBar)");
+    };
+  }, [rooms]);
+
+  useEffect(() => {
+    socket.on("message", ({ user, name, text }) => {
+      setChats((prevchats) => [...prevchats, { user, name, text }]);
+    });
+
+    console.log("inside useEffect for message");
+
+    return () => {
+      socket.off("message");
+      console.log("inside unmount of off.message(RightSideBar)");
     };
   }, [chats]);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+
   return (
     // <div style={{ padding: "2px" }}>
     <Fragment>
@@ -100,7 +82,10 @@ const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
           marginBottom: "8px",
         }}
       >
-        <h1 style={{ color: "limegreen" }}>{myParticularRoom.roomName}</h1>
+        {rooms.map((room) => (
+          <h1 style={{ color: "limegreen" }}>{room}</h1>
+        ))}
+        <h1 style={{ color: "limegreen" }}>GlobalRoom hai Re</h1>
       </div>
       <div style={{ height: "90%", overflowY: "scroll" }}>
         {chats.map((item) => (
@@ -191,6 +176,19 @@ const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
             sendMessage(e);
           }}
         />
+        <div>
+          <button
+            onClick={() => {
+              // setRooms((prevrooms) => [...prevrooms, "achaRoomHai"]);
+              socket.emit("bhaicreateroom", {
+                room: "achaRoomHai",
+                withGuy: "karan",
+              });
+            }}
+          >
+            CreateRoom
+          </button>
+        </div>
       </div>
     </Fragment>
   );

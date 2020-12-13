@@ -6,6 +6,7 @@ const keys = require("./config/keys");
 const connectDB = require("./config/db");
 const User = require("./models/User");
 const Room = require("./models/Room");
+const Profile = require("./models/Profile");
 const app = express();
 
 // Implementing cors
@@ -29,7 +30,6 @@ const server = app.listen(PORT, () => {
 });
 
 const io = require("socket.io")(server);
-
 // io.use((socket, next) => {
 //   // Verificaitn of ttoken
 //   if (socket.handshake.query && socket.handshake.query.token) {
@@ -49,19 +49,9 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
-  socket.on("joined", ({ name, user, socketId }, callback) => {
-    if (socketId) {
-      console.log(socketId);
-      console.log(`I am the socketid before change ${socket.id}`);
-      socket.id = socketId;
-      callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
-      console.log(`I am the socketid after change ${socket.id}`);
-    } else {
-      callback({
-        wlcmsg: `Welcome ${name} to LavChatApp`,
-        socketId: socket.id,
-      });
-    }
+  socket.on("joined", ({ name }, callback) => {
+    console.log(`my name ${name}, my socketId:${socket.id}`);
+    callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
   });
 
   socket.on("leaveRoom", ({ user, name, room }) => {
@@ -73,9 +63,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinedRoom", ({ user, name, room }, callback) => {
-    console.log(`printed socketid from joinedRoom event:${socket.id}`);
     socket.join(room);
-    console.log(socket.rooms);
 
     socket.emit("message", {
       user,
@@ -86,13 +74,6 @@ io.on("connection", (socket) => {
     socket.broadcast
       .to(room)
       .emit("message", { user, name, text: `${name} has joined!` });
-
-    // io.to(user.room).emit("roomData", {
-    //   room: user.room,
-    //   users: getUsersInRoom(user.room),
-    // });
-
-    // callback();
   });
 
   socket.on(
@@ -113,23 +94,47 @@ io.on("connection", (socket) => {
     }
   );
 
-  // socket.on(
-  //   "createdNewPrivateRoom",
-  //   async ({ user, name, text, room, roomId }, callback) => {
-  //     io.to(room).emit("message", { user, name, text });
-  //     try {
-  //       let chatRoom = await Room.findOne({
-  //         _id: roomId,
-  //       });
+  socket.on(
+    "createGrpChatRoom",
+    async ({ user, roomName, roomMembers }, callback) => {
+      //  Creating Room
+      console.log(roomMembers);
+      console.log(roomName);
+      try {
+        let room = new Room({
+          user,
+          roomName,
+          roomMembers,
+        });
+        await room.save();
 
-  //       chatRoom.chats.push({ user, name, text });
+        roomMembers.forEach(async (memberDetail) => {
+          let roomId = room._id;
+          try {
+            let memberProfile = await Profile.findOne({
+              user: memberDetail.user,
+            });
 
-  //       await chatRoom.save();
-  //     } catch (error) {
-  //       callback(error);
-  //     }
-  //   }
-  // );
+            memberProfile.myRooms.push({ roomId, roomName });
+
+            await memberProfile.save();
+
+            io.to(memberProfile.socketId).emit("addNewGrpChatRoom", { room });
+            console.log(
+              `event createdGrpChatRoom emmited to ${memberProfile.name}`
+            );
+            console.log(memberProfile.socketId);
+          } catch (err) {
+            // callback(err);
+            console.error(err.message);
+          }
+        });
+      } catch (err) {
+        // callback(err);
+        console.error(err.message);
+      }
+    }
+  );
 
   socket.on("getRoomById", async ({ roomId }, callback) => {
     try {
@@ -140,9 +145,39 @@ io.on("connection", (socket) => {
     }
   });
 
-  // socket.join("joined", (callback) => {});
+  // socket.on("tjoined", ({ name, user }, callback) => {
+  //   callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
+  // });
+
+  // socket.on("tjoinedRoom", ({ user, name }, callback) => {
+  //   console.log(`my name ${name},my socketId: ${socket.id}`);
+  //   socket.emit("message", {
+  //     user,
+  //     name,
+  //     text: `${name}, welcome to GroupChat.`,
+  //   });
+
+  //   socket.broadcast.emit("message", {
+  //     user,
+  //     name,
+  //     text: `${name} has joined!`,
+  //   });
+  // });
+
+  // socket.on("tsendMessage", ({ user, name, text }, callback) => {
+  //   io.emit("message", { user, name, text });
+  // });
+
+  // socket.on("bhaicreateroom", async ({ room, withGuy }) => {
+  //   let theGuy = await Profile.findOne({
+  //     name: withGuy,
+  //   });
+  //   io.to(theGuy.socketId).emit("tcreateroom", { room });
+  //   // io.emit("message", { user, name, text: "bhai room kyu nahi ban raha" });
+  // });
 
   socket.on("disconnect", () => {
+    socket.off();
     console.log("User have left");
   });
 });

@@ -52,37 +52,37 @@ module.exports = (app) => {
     }
   });
 
-  app.post("/api/room/createroom", verify, async (req, res) => {
-    const { roomName, roomMembers } = req.body;
-    try {
-      let room = new Room({
-        user: req.user.id,
-        roomName,
-        roomMembers,
-      });
-      await room.save();
+  // app.post("/api/room/createroom", verify, async (req, res) => {
+  //   const { roomName, roomMembers } = req.body;
+  //   try {
+  //     let room = new Room({
+  //       user: req.user.id,
+  //       roomName,
+  //       roomMembers,
+  //     });
+  //     await room.save();
 
-      roomMembers.forEach(async (memberDetail) => {
-        let roomId = room._id;
-        try {
-          let memberProfile = await Profile.findOne({
-            user: memberDetail.user,
-          });
+  //     roomMembers.forEach(async (memberDetail) => {
+  //       let roomId = room._id;
+  //       try {
+  //         let memberProfile = await Profile.findOne({
+  //           user: memberDetail.user,
+  //         });
 
-          memberProfile.myRooms.push({ roomId, roomName });
+  //         memberProfile.myRooms.push({ roomId, roomName });
 
-          await memberProfile.save();
-        } catch (err) {
-          console.error(err.message);
-        }
-      });
+  //         await memberProfile.save();
+  //       } catch (err) {
+  //         console.error(err.message);
+  //       }
+  //     });
 
-      res.json(room);
-    } catch (err) {
-      res.status(500).send("Server Error");
-      console.error(err.message);
-    }
-  });
+  //     res.json(room);
+  //   } catch (err) {
+  //     res.status(500).send("Server Error");
+  //     console.error(err.message);
+  //   }
+  // });
 
   //for PrivateRoomMessage
   app.post("/api/room/createPrivateChatroom", verify, async (req, res) => {

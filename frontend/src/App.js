@@ -13,12 +13,12 @@ import Landing from "./components/Layout/Landing";
 import Check from "./components/Layout/Check";
 
 const App = () => {
-  useEffect(() => {
-    if (localStorage.token) {
-      setAuthToken(localStorage.token);
-      store.dispatch(loadUser());
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.token) {
+  //     setAuthToken(localStorage.token);
+  //     store.dispatch(loadUser());
+  //   }
+  // }, []);
 
   return (
     <Router>
