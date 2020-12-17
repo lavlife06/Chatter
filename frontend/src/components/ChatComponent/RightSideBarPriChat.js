@@ -2,7 +2,14 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 
-const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
+const RightSideBarPriChat = ({
+  selectedRoom,
+  location,
+  socket,
+  myprofile,
+  changeRoomsStack,
+  theRooms,
+}) => {
   const dispatch = useDispatch();
   const [chattext, setChatText] = useState("");
   const [chats, setChats] = useState([]);
@@ -13,7 +20,7 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
   const particularRoom = useSelector((state) => state.room.particularRoom);
 
   useEffect(() => {
-    socket.current.on("getRoomById", ({ room }) => {
+    socket.on("getRoomById", ({ room }) => {
       dispatch({ type: GET_ROOM_BY_ID, payload: room });
     });
     console.log("dispatch for get_room_byid triggered");
@@ -31,9 +38,9 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
 
   useEffect(() => {
     if (particularRoom) {
-      socket.current.emit(
-        "joinedRoom",
-        { user, name, room: particularRoom.roomName },
+      socket.emit(
+        "joinedPriRoom",
+        { user, name, roomId: particularRoom._id },
         ({ welcomeMessage }) => {
           alert(welcomeMessage);
         }
@@ -42,14 +49,14 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
     }
     return () => {
       if (particularRoom) {
-        socket.current.emit("leaveRoom", {
+        socket.emit("leaveRoom", {
           user,
           name,
-          room: particularRoom.roomName,
+          roomId: particularRoom._id,
         });
-        socket.current.emit("disconnect");
+        socket.emit("disconnect");
         console.log("inside unmount of RightSideBarPriChat");
-        socket.current.off("joinedRoom");
+        socket.off("joinedRoom");
       }
     };
   }, [particularRoom]);
@@ -58,20 +65,33 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
     e.preventDefault();
 
     if (chattext) {
-      socket.current.emit("sendMessage", {
+      socket.emit("sendPriMessage", {
         user,
         name,
         text: chattext,
-        room: particularRoom.roomName,
         roomId: particularRoom._id,
       });
     }
     setChatText("");
+
+    // Changing room stack
+    if (theRooms.length != 0) {
+      if (theRooms[0].roomname != selectedRoom.roomname) {
+        theRooms.forEach((arritem, index) => {
+          if (arritem.roomname == selectedRoom.roomname) {
+            theRooms.splice(index, 1);
+            theRooms.splice(0, 0, arritem);
+          }
+        });
+        console.log(theRooms);
+        changeRoomsStack(theRooms);
+      }
+    }
   };
 
   useEffect(() => {
     if (particularRoom) {
-      socket.current.on("message", ({ user, name, text }) => {
+      socket.on("message", ({ user, name, text }) => {
         setChats((prevchats) => [...prevchats, { user, name, text }]);
       });
 
@@ -80,14 +100,16 @@ const RightSideBarPriChat = ({ selectedRoom, location, socket, myprofile }) => {
 
     return () => {
       if (particularRoom) {
-        socket.current.off("message");
+        socket.off("message");
         console.log("inside unmount of off.message(RightSideBarPriChat)");
       }
     };
   }, [chats]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
   return (
     // <div style={{ padding: "2px" }}>
     <Fragment>

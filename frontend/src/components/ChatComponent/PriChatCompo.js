@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfiles } from "../../reduxstuff/actions/profile";
+import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
 import { createPriChatRoom } from "../../reduxstuff/actions/room";
 import { CLEAR_PROFILES } from "../../reduxstuff/actions/types";
 // import { getProfiles } from "../reduxstuff/actions/profile";
@@ -18,6 +18,21 @@ const PriChatCompo = ({ location, socket }) => {
   const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
   const myPriChatRooms = useSelector((state) => state.room.myPriChatRooms);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    console.log(`printing socketId from Frontend:${socket.id}`);
+    dispatch(updateProfile(socket.id));
+  }, [socket.id]);
+
+  useEffect(() => {
+    console.log(myPriChatRooms);
+    let theChangedRooms = myPriChatRooms.map((theRoom) => {
+      return { ...theRoom, unReadMsgLength: 0 };
+    });
+    setRooms([...theChangedRooms]);
+    console.log("inside setRooms");
+  }, [location]);
 
   const [groupMembers, setGroupMembers] = useState([
     {
@@ -25,6 +40,10 @@ const PriChatCompo = ({ location, socket }) => {
       name: myprofile.name,
     },
   ]);
+
+  const changePriRoomsStack = (rearrangedRooms) => {
+    setRooms([...rearrangedRooms]);
+  };
 
   return (
     <Fragment>
@@ -106,7 +125,7 @@ const PriChatCompo = ({ location, socket }) => {
                       setText("");
                       dispatch({ type: CLEAR_PROFILES });
                     } else {
-                      socket.current.emit("getRoomById", {
+                      socket.emit("getRoomById", {
                         roomId: theSelectedRoom[0].roomId,
                       });
                       setSelectedRoom({
@@ -124,17 +143,26 @@ const PriChatCompo = ({ location, socket }) => {
             ))}
           {profiles.length == 0 ? (
             <div>
-              {myPriChatRooms.map((roomInfo) => (
+              {rooms.map((roomInfo) => (
                 <div
                   onClick={() => {
                     console.log(roomInfo.chatRoom._id);
-                    socket.current.emit("getRoomById", {
+                    socket.emit("getRoomById", {
                       roomId: roomInfo.chatRoom._id,
                     });
                     setSelectedRoom({
                       chatroominfo: roomInfo.chatRoom,
                       roomname: roomInfo.roomname,
                     });
+                    if (roomInfo.unReadMsgLength > 0) {
+                      let newarr = [...rooms];
+                      newarr.forEach((arritem) => {
+                        if (arritem.roomname == roomInfo.roomname) {
+                          arritem.unReadMsgLength = 0;
+                        }
+                      });
+                      setRooms([...newarr]);
+                    }
                   }}
                   style={{
                     borderBottomColor: "limegreen",
@@ -146,40 +174,15 @@ const PriChatCompo = ({ location, socket }) => {
                   }}
                 >
                   {roomInfo.roomname}
+                  <strong style={{ fontWeight: "normal", float: "right" }}>
+                    {roomInfo.unReadMsgLength}
+                  </strong>
                 </div>
               ))}
             </div>
           ) : (
             <></>
           )}
-          {/* {!profiles && (
-            <div>
-              {myPriChatRooms.map((roomInfo) => (
-                <div
-                  onClick={() => {
-                    console.log(roomInfo.chatRoom._id);
-                    socket.current.emit("getRoomById", {
-                      roomId: roomInfo.chatRoom._id,
-                    });
-                    setSelectedRoom({
-                      chatroominfo: roomInfo.chatRoom,
-                      roomname: roomInfo.roomname,
-                    });
-                  }}
-                  style={{
-                    borderBottomColor: "limegreen",
-                    color: "yellow",
-                    borderBottomWidth: "1px",
-                    borderBottomStyle: "solid",
-                    fontSize: "20px",
-                    textAlign: "center",
-                  }}
-                >
-                  {roomInfo.roomname}
-                </div>
-              ))}
-            </div>
-          )} */}
         </div>
       </div>
       <div
@@ -199,6 +202,8 @@ const PriChatCompo = ({ location, socket }) => {
             location={location}
             socket={socket}
             myprofile={myprofile}
+            changePriRoomsStack={changePriRoomsStack}
+            theRooms={rooms}
           />
         )}
         {!selectedRoom && (

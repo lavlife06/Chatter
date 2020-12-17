@@ -63,7 +63,7 @@ const RightSideBarGrpChat = ({
     e.preventDefault();
 
     if (chattext) {
-      socket.emit("sendMessage", {
+      socket.emit("sendGrpMessage", {
         user,
         name,
         text: chattext,
@@ -74,16 +74,18 @@ const RightSideBarGrpChat = ({
     setChatText("");
 
     // Changing room stack
-    if (theRooms[0].roomName != selectedRoom.roomName) {
-      theRooms.forEach((arritem, index) => {
-        if (arritem.roomName == selectedRoom.roomName) {
-          theRooms.splice(index, 1);
-          theRooms.splice(0, 0, arritem);
-        }
-      });
-      console.log(theRooms);
+    if (theRooms.length != 0) {
+      if (theRooms[0].roomName != selectedRoom.roomName) {
+        theRooms.forEach((arritem, index) => {
+          if (arritem.roomName == selectedRoom.roomName) {
+            theRooms.splice(index, 1);
+            theRooms.splice(0, 0, arritem);
+          }
+        });
+        console.log(theRooms);
 
-      changeRoomsStack(theRooms);
+        changeRoomsStack(theRooms);
+      }
     }
   };
 

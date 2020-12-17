@@ -44,7 +44,7 @@ const GrpChatCompo = ({ location, socket }) => {
     };
   }, [rooms]);
 
-  const [roomMembers, setGroupMembers] = useState([
+  const [roomMembers, setRoomMembers] = useState([
     {
       user: myprofile.user,
       name: myprofile.name,
@@ -136,7 +136,7 @@ const GrpChatCompo = ({ location, socket }) => {
                   modal.style.display = "none";
                   dispatch({ type: CLEAR_PROFILES });
                   setText("");
-                  setGroupMembers([
+                  setRoomMembers([
                     {
                       user: myprofile.user,
                       name: myprofile.name,
@@ -209,7 +209,7 @@ const GrpChatCompo = ({ location, socket }) => {
                           if (myprofile.name === person.name) {
                             alert("You can't add yourself twice in same group");
                           } else {
-                            setGroupMembers([
+                            setRoomMembers([
                               ...roomMembers,
                               {
                                 user: person.user,
@@ -270,7 +270,7 @@ const GrpChatCompo = ({ location, socket }) => {
                     modal.style.display = "none";
                     dispatch({ type: CLEAR_PROFILES });
                     setText("");
-                    setGroupMembers([
+                    setRoomMembers([
                       {
                         user: myprofile.user,
                         name: myprofile.name,

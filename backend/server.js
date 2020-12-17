@@ -76,8 +76,12 @@ io.on("connection", (socket) => {
       .emit("message", { user, name, text: `${name} has joined!` });
   });
 
+  socket.on("joinedPriRoom", ({ user, name, roomId, room }, callback) => {
+    socket.join(roomId);
+  });
+
   socket.on(
-    "sendMessage",
+    "sendGrpMessage",
     async ({ user, name, text, room, roomId }, callback) => {
       io.to(room).emit("message", { user, name, text });
       try {
@@ -93,6 +97,33 @@ io.on("connection", (socket) => {
             console.log(profile.name);
           }
         });
+
+        chatRoom.chats.push({ user, name, text });
+
+        await chatRoom.save();
+      } catch (error) {
+        callback(error);
+      }
+    }
+  );
+
+  socket.on(
+    "sendPriMessage",
+    async ({ user, name, text, roomId }, callback) => {
+      io.to(roomId).emit("message", { user, name, text });
+      try {
+        let chatRoom = await Room.findOne({
+          _id: roomId,
+        });
+
+        // chatRoom.roomMembers.forEach(async (member) => {
+        //   if (user != member.user) {
+        //     let profile = await Profile.findOne({ user: member.user });
+        //     io.to(profile.socketId).emit("newMessage", { room: chatRoom });
+        //     console.log(profile.socketId);
+        //     console.log(profile.name);
+        //   }
+        // });
 
         chatRoom.chats.push({ user, name, text });
 
