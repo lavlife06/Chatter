@@ -41,6 +41,42 @@ const PriChatCompo = ({ location, socket }) => {
     },
   ]);
 
+  useEffect(() => {
+    socket.on("newMessage", ({ room }) => {
+      if (rooms[0].roomname != room.roomName) {
+        if (rooms.length <= 1) {
+          setRooms((prevRooms) => [
+            {
+              ...prevRooms[0],
+              unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
+            },
+          ]);
+        } else {
+          let theNewArr = [...rooms];
+
+          theNewArr.forEach((arritem, index) => {
+            if (arritem.roomname == room.roomName) {
+              theNewArr.splice(index, 1);
+              theNewArr.splice(0, 0, {
+                ...arritem,
+                unReadMsgLength: arritem.unReadMsgLength + 1,
+              });
+            }
+          });
+
+          console.log(theNewArr);
+          setRooms([...theNewArr]);
+        }
+      }
+    });
+    console.log("inside on event newMessage");
+
+    return () => {
+      socket.off("newMessage");
+      console.log("inside unmount of off.newMessage");
+    };
+  }, [rooms]);
+
   const changePriRoomsStack = (rearrangedRooms) => {
     setRooms([...rearrangedRooms]);
   };

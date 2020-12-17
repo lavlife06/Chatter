@@ -75,7 +75,7 @@ const RightSideBarPriChat = ({
     setChatText("");
 
     // Changing room stack
-    if (theRooms.length != 0) {
+    if (theRooms.length > 1) {
       if (theRooms[0].roomname != selectedRoom.roomname) {
         theRooms.forEach((arritem, index) => {
           if (arritem.roomname == selectedRoom.roomname) {

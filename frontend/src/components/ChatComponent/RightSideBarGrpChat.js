@@ -74,7 +74,7 @@ const RightSideBarGrpChat = ({
     setChatText("");
 
     // Changing room stack
-    if (theRooms.length != 0) {
+    if (theRooms.length > 1) {
       if (theRooms[0].roomName != selectedRoom.roomName) {
         theRooms.forEach((arritem, index) => {
           if (arritem.roomName == selectedRoom.roomName) {

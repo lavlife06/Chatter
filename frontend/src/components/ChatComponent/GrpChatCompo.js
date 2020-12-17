@@ -54,22 +54,31 @@ const GrpChatCompo = ({ location, socket }) => {
   useEffect(() => {
     socket.on("newMessage", ({ room }) => {
       if (rooms[0].roomName != room.roomName) {
-        let theNewArr = [...rooms];
-        console.log(theNewArr);
-        theNewArr.forEach((arritem, index) => {
-          console.log(arritem);
-          console.log(room);
-          if (arritem.roomName == room.roomName) {
-            console.log("matched");
-            theNewArr.splice(index, 1);
-            theNewArr.splice(0, 0, {
-              ...arritem,
-              unReadMsgLength: arritem.unReadMsgLength + 1,
-            });
-          }
-        });
-        console.log(theNewArr);
-        setRooms([...theNewArr]);
+        if (rooms.length <= 1) {
+          setRooms((prevRooms) => [
+            {
+              ...prevRooms[0],
+              unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
+            },
+          ]);
+        } else {
+          let theNewArr = [...rooms];
+          console.log(theNewArr);
+          theNewArr.forEach((arritem, index) => {
+            console.log(arritem);
+            console.log(room);
+            if (arritem.roomName == room.roomName) {
+              console.log("matched");
+              theNewArr.splice(index, 1);
+              theNewArr.splice(0, 0, {
+                ...arritem,
+                unReadMsgLength: arritem.unReadMsgLength + 1,
+              });
+            }
+          });
+          console.log(theNewArr);
+          setRooms([...theNewArr]);
+        }
       }
     });
     console.log("inside on event newMessage");
