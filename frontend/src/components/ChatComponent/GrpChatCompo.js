@@ -24,7 +24,10 @@ const GrpChatCompo = ({ location, socket }) => {
 
   useEffect(() => {
     console.log(myRooms);
-    setRooms(myRooms);
+    let theChangedRooms = myRooms.map((theRoom) => {
+      return { ...theRoom, unReadMsgLength: 0 };
+    });
+    setRooms([...theChangedRooms]);
     console.log("inside setRooms");
   }, [location]);
 
@@ -47,6 +50,39 @@ const GrpChatCompo = ({ location, socket }) => {
       name: myprofile.name,
     },
   ]);
+
+  useEffect(() => {
+    socket.on("newMessage", ({ room }) => {
+      if (rooms[0].roomName != room.roomName) {
+        let theNewArr = [...rooms];
+        console.log(theNewArr);
+        theNewArr.forEach((arritem, index) => {
+          console.log(arritem);
+          console.log(room);
+          if (arritem.roomName == room.roomName) {
+            console.log("matched");
+            theNewArr.splice(index, 1);
+            theNewArr.splice(0, 0, {
+              ...arritem,
+              unReadMsgLength: arritem.unReadMsgLength + 1,
+            });
+          }
+        });
+        console.log(theNewArr);
+        setRooms([...theNewArr]);
+      }
+    });
+    console.log("inside on event newMessage");
+
+    return () => {
+      socket.off("newMessage");
+      console.log("inside unmount of off.newMessage");
+    };
+  }, [rooms]);
+
+  const changeRoomsStack = (rearrangedRooms) => {
+    setRooms([...rearrangedRooms]);
+  };
 
   return (
     <Fragment>
@@ -254,6 +290,15 @@ const GrpChatCompo = ({ location, socket }) => {
                 onClick={() => {
                   socket.emit("getRoomById", { roomId: room._id });
                   setSelectedRoom(room);
+                  if (room.unReadMsgLength > 0) {
+                    let newarr = [...rooms];
+                    newarr.forEach((arritem) => {
+                      if (arritem.roomName == room.roomName) {
+                        arritem.unReadMsgLength = 0;
+                      }
+                    });
+                    setRooms([...newarr]);
+                  }
                 }}
                 style={{
                   borderBottomColor: "limegreen",
@@ -265,6 +310,9 @@ const GrpChatCompo = ({ location, socket }) => {
                 }}
               >
                 {room.roomName}
+                <strong style={{ fontWeight: "normal", float: "right" }}>
+                  {room.unReadMsgLength}
+                </strong>
               </div>
             ))}
           </div>
@@ -286,6 +334,8 @@ const GrpChatCompo = ({ location, socket }) => {
             selectedRoom={selectedRoom}
             location={location}
             socket={socket}
+            changeRoomsStack={changeRoomsStack}
+            theRooms={rooms}
           />
         )}
         {!selectedRoom && (

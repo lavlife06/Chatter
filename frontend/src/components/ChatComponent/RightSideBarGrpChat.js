@@ -2,7 +2,13 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 
-const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
+const RightSideBarGrpChat = ({
+  selectedRoom,
+  location,
+  socket,
+  changeRoomsStack,
+  theRooms,
+}) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -66,6 +72,19 @@ const RightSideBarGrpChat = ({ selectedRoom, location, socket }) => {
       });
     }
     setChatText("");
+
+    // Changing room stack
+    if (theRooms[0].roomName != selectedRoom.roomName) {
+      theRooms.forEach((arritem, index) => {
+        if (arritem.roomName == selectedRoom.roomName) {
+          theRooms.splice(index, 1);
+          theRooms.splice(0, 0, arritem);
+        }
+      });
+      console.log(theRooms);
+
+      changeRoomsStack(theRooms);
+    }
   };
 
   useEffect(() => {

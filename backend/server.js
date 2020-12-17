@@ -85,6 +85,15 @@ io.on("connection", (socket) => {
           _id: roomId,
         });
 
+        chatRoom.roomMembers.forEach(async (member) => {
+          if (user != member.user) {
+            let profile = await Profile.findOne({ user: member.user });
+            io.to(profile.socketId).emit("newMessage", { room: chatRoom });
+            console.log(profile.socketId);
+            console.log(profile.name);
+          }
+        });
+
         chatRoom.chats.push({ user, name, text });
 
         await chatRoom.save();
