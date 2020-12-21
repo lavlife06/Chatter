@@ -125,7 +125,8 @@ const PriChatCompo = ({ location, socket }) => {
               dispatch(getProfiles(e.target.value));
             }}
           />
-          <button
+          {/* <button
+            className="clearBtn"
             style={{ display: "inline" }}
             onClick={() => {
               setText("");
@@ -133,7 +134,14 @@ const PriChatCompo = ({ location, socket }) => {
             }}
           >
             &#10006;
-          </button>
+          </button> */}
+          <i
+            className="fas fa-window-close clearBtn"
+            onClick={() => {
+              setText("");
+              dispatch({ type: CLEAR_PROFILES });
+            }}
+          />
           {profiles &&
             profiles.map((person) => (
               <div>

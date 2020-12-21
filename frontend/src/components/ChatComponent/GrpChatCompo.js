@@ -122,6 +122,13 @@ const GrpChatCompo = ({ location, socket }) => {
             }}
           />
           <i
+            className="fas fa-window-close clearBtn"
+            onClick={() => {
+              setText("");
+              dispatch({ type: CLEAR_PROFILES });
+            }}
+          />
+          <i
             className="fas fa-bars"
             style={{
               color: "yellow",

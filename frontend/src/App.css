@@ -89,6 +89,27 @@ a {
 } */
 
 /* Create an active/current tablink class */
-/* .tab button.active {
-  background-color: #ccc;
-} */
+.tablink {
+  /* box-shadow: 0 4px #999; */
+  margin: 5px;
+  font-size: 18px;
+  font-weight: 200;
+}
+.clearBtn {
+  font-size: 18px;
+  margin-left: 2px;
+  border-radius: 50%;
+  color: lightcoral;
+}
+.truetablink {
+  /* box-shadow: 0 4px #999; */
+  background-color: rgba(18, 245, 164, 0.87);
+  margin: 5px;
+  font-size: 18px;
+  font-weight: 200;
+}
+.tablink:active {
+  /* background-color: rgba(18, 245, 164, 0.87); */
+  /* box-shadow: 0 5px #666; */
+  transform: translateY(3px);
+}

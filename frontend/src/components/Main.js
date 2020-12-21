@@ -51,50 +51,69 @@ const Main = ({ location }) => {
       <div
         style={{
           display: "flex",
-          marginLeft: "10%",
-          marginRight: "10%",
-          height: "80vh",
-          backgroundColor: "black",
-          borderColor: "limegreen",
-          borderWidth: "1px",
+          flexDirection: "column",
         }}
       >
         <div
           style={{
+            display: "flex",
+            justifyContent: "center",
             flexDirection: "row",
             borderWidth: "1px",
             borderStyle: "solid",
             borderColor: "limegreen",
+            backgroundColor: "black",
+            marginLeft: "10%",
+            marginRight: "10%",
+            marginBottom: "1vh",
           }}
         >
-          <div className="tab">
-            <button
-              className="tablinks"
-              onClick={() => {
-                dispatch({ type: CLEAR_PARTICULAR_ROOM });
-                setShowGroupChat(true);
-                console.log("groupchat clicked");
-              }}
-            >
-              GroupChat
-            </button>
-            <button
-              className="tablinks"
-              onClick={() => {
-                dispatch({ type: CLEAR_PARTICULAR_ROOM });
-                setShowGroupChat(false);
-                console.log("prichat clicked");
-              }}
-            >
-              PrivateChat
-            </button>
-          </div>
+          <button
+            className={showGroupChat ? "truetablink" : "tablink"}
+            style={{
+              display: "flex",
+              borderRadius: "15px",
+            }}
+            onClick={() => {
+              dispatch({ type: CLEAR_PARTICULAR_ROOM });
+              setShowGroupChat(true);
+              console.log("groupchat clicked");
+            }}
+          >
+            GroupChat
+          </button>
+          <button
+            className={showGroupChat ? "tablink" : "truetablink"}
+            style={{
+              display: "flex",
+              borderRadius: "15px",
+            }}
+            onClick={() => {
+              dispatch({ type: CLEAR_PARTICULAR_ROOM });
+              setShowGroupChat(false);
+              console.log("prichat clicked");
+            }}
+          >
+            PrivateChat
+          </button>
         </div>
-        {showGroupChat ? (
-          <GrpChatCompo socket={socket} />
-        ) : (
-          <PriChatCompo socket={socket} />
-        )}
+        <div
+          style={{
+            display: "flex",
+            marginLeft: "10%",
+            marginRight: "10%",
+            height: "80vh",
+            backgroundColor: "black",
+            borderColor: "limegreen",
+            borderWidth: "1px",
+          }}
+        >
+          {showGroupChat ? (
+            <GrpChatCompo socket={socket} />
+          ) : (
+            <PriChatCompo socket={socket} />
+          )}
+        </div>
       </div>
     );
   }
