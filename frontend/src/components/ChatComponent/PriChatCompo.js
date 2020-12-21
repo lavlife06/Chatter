@@ -34,12 +34,28 @@ const PriChatCompo = ({ location, socket }) => {
     console.log("inside setRooms");
   }, [location]);
 
-  const [groupMembers, setGroupMembers] = useState([
+  const [roomMembers, setRoomMembers] = useState([
     {
       user: myprofile.user,
       name: myprofile.name,
     },
   ]);
+
+  useEffect(() => {
+    socket.on("addNewPriChatRoom", ({ roomName, room }) => {
+      setRooms((prevrooms) => [
+        { chatRoom: room, roomname: roomName, unReadMsgLength: 0 },
+        ...prevrooms,
+      ]);
+      console.log(room);
+    });
+    console.log("inside on event addNewPriChatRoom");
+
+    return () => {
+      socket.off("addNewPriChatRoom");
+      console.log("inside unmount of off.addNewPriChatRoom");
+    };
+  }, [rooms]);
 
   useEffect(() => {
     socket.on("newMessage", ({ room }) => {
@@ -148,17 +164,20 @@ const PriChatCompo = ({ location, socket }) => {
                     if (myprofile.name === person.name) {
                       alert("You can't message your own account");
                     } else if (theSelectedRoom.length === 0) {
-                      dispatch(
-                        createPriChatRoom(person.name, [
-                          ...groupMembers,
+                      socket.emit("createPriChatRoom", {
+                        user: myprofile.user,
+                        roomMembers: [
+                          ...roomMembers,
                           { user: person.user, name: person.name },
-                        ])
-                      );
-                      setGroupMembers([
-                        ...groupMembers,
-                        { user: person.user, name: person.name },
-                      ]);
+                        ],
+                      });
                       setText("");
+                      setRoomMembers([
+                        {
+                          user: myprofile.user,
+                          name: myprofile.name,
+                        },
+                      ]);
                       dispatch({ type: CLEAR_PROFILES });
                     } else {
                       socket.emit("getRoomById", {
