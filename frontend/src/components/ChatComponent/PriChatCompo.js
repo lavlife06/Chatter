@@ -121,25 +121,14 @@ const PriChatCompo = ({ location, socket }) => {
             style={{ borderRadius: "5px" }}
             placeholder="Search for users and chat with them"
             onChange={(e) => {
-              setText(e.target.value);
-              dispatch(getProfiles(e.target.value));
-            }}
-          />
-          {/* <button
-            className="clearBtn"
-            style={{ display: "inline" }}
-            onClick={() => {
-              setText("");
-              dispatch({ type: CLEAR_PROFILES });
-            }}
-          >
-            &#10006;
-          </button> */}
-          <i
-            className="fas fa-window-close clearBtn"
-            onClick={() => {
-              setText("");
-              dispatch({ type: CLEAR_PROFILES });
+              console.log(e.target.value);
+              if (!e.target.value) {
+                setText("");
+                dispatch({ type: CLEAR_PROFILES });
+              } else {
+                setText(e.target.value);
+                dispatch(getProfiles(e.target.value));
+              }
             }}
           />
           {profiles &&

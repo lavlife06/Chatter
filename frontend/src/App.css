@@ -98,8 +98,12 @@ a {
 .clearBtn {
   font-size: 18px;
   margin-left: 2px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
+  /* border: 1px solid whitesmoke; */
   color: lightcoral;
+  /* color: black; */
+  font-weight: bold;
+  cursor: pointer;
 }
 .truetablink {
   /* box-shadow: 0 4px #999; */

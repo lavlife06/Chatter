@@ -117,15 +117,14 @@ const GrpChatCompo = ({ location, socket }) => {
             style={{ borderRadius: "5px" }}
             placeholder="Search your Rooms"
             onChange={(e) => {
-              setText(e.target.value);
-              console.log("isko baadme dekh lenge");
-            }}
-          />
-          <i
-            className="fas fa-window-close clearBtn"
-            onClick={() => {
-              setText("");
-              dispatch({ type: CLEAR_PROFILES });
+              console.log(e.target.value);
+              if (!e.target.value) {
+                setText("");
+                dispatch({ type: CLEAR_PROFILES });
+              } else {
+                setText(e.target.value);
+                console.log("isko baadme dekh lenge");
+              }
             }}
           />
           <i

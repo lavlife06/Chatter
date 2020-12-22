@@ -49,12 +49,17 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("Hey i am socket.io and it seems that i am connected");
 
+  console.log(io.sockets.adapter.rooms);
+
   socket.on("joined", ({ name }, callback) => {
     console.log(`my name ${name}, my socketId:${socket.id}`);
     callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
   });
 
   socket.on("leaveRoom", ({ user, name, room }) => {
+    console.log(io.sockets.adapter.rooms);
+    // console.log(socket.rooms);
+    console.log("leaveroomwala");
     socket.broadcast
       .to(room)
       .emit("message", { user, name, text: `${name} has left the room!` });
@@ -63,8 +68,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinedRoom", ({ user, name, room }, callback) => {
+    console.log(io.sockets.adapter.rooms);
+    // console.log(socket.rooms);
     socket.join(room);
-
     socket.emit("message", {
       user,
       name,
@@ -74,6 +80,7 @@ io.on("connection", (socket) => {
     socket.broadcast
       .to(room)
       .emit("message", { user, name, text: `${name} has joined!` });
+    console.log("joinroomwala");
   });
 
   socket.on("joinedPriRoom", ({ user, name, roomId, room }, callback) => {
@@ -279,7 +286,8 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("disconnect", () => {
-    socket.off();
+    console.log(socket.connected);
     console.log("User have left");
+    console.log(io.sockets.adapter.rooms);
   });
 });

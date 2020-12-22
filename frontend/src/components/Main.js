@@ -33,9 +33,11 @@ const Main = ({ location }) => {
     dispatch(getMyRooms());
 
     return () => {
-      socket.emit("disconnect");
+      console.log(socket);
+      socket.disconnect(true);
       console.log("inside unmount of Main");
-      socket.off();
+      socket.off("joined");
+      console.log(socket);
     };
   }, [location]);
 
