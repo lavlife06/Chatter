@@ -15,6 +15,7 @@ const initialState = {
   isAuthenticated: null,
   loading: true,
   user: null,
+  creatingNewUser: false,
 };
 
 const reducers = (state = initialState, action) => {
@@ -29,6 +30,15 @@ const reducers = (state = initialState, action) => {
         user: payload,
       };
     case REGISTER_SUCCESS:
+      localStorage.setItem("token", payload.token);
+      setAuthToken(payload.token);
+      return {
+        ...state,
+        ...payload,
+        creatingNewUser: true,
+        isAuthenticated: true,
+        loading: false,
+      };
     case LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
       setAuthToken(payload.token);
@@ -54,6 +64,7 @@ const reducers = (state = initialState, action) => {
         ...state,
         token: null,
         isAuthenticated: false,
+        creatingNewUser: false,
         loading: false,
         user: null,
       };

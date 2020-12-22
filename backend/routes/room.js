@@ -27,7 +27,6 @@ module.exports = (app) => {
       //   });
       //   console.log(myGrpChatallrooms);
       // });
-
       myprofile.myRooms.map((item) => {
         let foundedroom = rooms.filter(
           (roomitem) => roomitem._id.toString() == item.roomId

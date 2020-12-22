@@ -11,6 +11,8 @@ let socket;
 const Main = ({ location }) => {
   const dispatch = useDispatch();
   const myRooms = useSelector((state) => state.room.myRooms);
+  const creatingNewUser = useSelector((state) => state.auth.creatingNewUser);
+  const myprofile = useSelector((state) => state.profile.myprofile);
 
   useEffect(() => {
     socket = io("localhost:5000", {
@@ -24,13 +26,13 @@ const Main = ({ location }) => {
       {
         name: myprofile.name,
         user: myprofile.user,
-      },
-      ({ wlcmsg }) => {
-        alert(wlcmsg);
       }
+      // ({ wlcmsg }) => {
+      //   alert(wlcmsg);
+      // }
     );
 
-    dispatch(getMyRooms());
+    // dispatch(getMyRooms());
 
     return () => {
       console.log(socket);
@@ -43,11 +45,83 @@ const Main = ({ location }) => {
 
   const [showGroupChat, setShowGroupChat] = useState(true);
 
-  const myprofile = useSelector((state) => state.profile.myprofile);
-
-  if (!(myprofile.name && socket && myRooms.length)) {
+  if (creatingNewUser) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "row",
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderColor: "limegreen",
+            backgroundColor: "black",
+            marginLeft: "10%",
+            marginRight: "10%",
+            marginBottom: "1vh",
+          }}
+        >
+          <button
+            className={showGroupChat ? "truetablink" : "tablink"}
+            style={{
+              display: "flex",
+              borderRadius: "15px",
+            }}
+            onClick={() => {
+              dispatch({ type: CLEAR_PARTICULAR_ROOM });
+              setShowGroupChat(true);
+              console.log("groupchat clicked");
+            }}
+          >
+            GroupChat
+          </button>
+          <button
+            className={showGroupChat ? "tablink" : "truetablink"}
+            style={{
+              display: "flex",
+              borderRadius: "15px",
+            }}
+            onClick={() => {
+              dispatch({ type: CLEAR_PARTICULAR_ROOM });
+              setShowGroupChat(false);
+              console.log("prichat clicked");
+            }}
+          >
+            PrivateChat
+          </button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            marginLeft: "10%",
+            marginRight: "10%",
+            height: "80vh",
+            backgroundColor: "black",
+            borderColor: "limegreen",
+            borderWidth: "1px",
+          }}
+        >
+          {showGroupChat ? (
+            <GrpChatCompo socket={socket} />
+          ) : (
+            <PriChatCompo socket={socket} />
+          )}
+        </div>
+      </div>
+    );
+  } else if (
+    !(myprofile.name && socket && myRooms.length && !creatingNewUser)
+  ) {
     console.log(myRooms);
+    // if (myprofile.myRooms.length!=0) {
     return <Spinner />;
+    // }
   } else {
     return (
       <div

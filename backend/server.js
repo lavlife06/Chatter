@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
 
   socket.on("joined", ({ name }, callback) => {
     console.log(`my name ${name}, my socketId:${socket.id}`);
-    callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
+    // callback({ wlcmsg: `Welcome ${name} to LavChatApp` });
   });
 
   socket.on("leaveRoom", ({ user, name, room }) => {
