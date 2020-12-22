@@ -42,7 +42,6 @@ const Register = () => {
         marginRight: "20%",
         marginLeft: "20%",
         borderRadius: "5px",
-        backgroundColor: "#f2f2f2",
         padding: "20px",
         display: "flex",
         flexDirection: "column",

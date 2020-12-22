@@ -133,25 +133,53 @@ const PriChatCompo = ({ location, socket }) => {
           />
           {profiles &&
             profiles.map((person) => (
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  borderBottomColor: "limegreen",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                  lineHeight: "7vh",
+                  borderRadius: "5px",
+                  margin: "2px",
+                  paddingLeft: "2px",
+                  paddingRight: "2px",
+                  alignItems: "center",
+                }}
+              >
                 <i
                   className="fas fa-user-circle"
-                  style={{ fontSize: "25px", marginRight: "7px" }}
+                  style={{
+                    fontSize: "3.8vh",
+                    marginRight: "7px",
+                    color: "lightcyan",
+                  }}
                 />
                 <strong
                   style={{
                     // fontWeight: "normal",
-                    fontSize: "25px",
+                    fontSize: "3.8vh",
                     color: "limegreen",
                   }}
                 >
                   {person.name}
                 </strong>
-                <button
+                <div
                   style={{
-                    fontSize: "25px",
+                    display: "flex",
+                    fontSize: "3vh",
                     paddingRight: "3px",
-                    float: "right",
+                    // float: "right",
+                    borderRadius: "10%",
+                    backgroundColor: "yellow",
+                    color: "black",
+                    height: "3.7vh",
+                    width: "4vw",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontWeight: "bold",
+                    cursor: "pointer",
                   }}
                   onClick={() => {
                     let theSelectedRoom = myprofile.myPrivateChatRooms.filter(
@@ -189,8 +217,8 @@ const PriChatCompo = ({ location, socket }) => {
                     }
                   }}
                 >
-                  Message
-                </button>
+                  Chat
+                </div>
               </div>
             ))}
           {profiles.length == 0 ? (
