@@ -2,29 +2,14 @@ import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../reduxstuff/actions/auth";
+import "./layout.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        marginRight: "10%",
-        marginLeft: "10%",
-        paddingRight: "10px",
-        paddingLeft: "10px",
-        borderWidth: "2px",
-        borderColor: "black",
-        borderStyle: "solid",
-        borderRadius: "5px",
-        backgroundColor: "#12f5a4de",
-        lineHeight: "20px",
-        marginBottom: "10px",
-      }}
-    >
+    <div className="navbardiv">
       <h2
         style={{
           /*textAlign: "center" */

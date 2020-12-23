@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 :root {
   --primary-color: #17a2b8;
   --dark-color: #343a40;
@@ -5,13 +8,14 @@
   --danger-color: #dc3545;
   --success-color: #28a745;
 }
+html,
 body {
   background-image: url("./img/unsplashimg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   background-size: cover;
-  /* height: 100vh; */
+  height: 100vh;
   /* padding-bottom: 20px; */
 }
 
@@ -92,7 +96,7 @@ a {
 .tablink {
   /* box-shadow: 0 4px #999; */
   margin: 5px;
-  font-size: 18px;
+  font-size: 2.8vh;
   font-weight: 200;
 }
 .clearBtn {
@@ -109,7 +113,7 @@ a {
   /* box-shadow: 0 4px #999; */
   background-color: rgba(18, 245, 164, 0.87);
   margin: 5px;
-  font-size: 18px;
+  font-size: 2.8vh;
   font-weight: 200;
 }
 .tablink:active {
@@ -138,4 +142,26 @@ a {
   100% {
     transform: rotate(360deg);
   }
+}
+.maindiv1 {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  border-width: 1px;
+  border-style: solid;
+  border-color: limegreen;
+  background-color: #04272d;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 1vh;
+  height: 6.5vh;
+}
+.maindiv2 {
+  display: flex;
+  margin-left: 10%;
+  margin-right: 10%;
+  height: 80vh;
+  background-color: #04272d;
+  border-color: limegreen;
+  border-width: 1px;
 }

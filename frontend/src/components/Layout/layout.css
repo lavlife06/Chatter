@@ -1,0 +1,15 @@
+.navbardiv {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10%;
+  margin-left: 10%;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 25px;
+  background-color: #12f5a4de;
+  line-height: 1.8vh;
+  margin-bottom: 10px;
+}

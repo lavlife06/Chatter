@@ -53,20 +53,7 @@ const Main = ({ location }) => {
           flexDirection: "column",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "row",
-            borderWidth: "1px",
-            borderStyle: "solid",
-            borderColor: "limegreen",
-            backgroundColor: "black",
-            marginLeft: "10%",
-            marginRight: "10%",
-            marginBottom: "1vh",
-          }}
-        >
+        <div className="maindiv1">
           <button
             className={showGroupChat ? "truetablink" : "tablink"}
             style={{
@@ -96,17 +83,7 @@ const Main = ({ location }) => {
             PrivateChat
           </button>
         </div>
-        <div
-          style={{
-            display: "flex",
-            marginLeft: "10%",
-            marginRight: "10%",
-            height: "80vh",
-            backgroundColor: "black",
-            borderColor: "limegreen",
-            borderWidth: "1px",
-          }}
-        >
+        <div className="maindiv2">
           {showGroupChat ? (
             <GrpChatCompo socket={socket} />
           ) : (
@@ -130,20 +107,7 @@ const Main = ({ location }) => {
           flexDirection: "column",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "row",
-            borderWidth: "1px",
-            borderStyle: "solid",
-            borderColor: "limegreen",
-            backgroundColor: "black",
-            marginLeft: "10%",
-            marginRight: "10%",
-            marginBottom: "1vh",
-          }}
-        >
+        <div className="maindiv1">
           <button
             className={showGroupChat ? "truetablink" : "tablink"}
             style={{
@@ -173,17 +137,7 @@ const Main = ({ location }) => {
             PrivateChat
           </button>
         </div>
-        <div
-          style={{
-            display: "flex",
-            marginLeft: "10%",
-            marginRight: "10%",
-            height: "80vh",
-            backgroundColor: "black",
-            borderColor: "limegreen",
-            borderWidth: "1px",
-          }}
-        >
+        <div className="maindiv2">
           {showGroupChat ? (
             <GrpChatCompo socket={socket} />
           ) : (
