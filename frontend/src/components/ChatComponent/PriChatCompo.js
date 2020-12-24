@@ -59,9 +59,9 @@ const PriChatCompo = ({ location, socket }) => {
   }, [rooms]);
 
   useEffect(() => {
-    console.log(rooms);
     socket.on("newMessage", ({ room }) => {
-      if (rooms[0].chatRoom._id != room._id) {
+      console.log(room._id);
+      if (selectedRoom.chatroominfo._id != room._id) {
         if (rooms.length <= 1) {
           setRooms((prevRooms) => [
             {
@@ -73,7 +73,7 @@ const PriChatCompo = ({ location, socket }) => {
           let theNewArr = [...rooms];
 
           theNewArr.forEach((arritem, index) => {
-            if (arritem.roomname == room.roomName) {
+            if (arritem.chatRoom._id == room._id) {
               theNewArr.splice(index, 1);
               theNewArr.splice(0, 0, {
                 ...arritem,
