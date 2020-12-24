@@ -11,6 +11,7 @@ const initialState = {
   myRooms: [],
   myPriChatRooms: [{ chatRoom: {}, roomname: "" }],
   particularRoom: {},
+  loading: true,
 };
 
 const reducers = (state = initialState, action) => {
@@ -34,7 +35,7 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         myPriChatRooms: [
-          { chatRoom: payload.theCreatedRoom, roomname: payload.roomName },
+          { chatRoom: payload.room, roomname: payload.roomName },
           ...state.myPriChatRooms,
         ],
         loading: false,
@@ -49,8 +50,9 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         myRooms: [],
+        myPriChatRooms: [{ chatRoom: {}, roomname: "" }],
         particularRoom: {},
-        loading: false,
+        loading: true,
       };
     case CLEAR_PARTICULAR_ROOM:
       return {

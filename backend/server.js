@@ -28,7 +28,6 @@ const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log("Listen to Port to 3000");
 });
-
 const io = require("socket.io")(server);
 // io.use((socket, next) => {
 //   // Verificaitn of ttoken
@@ -59,12 +58,20 @@ io.on("connection", (socket) => {
   socket.on("leaveRoom", ({ user, name, room }) => {
     console.log(io.sockets.adapter.rooms);
     // console.log(socket.rooms);
-    console.log("leaveroomwala");
+    console.log("leaveroom");
     socket.broadcast
       .to(room)
       .emit("message", { user, name, text: `${name} has left the room!` });
 
     socket.leave(room);
+  });
+
+  socket.on("leavePriRoom", ({ roomId }) => {
+    console.log(io.sockets.adapter.rooms);
+    // console.log(socket.rooms);
+    console.log("leaveroom");
+
+    socket.leave(roomId);
   });
 
   socket.on("joinedRoom", ({ user, name, room }, callback) => {
@@ -80,11 +87,14 @@ io.on("connection", (socket) => {
     socket.broadcast
       .to(room)
       .emit("message", { user, name, text: `${name} has joined!` });
-    console.log("joinroomwala");
+    console.log("joinroom");
   });
 
-  socket.on("joinedPriRoom", ({ user, name, roomId, room }, callback) => {
+  socket.on("joinedPriRoom", ({ roomId }, callback) => {
+    console.log(io.sockets.adapter.rooms);
     socket.join(roomId);
+    console.log("joinroom");
+    // user.push(socketId);
   });
 
   socket.on(
@@ -117,7 +127,9 @@ io.on("connection", (socket) => {
   socket.on(
     "sendPriMessage",
     async ({ user, name, text, roomId }, callback) => {
+      console.log(roomId);
       io.to(roomId).emit("message", { user, name, text });
+
       try {
         let chatRoom = await Room.findOne({
           _id: roomId,
@@ -126,9 +138,9 @@ io.on("connection", (socket) => {
         chatRoom.roomMembers.forEach(async (member) => {
           if (user != member.user) {
             let profile = await Profile.findOne({ user: member.user });
-            io.to(profile.socketId).emit("newMessage", { room: chatRoom });
             console.log(profile.socketId);
             console.log(profile.name);
+            io.to(profile.socketId).emit("newMessage", { room: chatRoom });
           }
         });
 

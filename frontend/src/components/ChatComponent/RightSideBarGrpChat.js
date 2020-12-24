@@ -1,6 +1,7 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
+import "./chat.css";
 
 const RightSideBarGrpChat = ({
   selectedRoom,
@@ -121,7 +122,7 @@ const RightSideBarGrpChat = ({
           marginBottom: "8px",
         }}
       >
-        <h1 style={{ color: "limegreen" }}>{myParticularRoom.roomName}</h1>
+        <h1 style={{ color: "black" }}>{myParticularRoom.roomName}</h1>
       </div>
       <div style={{ height: "90%", overflowY: "scroll" }}>
         {chats.map((item) => (
@@ -134,17 +135,8 @@ const RightSideBarGrpChat = ({
                 }}
               >
                 <strong
-                  style={{
-                    // backgroundColor: "limegreen",
-                    borderRadius: "10%",
-                    borderWidth: "1px",
-                    borderColor: "limegreen",
-                    borderStyle: "solid",
-                    fontWeight: "normal",
-                    padding: "5px",
-                    marginBottom: "3px",
-                    color: "yellow",
-                  }}
+                  className="chatblockdiv"
+                  style={{ borderTopRightRadius: "initial" }}
                 >
                   {" "}
                   {item.text}
@@ -158,19 +150,10 @@ const RightSideBarGrpChat = ({
                 }}
               >
                 <strong
-                  style={{
-                    // backgroundColor: "limegreen",
-                    borderRadius: "10%",
-                    borderWidth: "1px",
-                    borderColor: "limegreen",
-                    borderStyle: "solid",
-                    fontWeight: "normal",
-                    padding: "5px",
-                    marginBottom: "3px",
-                    color: "yellow",
-                  }}
+                  className="chatblockdiv"
+                  style={{ borderTopLeftRadius: "initial" }}
                 >
-                  <div style={{ color: "deepskyblue" }}>{item.name}</div>
+                  <div style={{ color: "yellow" }}>{item.name}</div>
                   {item.text}
                 </strong>
               </div>
@@ -181,7 +164,7 @@ const RightSideBarGrpChat = ({
       <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
         <strong
           style={{
-            color: "limegreen",
+            color: "black",
             paddingLeft: "2px",
             paddingRight: "2px",
           }}
@@ -202,7 +185,7 @@ const RightSideBarGrpChat = ({
           type="submit"
           value="Submit"
           style={{
-            color: "limegreen",
+            color: "aquamarine",
             backgroundColor: "black",
             fontSize: "15px",
             fontWeight: "bold",

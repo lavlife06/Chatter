@@ -13,7 +13,6 @@ import {
 const initialState = {
   myprofile: {},
   profiles: [],
-  repos: [],
   loading: true,
   error: {},
 };
@@ -45,8 +44,9 @@ const reducers = (state = initialState, action) => {
     case CLEAR_PROFILE:
       return {
         ...state,
-        profile: {},
-        loading: false,
+        myprofile: {},
+        profiles: [],
+        loading: true,
       };
     case CLEAR_PROFILES:
       return {

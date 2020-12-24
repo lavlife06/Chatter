@@ -1,13 +1,14 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
+import "./chat.css";
 
 const RightSideBarPriChat = ({
   selectedRoom,
   location,
   socket,
   myprofile,
-  changeRoomsStack,
+  changePriRoomsStack,
   theRooms,
 }) => {
   const dispatch = useDispatch();
@@ -24,6 +25,10 @@ const RightSideBarPriChat = ({
       dispatch({ type: GET_ROOM_BY_ID, payload: room });
     });
     console.log("dispatch for get_room_byid triggered");
+    return () => {
+      socket.off("getRoomById");
+      console.log("inside unmount of getroombyid");
+    };
   }, [particularRoom]);
 
   useEffect(() => {
@@ -38,25 +43,19 @@ const RightSideBarPriChat = ({
 
   useEffect(() => {
     if (particularRoom) {
-      socket.emit(
-        "joinedPriRoom",
-        { user, name, roomId: particularRoom._id },
-        ({ welcomeMessage }) => {
-          alert(welcomeMessage);
-        }
-      );
+      socket.emit("joinedPriRoom", {
+        roomId: particularRoom._id,
+      });
       console.log("inside useEffect for joined");
     }
     return () => {
       if (particularRoom) {
-        socket.emit("leaveRoom", {
-          user,
-          name,
+        socket.emit("leavePriRoom", {
           roomId: particularRoom._id,
         });
-        socket.emit("disconnect");
         console.log("inside unmount of RightSideBarPriChat");
-        socket.off("joinedRoom");
+        socket.off("joinedPriRoom");
+        // socket.off("leavePriRoom");
       }
     };
   }, [particularRoom]);
@@ -84,7 +83,7 @@ const RightSideBarPriChat = ({
           }
         });
         console.log(theRooms);
-        changeRoomsStack(theRooms);
+        changePriRoomsStack(theRooms);
       }
     }
   };
@@ -123,7 +122,7 @@ const RightSideBarPriChat = ({
           marginBottom: "8px",
         }}
       >
-        <h1 style={{ color: "limegreen" }}>{selectedRoom.roomname}</h1>
+        <h1 style={{ color: "black" }}>{selectedRoom.roomname}</h1>
       </div>
       <div style={{ height: "90%", overflowY: "scroll" }}>
         {chats.map((item) => (
@@ -136,17 +135,8 @@ const RightSideBarPriChat = ({
                 }}
               >
                 <strong
-                  style={{
-                    // backgroundColor: "limegreen",
-                    borderRadius: "10%",
-                    borderWidth: "1px",
-                    borderColor: "limegreen",
-                    borderStyle: "solid",
-                    fontWeight: "normal",
-                    padding: "5px",
-                    marginBottom: "3px",
-                    color: "yellow",
-                  }}
+                  className="chatblockdiv"
+                  style={{ borderTopRightRadius: "initial" }}
                 >
                   {" "}
                   {item.text}
@@ -160,19 +150,10 @@ const RightSideBarPriChat = ({
                 }}
               >
                 <strong
-                  style={{
-                    // backgroundColor: "limegreen",
-                    borderRadius: "10%",
-                    borderWidth: "1px",
-                    borderColor: "limegreen",
-                    borderStyle: "solid",
-                    fontWeight: "normal",
-                    padding: "5px",
-                    marginBottom: "3px",
-                    color: "yellow",
-                  }}
+                  className="chatblockdiv"
+                  style={{ borderTopLeftRadius: "initial" }}
                 >
-                  <div style={{ color: "deepskyblue" }}>{item.name}</div>
+                  <div style={{ color: "yellow" }}>{item.name}</div>
                   {item.text}
                 </strong>
               </div>
@@ -183,7 +164,7 @@ const RightSideBarPriChat = ({
       <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
         <strong
           style={{
-            color: "limegreen",
+            color: "black",
             paddingLeft: "2px",
             paddingRight: "2px",
           }}
@@ -204,7 +185,7 @@ const RightSideBarPriChat = ({
           type="submit"
           value="Submit"
           style={{
-            color: "limegreen",
+            color: "aquamarine",
             backgroundColor: "black",
             fontSize: "15px",
             fontWeight: "bold",

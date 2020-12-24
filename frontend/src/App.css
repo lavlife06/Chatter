@@ -10,12 +10,13 @@
 }
 html,
 body {
-  background-image: url("./img/unsplashimg.jpg");
+  /* background-image: url("./img/unsplashimg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: cover; */
   height: 100vh;
+  background: linear-gradient(to bottom, #00ccff 0%, #99ff99 100%);
   /* padding-bottom: 20px; */
 }
 
@@ -149,7 +150,7 @@ a {
   flex-direction: row;
   border-width: 1px;
   border-style: solid;
-  border-color: limegreen;
+  border-color: palegreen;
   background-color: #04272d;
   margin-left: 10%;
   margin-right: 10%;
@@ -164,4 +165,5 @@ a {
   background-color: #04272d;
   border-color: limegreen;
   border-width: 1px;
+  border-radius: 12px;
 }

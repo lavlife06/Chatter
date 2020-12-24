@@ -45,7 +45,7 @@ const Register = () => {
         padding: "20px",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "aqua",
+        backgroundColor: "#01ffb6",
       }}
     >
       <form action="form" onSubmit={(e) => handleSubmit(e)}>

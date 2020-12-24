@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RightSideBarGrpChat from "./RightSideBarGrpChat";
 import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
-import { CLEAR_PROFILES } from "../../reduxstuff/actions/types";
+import { CLEAR_PROFILES, CREATE_ROOM } from "../../reduxstuff/actions/types";
 import { getMyRooms } from "../../reduxstuff/actions/room";
+import "./chat.css";
 
 const GrpChatCompo = ({ location, socket }) => {
   const dispatch = useDispatch();
@@ -17,6 +18,13 @@ const GrpChatCompo = ({ location, socket }) => {
   const [selectedRoom, setSelectedRoom] = useState("");
   const [rooms, setRooms] = useState([]);
 
+  const [roomMembers, setRoomMembers] = useState([
+    {
+      user: myprofile.user,
+      name: myprofile.name,
+    },
+  ]);
+
   useEffect(() => {
     console.log(`printing socketId from Frontend:${socket.id}`);
     dispatch(updateProfile(socket.id));
@@ -29,11 +37,12 @@ const GrpChatCompo = ({ location, socket }) => {
     });
     setRooms([...theChangedRooms]);
     console.log("inside setRooms");
-  }, [location]);
+  }, []);
 
   useEffect(() => {
     socket.on("addNewGrpChatRoom", ({ room }) => {
-      setRooms((prevrooms) => [...prevrooms, room]);
+      setRooms((prevrooms) => [{ ...room, unReadMsgLength: 0 }, ...prevrooms]);
+      dispatch({ type: CREATE_ROOM, payload: room });
       console.log(room);
     });
     console.log("inside on event addNewGrpChatRoom");
@@ -43,13 +52,6 @@ const GrpChatCompo = ({ location, socket }) => {
       console.log("inside unmount of off.addNewGrpChatRoom");
     };
   }, [rooms]);
-
-  const [roomMembers, setRoomMembers] = useState([
-    {
-      user: myprofile.user,
-      name: myprofile.name,
-    },
-  ]);
 
   useEffect(() => {
     socket.on("newMessage", ({ room }) => {
@@ -92,7 +94,7 @@ const GrpChatCompo = ({ location, socket }) => {
   const changeRoomsStack = (rearrangedRooms) => {
     setRooms([...rearrangedRooms]);
   };
-
+  console.log(rooms);
   return (
     <Fragment>
       <div
@@ -333,17 +335,7 @@ const GrpChatCompo = ({ location, socket }) => {
           </div>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flex: 3,
-          borderWidth: "1px",
-          borderColor: "limegreen",
-          borderStyle: "solid",
-          flexDirection: "column",
-          padding: "2px",
-        }}
-      >
+      <div className="rightsidebardiv">
         {selectedRoom && (
           <RightSideBarGrpChat
             selectedRoom={selectedRoom}
@@ -354,7 +346,7 @@ const GrpChatCompo = ({ location, socket }) => {
           />
         )}
         {!selectedRoom && (
-          <h1 style={{ marginLeft: "5px", color: "limegreen" }}>
+          <h1 style={{ marginLeft: "5px", color: "black" }}>
             Hey Join any room and start chatting
           </h1>
         )}

@@ -10,8 +10,8 @@ let socket;
 
 const Main = ({ location }) => {
   const dispatch = useDispatch();
-  const myRooms = useSelector((state) => state.room.myRooms);
-  const creatingNewUser = useSelector((state) => state.auth.creatingNewUser);
+  const myRoomsLoading = useSelector((state) => state.room.loading);
+  const myprofileLoading = useSelector((state) => state.profile.loading);
   const myprofile = useSelector((state) => state.profile.myprofile);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Main = ({ location }) => {
 
   const [showGroupChat, setShowGroupChat] = useState(true);
 
-  if (creatingNewUser) {
+  if (!myRoomsLoading && !myprofileLoading) {
     return (
       <div
         style={{
@@ -92,60 +92,15 @@ const Main = ({ location }) => {
         </div>
       </div>
     );
-  } else if (
-    !(myprofile.name && socket && myRooms.length && !creatingNewUser)
-  ) {
-    console.log(myRooms);
-    // if (myprofile.myRooms.length!=0) {
+  }
+  //  else if (!(myprofile.name && socket && myRooms.length)) {
+  //   console.log(myRooms);
+  //   // if (myprofile.myRooms.length!=0) {
+  //   return <Spinner />;
+  //   // }
+  // }
+  else {
     return <Spinner />;
-    // }
-  } else {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div className="maindiv1">
-          <button
-            className={showGroupChat ? "truetablink" : "tablink"}
-            style={{
-              display: "flex",
-              borderRadius: "15px",
-            }}
-            onClick={() => {
-              dispatch({ type: CLEAR_PARTICULAR_ROOM });
-              setShowGroupChat(true);
-              console.log("groupchat clicked");
-            }}
-          >
-            GroupChat
-          </button>
-          <button
-            className={showGroupChat ? "tablink" : "truetablink"}
-            style={{
-              display: "flex",
-              borderRadius: "15px",
-            }}
-            onClick={() => {
-              dispatch({ type: CLEAR_PARTICULAR_ROOM });
-              setShowGroupChat(false);
-              console.log("prichat clicked");
-            }}
-          >
-            PrivateChat
-          </button>
-        </div>
-        <div className="maindiv2">
-          {showGroupChat ? (
-            <GrpChatCompo socket={socket} />
-          ) : (
-            <PriChatCompo socket={socket} />
-          )}
-        </div>
-      </div>
-    );
   }
 };
 

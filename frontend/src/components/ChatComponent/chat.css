@@ -1,0 +1,23 @@
+.rightsidebardiv {
+  display: flex;
+  flex: 3;
+  border-width: 1px;
+  border-color: limegreen;
+  border-style: solid;
+  flex-direction: column;
+  padding: 2px;
+  background-color: aquamarine;
+}
+.chatblockdiv {
+  border-radius: 9px;
+  border-width: 1px;
+  /* border-color: black; */
+  border-style: solid;
+  font-weight: normal;
+  padding: 5px;
+  margin-bottom: 3px;
+  color: aquamarine;
+  background-color: #04272d;
+  /* border-top-left-radius: initial; */
+  margin-right: 2px;
+}

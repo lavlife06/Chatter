@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
-import { createPriChatRoom } from "../../reduxstuff/actions/room";
-import { CLEAR_PROFILES } from "../../reduxstuff/actions/types";
-// import { getProfiles } from "../reduxstuff/actions/profile";
-// import { CLEAR_PROFILES } from "../reduxstuff/actions/types";
-// import { createRoom, getMyRooms } from "../reduxstuff/actions/room";
+import {
+  CLEAR_PROFILES,
+  CREATE_PRICHATROOM,
+} from "../../reduxstuff/actions/types";
 import RightSideBarPriChat from "./RightSideBarPriChat";
+import "./chat.css";
 
 const PriChatCompo = ({ location, socket }) => {
   const dispatch = useDispatch();
@@ -20,6 +20,13 @@ const PriChatCompo = ({ location, socket }) => {
   const myPriChatRooms = useSelector((state) => state.room.myPriChatRooms);
   const [rooms, setRooms] = useState([]);
 
+  const [roomMembers, setRoomMembers] = useState([
+    {
+      user: myprofile.user,
+      name: myprofile.name,
+    },
+  ]);
+
   useEffect(() => {
     console.log(`printing socketId from Frontend:${socket.id}`);
     dispatch(updateProfile(socket.id));
@@ -32,14 +39,7 @@ const PriChatCompo = ({ location, socket }) => {
     });
     setRooms([...theChangedRooms]);
     console.log("inside setRooms");
-  }, [location]);
-
-  const [roomMembers, setRoomMembers] = useState([
-    {
-      user: myprofile.user,
-      name: myprofile.name,
-    },
-  ]);
+  }, []);
 
   useEffect(() => {
     socket.on("addNewPriChatRoom", ({ roomName, room }) => {
@@ -47,6 +47,7 @@ const PriChatCompo = ({ location, socket }) => {
         { chatRoom: room, roomname: roomName, unReadMsgLength: 0 },
         ...prevrooms,
       ]);
+      dispatch({ type: CREATE_PRICHATROOM, payload: { room, roomName } });
       console.log(room);
     });
     console.log("inside on event addNewPriChatRoom");
@@ -58,8 +59,9 @@ const PriChatCompo = ({ location, socket }) => {
   }, [rooms]);
 
   useEffect(() => {
+    console.log(rooms);
     socket.on("newMessage", ({ room }) => {
-      if (rooms[0].roomname != room.roomName) {
+      if (rooms[0].chatRoom._id != room._id) {
         if (rooms.length <= 1) {
           setRooms((prevRooms) => [
             {
@@ -91,12 +93,12 @@ const PriChatCompo = ({ location, socket }) => {
       socket.off("newMessage");
       console.log("inside unmount of off.newMessage");
     };
-  }, [rooms]);
+  }, [rooms, socket]);
 
   const changePriRoomsStack = (rearrangedRooms) => {
     setRooms([...rearrangedRooms]);
   };
-
+  console.log(rooms);
   return (
     <Fragment>
       <div
@@ -265,17 +267,7 @@ const PriChatCompo = ({ location, socket }) => {
           )}
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flex: 3,
-          borderWidth: "1px",
-          borderColor: "limegreen",
-          borderStyle: "solid",
-          flexDirection: "column",
-          padding: "2px",
-        }}
-      >
+      <div className="rightsidebardiv">
         {selectedRoom && (
           <RightSideBarPriChat
             selectedRoom={selectedRoom}
@@ -287,7 +279,7 @@ const PriChatCompo = ({ location, socket }) => {
           />
         )}
         {!selectedRoom && (
-          <h1 style={{ marginLeft: "5px", color: "limegreen" }}>
+          <h1 style={{ marginLeft: "5px", color: "black" }}>
             Hey why don't you start chatting
           </h1>
         )}
