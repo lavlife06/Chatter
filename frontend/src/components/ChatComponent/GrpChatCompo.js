@@ -15,7 +15,7 @@ const GrpChatCompo = ({ location, socket }) => {
 
   const [text, setText] = useState("");
   const [roomName, setRoomName] = useState("");
-  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState(null);
   const [rooms, setRooms] = useState([]);
 
   const [roomMembers, setRoomMembers] = useState([
@@ -55,7 +55,14 @@ const GrpChatCompo = ({ location, socket }) => {
 
   useEffect(() => {
     socket.on("newMessage", ({ room }) => {
-      if (rooms[0].roomName != room.roomName) {
+      let theFirstRoom;
+      if (selectedRoom) {
+        theFirstRoom = selectedRoom;
+      } else {
+        theFirstRoom = rooms[0];
+      }
+      console.log(theFirstRoom);
+      if (theFirstRoom.roomName != room.roomName) {
         if (rooms.length <= 1) {
           setRooms((prevRooms) => [
             {
@@ -97,14 +104,7 @@ const GrpChatCompo = ({ location, socket }) => {
   console.log(rooms);
   return (
     <Fragment>
-      <div
-        style={{
-          flexDirection: "row",
-          borderWidth: "1px",
-          borderStyle: "solid",
-          borderColor: "limegreen",
-        }}
-      >
+      <div className="GCCdiv1">
         <div
           style={{
             borderColor: "limegreen",

@@ -92,14 +92,7 @@ const Main = ({ location }) => {
         </div>
       </div>
     );
-  }
-  //  else if (!(myprofile.name && socket && myRooms.length)) {
-  //   console.log(myRooms);
-  //   // if (myprofile.myRooms.length!=0) {
-  //   return <Spinner />;
-  //   // }
-  // }
-  else {
+  } else {
     return <Spinner />;
   }
 };
