@@ -28,3 +28,10 @@
   border-radius: 12px 0px 0px 12px;
   padding: 0.3vh 0.3vw 0.3vh 0.3vw;
 }
+.scrollBottom {
+  height: 87%;
+}
+.bottomScroll {
+  background-color: black;
+  margin-right: 43%;
+}

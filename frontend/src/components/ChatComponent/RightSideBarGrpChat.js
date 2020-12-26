@@ -1,4 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
+import ScrollToBottom, {
+  useScrollToBottom,
+  useSticky,
+} from "react-scroll-to-bottom";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 import "./chat.css";
@@ -11,7 +15,8 @@ const RightSideBarGrpChat = ({
   theRooms,
 }) => {
   const dispatch = useDispatch();
-
+  const scrollToBottom = useScrollToBottom();
+  const [sticky] = useSticky();
   const [loading, setLoading] = useState(true);
 
   const myParticularRoom = useSelector((state) => state.room.particularRoom);
@@ -106,6 +111,7 @@ const RightSideBarGrpChat = ({
       }
     };
   }, [chats]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -124,7 +130,8 @@ const RightSideBarGrpChat = ({
       >
         <h1 style={{ color: "black" }}>{myParticularRoom.roomName}</h1>
       </div>
-      <div style={{ height: "90%", overflowY: "scroll" }}>
+      {/* <div style={{ height: "90%", overflowY: "scroll" }}> */}
+      <ScrollToBottom className="scrollBottom">
         {chats.map((item) => (
           <Fragment>
             {item.name === name ? (
@@ -158,9 +165,20 @@ const RightSideBarGrpChat = ({
                 </strong>
               </div>
             )}
+            {!sticky && (
+              <button
+                onClick={scrollToBottom}
+                // style={{ backgroundColor: "black", marginRight: "43%" }}
+                className="bottomScroll"
+              >
+                Down
+              </button>
+            )}
           </Fragment>
         ))}
-      </div>
+        {/* </div> */}
+      </ScrollToBottom>
+
       <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
         <strong
           style={{
