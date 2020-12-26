@@ -21,3 +21,10 @@
   /* border-top-left-radius: initial; */
   margin-right: 2px;
 }
+.GCCdiv1 {
+  flex-direction: row;
+  /* border-width: 1px;
+  border-style: solid; */
+  border-radius: 12px 0px 0px 12px;
+  padding: 0.3vh 0.3vw 0.3vh 0.3vw;
+}

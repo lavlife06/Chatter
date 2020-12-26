@@ -101,14 +101,7 @@ const PriChatCompo = ({ location, socket }) => {
   console.log(rooms);
   return (
     <Fragment>
-      <div
-        style={{
-          flexDirection: "row",
-          borderWidth: "1px",
-          borderStyle: "solid",
-          borderColor: "limegreen",
-        }}
-      >
+      <div className="GCCdiv1">
         <div
           style={{
             borderColor: "limegreen",
