@@ -16,17 +16,17 @@
 
 <!-- [![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=plastic&logo=linkedin&color=blue)][linkedin-url] -->
 
-  <h1 align="center">DevConnector</h1>
+  <h1 align="center">LavChatWebApp</h1>
   <p align="center">
-<img src="https://img.shields.io/badge/Contributions-2-yellow?color=yellow&style=plastic">
+<img src="https://img.shields.io/badge/Contributions-1-yellow?color=yellow&style=plastic">
 
-<img src="https://img.shields.io/github/forks/lavlife06/DevConnector?color=blue&style=plastic">
+<img src="https://img.shields.io/badge/forks-0-blue?color=blue&style=plastic">
 
 <img src="https://img.shields.io/github/stars/lavlife06/DevConnector?color=green&style=plastic">
 
-<img src="https://img.shields.io/badge/js-91.1%25-orange?color=orange&style=plastic">
+<img src="https://img.shields.io/badge/js-95.3%25-orange?color=orange&style=plastic">
 
-<img src="https://img.shields.io/badge/react-%5E16.13.1-brightgreen?color=brightgreen&style=plastic"> 
+<img src="https://img.shields.io/badge/react-%5E17.0.1-brightgreen?color=brightgreen&style=plastic"> 
 <a href='https://www.linkedin.com/in/lav-senghani-4764a0167/'> <img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=plastic&logo=linkedin&color=blue"></a>
 <a href='https://twitter.com/LavSenghani'><img src="https://img.shields.io/badge/-twitter-black.svg?style=plastic&logo=twitter&color=black"></a>
 
@@ -35,7 +35,7 @@
 
 </p>
 
-<h2 align="center"><a  href="https://cryptic-fortress-60566.herokuapp.com/">Live Demo</a></h2>
+<h2 align="center"><a  href="#">Live Demo</a></h2>
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
@@ -56,7 +56,7 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <!-- <li><a href="#license">License</a></li> -->
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -153,4 +153,3 @@ Name - [Lav Senghani](https://github.com/lavlife06) - lavsenghani@gmail.com
 [contributors-url]: https://img.shields.io/badge/Contributions-2-yellow
 [linkedin-url]: https://www.linkedin.com/in/lav-senghani-4764a0167/
 [twitter-url]: https://twitter.com/LavSenghani
-
