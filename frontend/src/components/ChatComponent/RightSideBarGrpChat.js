@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import ScrollToBottom, {
   useScrollToBottom,
   useSticky,
@@ -95,13 +95,21 @@ const RightSideBarGrpChat = ({
     }
   };
 
+  const theScrollToBottom = () => {
+    let chatContainer = document.getElementById("chatcontainer");
+    if (chatContainer) {
+      let scroll = chatContainer.scrollHeight - chatContainer.clientHeight;
+      chatContainer.scrollTo(0, scroll);
+    }
+  };
+
   useEffect(() => {
     if (myParticularRoom) {
       socket.on("message", ({ user, name, text }) => {
         setChats((prevchats) => [...prevchats, { user, name, text }]);
       });
-
       console.log("inside useEffect for message");
+      theScrollToBottom();
     }
 
     return () => {
@@ -130,8 +138,8 @@ const RightSideBarGrpChat = ({
       >
         <h1 style={{ color: "black" }}>{myParticularRoom.roomName}</h1>
       </div>
-      {/* <div style={{ height: "90%", overflowY: "scroll" }}> */}
-      <ScrollToBottom className="scrollBottom">
+      <div id="chatcontainer" style={{ height: "90%", overflowY: "scroll" }}>
+        {/* <ScrollToBottom className="scrollBottom"> */}
         {chats.map((item) => (
           <Fragment>
             {item.name === name ? (
@@ -165,19 +173,14 @@ const RightSideBarGrpChat = ({
                 </strong>
               </div>
             )}
-            {!sticky && (
-              <button
-                onClick={scrollToBottom}
-                // style={{ backgroundColor: "black", marginRight: "43%" }}
-                className="bottomScroll"
-              >
-                Down
-              </button>
-            )}
+
+            <button id="bottomScrollId" className="bottomScroll">
+              Down
+            </button>
           </Fragment>
         ))}
-        {/* </div> */}
-      </ScrollToBottom>
+      </div>
+      {/* </ScrollToBottom> */}
 
       <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
         <strong

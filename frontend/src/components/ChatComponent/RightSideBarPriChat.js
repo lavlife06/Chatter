@@ -88,12 +88,20 @@ const RightSideBarPriChat = ({
     }
   };
 
+  const theScrollToBottom = () => {
+    let chatContainer = document.getElementById("chatcontainer");
+    if (chatContainer) {
+      let scroll = chatContainer.scrollHeight - chatContainer.clientHeight;
+      chatContainer.scrollTo(0, scroll);
+    }
+  };
+
   useEffect(() => {
     if (particularRoom) {
       socket.on("message", ({ user, name, text }) => {
         setChats((prevchats) => [...prevchats, { user, name, text }]);
       });
-
+      theScrollToBottom();
       console.log("inside useEffect for message");
     }
 
@@ -124,7 +132,7 @@ const RightSideBarPriChat = ({
       >
         <h1 style={{ color: "black" }}>{selectedRoom.roomname}</h1>
       </div>
-      <div style={{ height: "90%", overflowY: "scroll" }}>
+      <div id="chatcontainer" style={{ height: "90%", overflowY: "scroll" }}>
         {chats.map((item) => (
           <Fragment>
             {item.name === name ? (
