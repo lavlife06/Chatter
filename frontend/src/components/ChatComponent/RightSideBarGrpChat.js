@@ -1,8 +1,4 @@
 import React, { Fragment, useEffect, useState, useRef } from "react";
-import ScrollToBottom, {
-  useScrollToBottom,
-  useSticky,
-} from "react-scroll-to-bottom";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 import "./chat.css";
@@ -15,8 +11,6 @@ const RightSideBarGrpChat = ({
   theRooms,
 }) => {
   const dispatch = useDispatch();
-  const scrollToBottom = useScrollToBottom();
-  const [sticky] = useSticky();
   const [loading, setLoading] = useState(true);
 
   const myParticularRoom = useSelector((state) => state.room.particularRoom);
@@ -173,10 +167,6 @@ const RightSideBarGrpChat = ({
                 </strong>
               </div>
             )}
-
-            <button id="bottomScrollId" className="bottomScroll">
-              Down
-            </button>
           </Fragment>
         ))}
       </div>

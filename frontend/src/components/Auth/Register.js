@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { register } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Layout/Spinner";
+import "../Layout/layout.css";
 
 const Register = () => {
   const [formData, setformData] = useState({
@@ -80,7 +81,18 @@ const Register = () => {
       </form>
       <p>
         Already have an account?{" "}
-        <Link to="/login" style={{ display: "inline-block" }}>
+        <Link
+          className="login"
+          to="/login"
+          style={{
+            display: "inline-block",
+            paddingTop: "3px",
+            paddingBottom: "3px",
+            backgroundColor: "rgb(0, 21, 41)",
+            alignItems: "center",
+            color: "#a9fd00",
+          }}
+        >
           Login
         </Link>
       </p>

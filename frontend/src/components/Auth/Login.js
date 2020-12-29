@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { login } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import "../Layout/layout.css";
 
 const Login = () => {
   const [formData, setformData] = useState({
@@ -70,7 +71,11 @@ const Login = () => {
       </form>
       <p>
         Don't have an account?{" "}
-        <Link to="/signup" style={{ display: "inline-block" }}>
+        <Link
+          className="register"
+          to="/signup"
+          style={{ display: "inline-block", backgroundColor: "#001529" }}
+        >
           Signup
         </Link>
       </p>

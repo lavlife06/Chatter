@@ -21,17 +21,28 @@ const Navbar = () => {
       {!isAuthenticated && (
         <Fragment>
           <Link
-            className
+            id="register"
+            className="register"
             to="/signup"
             onClick={() => {
+              let login = document.getElementById("login");
+              let register = document.getElementById("register");
+              register.style.backgroundColor = "#a9fd00";
+              login.style.backgroundColor = "#3ff5df";
               dispatch(logout());
             }}
           >
             SignUp
           </Link>
           <Link
+            id="login"
+            className="login"
             to="/login"
             onClick={() => {
+              let login = document.getElementById("login");
+              let register = document.getElementById("register");
+              login.style.backgroundColor = "#a9fd00";
+              register.style.backgroundColor = "#3ff5df";
               dispatch(logout());
             }}
           >
