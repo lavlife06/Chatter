@@ -4,6 +4,10 @@ import { register } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Layout/Spinner";
 import "../Layout/layout.css";
+import "antd/dist/antd.css";
+import { Form, Input, Button, Checkbox } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import loginImage from "./loginImage.jpg";
 
 const Register = () => {
   const [formData, setformData] = useState({
@@ -17,8 +21,8 @@ const Register = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const myprofile = useSelector((state) => state.profile.myprofile);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // e.preventDefault();
     dispatch(register(formData.name, formData.email, formData.password));
     setformData({
       name: "",
@@ -45,57 +49,147 @@ const Register = () => {
         borderRadius: "5px",
         padding: "20px",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         backgroundColor: "#01ffb6",
+        fontSize: "4vh",
       }}
     >
-      <form action="form" onSubmit={(e) => handleSubmit(e)}>
-        <label>Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Your name.."
-          value={formData.name}
-          onChange={(e) => changeHandler(e)}
-          style={{ width: "100%" }}
+      <div style={{ flex: 3, marginRight: "2%" }}>
+        <img
+          src={loginImage}
+          style={{ width: "100%", height: "100%" }}
+          alt="login image"
         />
-        <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Your email.."
-          value={formData.email}
-          onChange={(e) => changeHandler(e)}
-          style={{ width: "100%" }}
-        />
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Your password..."
-          value={formData.password}
-          onChange={(e) => changeHandler(e)}
-          style={{ width: "100%", marginBottom: "12px" }}
-        />
-        <input type="submit" value="SignUp" />
-      </form>
-      <p>
-        Already have an account?{" "}
-        <Link
-          className="login"
-          to="/login"
-          style={{
-            display: "inline-block",
-            paddingTop: "3px",
-            paddingBottom: "3px",
-            backgroundColor: "rgb(0, 21, 41)",
-            alignItems: "center",
-            color: "#a9fd00",
+      </div>
+      <div
+        style={{
+          flex: 2,
+        }}
+      >
+        <Form
+          size="large"
+          name="normal_login"
+          className="login-form"
+          initialValues={{
+            remember: true,
           }}
+          onFinish={handleSubmit}
         >
-          Login
-        </Link>
-      </p>
+          <Form.Item
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Username!",
+              },
+            ]}
+            hasFeedback
+          >
+            <Input
+              style={{
+                borderRadius: "15px",
+              }}
+              name="name"
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+              onChange={(e) => {
+                changeHandler(e);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+            ]}
+            hasFeedback
+          >
+            <Input
+              style={{
+                borderRadius: "15px",
+              }}
+              name="email"
+              prefix={<i class="far fa-envelope" />}
+              placeholder="Email"
+              type="email"
+              onChange={(e) => {
+                changeHandler(e);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Password!",
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password
+              style={{
+                borderRadius: "15px",
+              }}
+              name="password"
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+              onChange={(e) => {
+                changeHandler(e);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            style={{
+              fontSize: "2.5vh",
+              fontWeight: "500",
+            }}
+          >
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{ width: "100%" }}
+              onSubmit={handleSubmit}
+            >
+              Sign Up
+            </Button>
+          </Form.Item>
+        </Form>
+        <p>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            style={{
+              display: "inline-block",
+            }}
+          >
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              size="large"
+              style={{
+                backgroundColor: "rgb(0, 21, 41)",
+                color: "#a9fd00",
+                borderRadius: "15px",
+              }}
+            >
+              Login
+            </Button>
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

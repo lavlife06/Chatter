@@ -14,6 +14,7 @@ const Navbar = () => {
         style={{
           /*textAlign: "center" */
           flex: 5,
+          color: "rgb(169, 253, 0)",
         }}
       >
         LavChatApp
