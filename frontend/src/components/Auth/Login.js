@@ -19,14 +19,13 @@ const Login = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const myprofile = useSelector((state) => state.profile.myprofile);
 
-  const handleSubmit = () => {
-    // e.preventDefault();
-
+  const handleSubmit = (e) => {
     dispatch(login(formData.email, formData.password));
-    setformData({
-      email: "",
-      password: "",
-    });
+    // setformData({
+    //   email: "",
+    //   password: "",
+    // });
+    return false;
   };
 
   const changeHandler = (e) => {
@@ -36,6 +35,10 @@ const Login = () => {
     });
   };
   if (isAuthenticated) {
+    setformData({
+      email: "",
+      password: "",
+    });
     return <Redirect to="/check" />;
   }
   console.log(formData);
@@ -72,7 +75,9 @@ const Login = () => {
           initialValues={{
             remember: true,
           }}
-          onFinish={handleSubmit}
+          onFinish={(e) => {
+            handleSubmit(e);
+          }}
         >
           <Form.Item
             name="email"
@@ -91,6 +96,7 @@ const Login = () => {
                 borderRadius: "15px",
               }}
               name="email"
+              value={formData.email}
               prefix={<i class="far fa-envelope" />}
               placeholder="Email"
               type="email"
@@ -116,6 +122,7 @@ const Login = () => {
                 // fontSize: "3vh",
               }}
               name="password"
+              value={formData.password}
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
@@ -141,7 +148,9 @@ const Login = () => {
               htmlType="submit"
               className="login-form-button"
               style={{ width: "100%" }}
-              onSubmit={handleSubmit}
+              onSubmit={(e) => {
+                handleSubmit(e);
+              }}
             >
               Log in
             </Button>

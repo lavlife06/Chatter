@@ -11,6 +11,7 @@ import Main from "./components/Main";
 import "./App.css";
 import Landing from "./components/Layout/Landing";
 import Check from "./components/Layout/Check";
+import TheAlertCompo from "./components/Layout/Alert";
 
 const App = () => {
   // useEffect(() => {
@@ -25,7 +26,7 @@ const App = () => {
       <Fragment>
         <Navbar />
         <Route exact path="/" component={Landing} />
-        {/* <Alert /> */}
+        <TheAlertCompo />
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Register} />

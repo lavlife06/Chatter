@@ -12,7 +12,7 @@ import {
   // CLEAR_PROFILE,
 } from "./types";
 import axios from "axios";
-// import { setAlert } from './alert';
+import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
 import { createProfile, getCurrentProfile } from "./profile";
 
@@ -64,13 +64,13 @@ export const register = (name, email, password) => async (dispatch) => {
     dispatch(createProfile());
   } catch (err) {
     console.log(err);
-    // const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
+    const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
 
-    // if (errors) {
-    //   errors.forEach((error) => {
-    //     dispatch(setAlert(error.msg, "danger"));
-    //   });
-    // }
+    if (errors) {
+      errors.forEach((error) => {
+        dispatch(setAlert(error.msg, "error"));
+      });
+    }
 
     dispatch({
       type: REGISTER_FAIL,
@@ -106,8 +106,8 @@ export const login = (email, password) => async (dispatch) => {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => {
-        // dispatch(setAlert(error.msg, "danger"));
-        alert(error.msg);
+        dispatch(setAlert(error.msg, "error"));
+        // alert(error.msg);
       });
     }
     console.log(err);
