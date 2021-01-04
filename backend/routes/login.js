@@ -17,6 +17,7 @@ module.exports = (app) => {
 
   app.post("/api/login", async (req, res) => {
     let { email, password } = req.body;
+    console.log(req.body);
     try {
       // let user = await User.findOne({ email: email })
       //                  ||
