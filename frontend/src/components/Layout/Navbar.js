@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../reduxstuff/actions/auth";
 import "./layout.css";
+import { Button } from "antd";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -10,15 +11,7 @@ const Navbar = () => {
 
   return (
     <div className="navbardiv">
-      <h2
-        style={{
-          /*textAlign: "center" */
-          flex: 5,
-          color: "rgb(169, 253, 0)",
-        }}
-      >
-        LavChatApp
-      </h2>
+      <div className="appname">LavChatApp</div>
       {!isAuthenticated && (
         <Fragment>
           <Link
@@ -59,7 +52,27 @@ const Navbar = () => {
               dispatch(logout());
             }}
           >
-            Logout
+            <Button
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontWeight: "800",
+                borderRadius: "15px",
+                fontSize: "2.5vh",
+                backgroundColor: "cyan",
+              }}
+              icon={
+                <i
+                  class="fas fa-sign-out-alt"
+                  style={{ fontSize: "2.5vh", marginRight: "3px" }}
+                />
+              }
+              onClick={() => {
+                dispatch(logout());
+              }}
+            >
+              Log Out
+            </Button>
           </Link>
         </Fragment>
       )}

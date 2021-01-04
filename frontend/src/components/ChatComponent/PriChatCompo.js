@@ -7,8 +7,16 @@ import {
 } from "../../reduxstuff/actions/types";
 import RightSideBarPriChat from "./RightSideBarPriChat";
 import "./chat.css";
+import LeftSideBar from "./LeftSideBar";
+import { Input, Modal } from "antd";
+import ChatPrivateModal from "./ChatPrivateModal";
 
-const PriChatCompo = ({ location, socket }) => {
+const PriChatCompo = ({
+  location,
+  socket,
+  isModalVisible,
+  setIsModalVisible,
+}) => {
   const dispatch = useDispatch();
   // const [roomChats, setRoomChats] = useState("");
 
@@ -47,6 +55,7 @@ const PriChatCompo = ({ location, socket }) => {
         { chatRoom: room, roomname: roomName, unReadMsgLength: 0 },
         ...prevrooms,
       ]);
+
       dispatch({ type: CREATE_PRICHATROOM, payload: { room, roomName } });
       console.log(room);
     });
@@ -107,164 +116,53 @@ const PriChatCompo = ({ location, socket }) => {
   console.log(rooms);
   return (
     <Fragment>
-      <div className="GCCdiv1">
-        <div
-          style={{
-            borderColor: "limegreen",
-            borderWidth: "1px",
-            margin: "2px",
-          }}
-        >
-          <input
-            type="search"
-            name="search"
-            value={text}
-            style={{ borderRadius: "5px" }}
-            placeholder="Search for users and chat with them"
-            onChange={(e) => {
-              console.log(e.target.value);
-              if (!e.target.value) {
-                setText("");
-                dispatch({ type: CLEAR_PROFILES });
-              } else {
-                setText(e.target.value);
-                dispatch(getProfiles(e.target.value));
-              }
-            }}
-          />
-          {profiles &&
-            profiles.map((person) => (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  borderBottomColor: "limegreen",
-                  borderBottomWidth: "1px",
-                  borderBottomStyle: "solid",
-                  lineHeight: "7vh",
-                  borderRadius: "5px",
-                  margin: "2px",
-                  paddingLeft: "2px",
-                  paddingRight: "2px",
-                  alignItems: "center",
-                }}
-              >
-                <i
-                  className="fas fa-user-circle"
-                  style={{
-                    fontSize: "3.8vh",
-                    marginRight: "7px",
-                    color: "lightcyan",
-                  }}
-                />
-                <strong
-                  style={{
-                    // fontWeight: "normal",
-                    fontSize: "3.8vh",
-                    color: "limegreen",
-                  }}
-                >
-                  {person.name}
-                </strong>
-                <div
-                  style={{
-                    display: "flex",
-                    fontSize: "3vh",
-                    paddingRight: "3px",
-                    // float: "right",
-                    borderRadius: "10%",
-                    backgroundColor: "yellow",
-                    color: "black",
-                    height: "3.7vh",
-                    width: "4vw",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    let theSelectedRoom = myprofile.myPrivateChatRooms.filter(
-                      (myRoom) => myRoom.user == person.user
-                    );
-                    console.log(theSelectedRoom);
-                    if (myprofile.name === person.name) {
-                      alert("You can't message your own account");
-                    } else if (theSelectedRoom.length === 0) {
-                      socket.emit("createPriChatRoom", {
-                        user: myprofile.user,
-                        roomMembers: [
-                          ...roomMembers,
-                          { user: person.user, name: person.name },
-                        ],
-                      });
-                      setText("");
-                      setRoomMembers([
-                        {
-                          user: myprofile.user,
-                          name: myprofile.name,
-                        },
-                      ]);
-                      dispatch({ type: CLEAR_PROFILES });
-                    } else {
-                      socket.emit("getRoomById", {
-                        roomId: theSelectedRoom[0].roomId,
-                      });
-                      setSelectedRoom({
-                        chatroominfo: theSelectedRoom[0],
-                        roomname: person.name,
-                      });
-                      setText("");
-                      dispatch({ type: CLEAR_PROFILES });
-                    }
-                  }}
-                >
-                  Chat
-                </div>
-              </div>
-            ))}
-          {profiles.length == 0 ? (
-            <div>
-              {rooms.map((roomInfo) => (
-                <div
-                  onClick={() => {
-                    console.log(roomInfo.chatRoom._id);
-                    socket.emit("getRoomById", {
-                      roomId: roomInfo.chatRoom._id,
-                    });
-                    setSelectedRoom({
-                      chatroominfo: roomInfo.chatRoom,
-                      roomname: roomInfo.roomname,
-                    });
-                    if (roomInfo.unReadMsgLength > 0) {
-                      let newarr = [...rooms];
-                      newarr.forEach((arritem) => {
-                        if (arritem.roomname == roomInfo.roomname) {
-                          arritem.unReadMsgLength = 0;
-                        }
-                      });
-                      setRooms([...newarr]);
-                    }
-                  }}
-                  style={{
-                    borderBottomColor: "limegreen",
-                    color: "yellow",
-                    borderBottomWidth: "1px",
-                    borderBottomStyle: "solid",
-                    fontSize: "20px",
-                    textAlign: "center",
-                  }}
-                >
-                  {roomInfo.roomname}
-                  <strong style={{ fontWeight: "normal", float: "right" }}>
-                    {roomInfo.unReadMsgLength}
-                  </strong>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
+      <Modal
+        title="Start Private Chat"
+        visible={isModalVisible}
+        onOk={() => {
+          dispatch({ type: CLEAR_PROFILES });
+          setText("");
+          setRoomMembers([
+            {
+              user: myprofile.user,
+              name: myprofile.name,
+            },
+          ]);
+          setIsModalVisible(false);
+        }}
+        onCancel={() => {
+          dispatch({ type: CLEAR_PROFILES });
+          setText("");
+          setRoomMembers([
+            {
+              user: myprofile.user,
+              name: myprofile.name,
+            },
+          ]);
+          setIsModalVisible(false);
+        }}
+      >
+        {" "}
+        <ChatPrivateModal
+          setText={setText}
+          text={text}
+          socket={socket}
+          myprofile={myprofile}
+          roomMembers={roomMembers}
+          setRoomMembers={setRoomMembers}
+          setSelectedRoom={setSelectedRoom}
+          setIsModalVisible={setIsModalVisible}
+        />{" "}
+      </Modal>
+      <div className="leftsidebardiv">
+        <LeftSideBar
+          type={"privateChat"}
+          myprofile={myprofile}
+          rooms={rooms}
+          socket={socket}
+          setRooms={setRooms}
+          setSelectedRoom={setSelectedRoom}
+        />
       </div>
       <div className="rightsidebardiv">
         {selectedRoom && (
@@ -288,3 +186,112 @@ const PriChatCompo = ({ location, socket }) => {
 };
 
 export default PriChatCompo;
+
+// {profiles &&
+//   profiles.map((person) => (
+//     <div
+//       style={{
+//         display: "flex",
+//         justifyContent: "space-between",
+//         borderBottomColor: "limegreen",
+//         borderBottomWidth: "1px",
+//         borderBottomStyle: "solid",
+//         lineHeight: "7vh",
+//         borderRadius: "5px",
+//         margin: "2px",
+//         paddingLeft: "2px",
+//         paddingRight: "2px",
+//         alignItems: "center",
+//       }}
+//     >
+//       <i
+//         className="fas fa-user-circle"
+//         style={{
+//           fontSize: "3.8vh",
+//           marginRight: "7px",
+//           color: "lightcyan",
+//         }}
+//       />
+//       <strong
+//         style={{
+//           // fontWeight: "normal",
+//           fontSize: "3.8vh",
+//           color: "limegreen",
+//         }}
+//       >
+//         {person.name}
+//       </strong>
+//       <div
+//         style={{
+//           display: "flex",
+//           fontSize: "3vh",
+//           paddingRight: "3px",
+//           // float: "right",
+//           borderRadius: "10%",
+//           backgroundColor: "yellow",
+//           color: "black",
+//           height: "3.7vh",
+//           width: "4vw",
+//           justifyContent: "center",
+//           alignItems: "center",
+//           fontWeight: "bold",
+//           cursor: "pointer",
+//         }}
+//         onClick={() => {
+//           let theSelectedRoom = myprofile.myPrivateChatRooms.filter(
+//             (myRoom) => myRoom.user == person.user
+//           );
+//           console.log(theSelectedRoom);
+//           if (myprofile.name === person.name) {
+//             alert("You can't message your own account");
+//           } else if (theSelectedRoom.length === 0) {
+//             socket.emit("createPriChatRoom", {
+//               user: myprofile.user,
+//               roomMembers: [
+//                 ...roomMembers,
+//                 { user: person.user, name: person.name },
+//               ],
+//             });
+//             setText("");
+//             setRoomMembers([
+//               {
+//                 user: myprofile.user,
+//                 name: myprofile.name,
+//               },
+//             ]);
+//             dispatch({ type: CLEAR_PROFILES });
+//           } else {
+//             socket.emit("getRoomById", {
+//               roomId: theSelectedRoom[0].roomId,
+//             });
+//             setSelectedRoom({
+//               chatroominfo: theSelectedRoom[0],
+//               roomname: person.name,
+//             });
+//             setText("");
+//             dispatch({ type: CLEAR_PROFILES });
+//           }
+//         }}
+//       >
+//         Chat
+//       </div>
+//     </div>
+//   ))}
+
+// <input
+//   type="search"
+//   name="search"
+//   value={text}
+//   style={{ borderRadius: "5px" }}
+//   placeholder="Search for users and chat with them"
+//   onChange={(e) => {
+//     console.log(e.target.value);
+//     if (!e.target.value) {
+//       setText("");
+//       dispatch({ type: CLEAR_PROFILES });
+//     } else {
+//       setText(e.target.value);
+//       dispatch(getProfiles(e.target.value));
+//     }
+//   }}
+// />

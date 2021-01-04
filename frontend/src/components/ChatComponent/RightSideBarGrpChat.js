@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 import "./chat.css";
+import { SendOutlined } from "@ant-design/icons";
+import { Input, Modal } from "antd";
 
 const RightSideBarGrpChat = ({
   selectedRoom,
@@ -120,19 +122,25 @@ const RightSideBarGrpChat = ({
   return (
     // <div style={{ padding: "2px" }}>
     <Fragment>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "20px",
-          marginTop: "8px",
-          marginBottom: "8px",
-        }}
-      >
-        <h1 style={{ color: "black" }}>{myParticularRoom.roomName}</h1>
+      <div className="groupinfodiv">
+        <i
+          className="fas fa-users usersIcon"
+          style={{
+            fontSize: "20px",
+            borderColor: "aquamarine",
+            padding: "7px 5px",
+          }}
+        />
+        <strong
+          style={{ color: "aquamarine", fontSize: "25px", marginBottom: "6px" }}
+        >
+          {myParticularRoom.roomName}
+        </strong>
       </div>
-      <div id="chatcontainer" style={{ height: "90%", overflowY: "scroll" }}>
+      <div
+        id="chatcontainer"
+        style={{ height: "90%", overflowY: "scroll", padding: "7px" }}
+      >
         {/* <ScrollToBottom className="scrollBottom"> */}
         {chats.map((item) => (
           <Fragment>
@@ -141,11 +149,16 @@ const RightSideBarGrpChat = ({
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
+                  marginBottom: "0.8vh",
                 }}
               >
                 <strong
                   className="chatblockdiv"
-                  style={{ borderTopRightRadius: "initial" }}
+                  style={{
+                    borderTopRightRadius: "initial",
+                    fontSize: "17px",
+                    padding: "5px 10px",
+                  }}
                 >
                   {" "}
                   {item.text}
@@ -156,11 +169,16 @@ const RightSideBarGrpChat = ({
                 style={{
                   display: "flex",
                   justifyContent: "flex-start",
+                  marginBottom: "0.8vh",
                 }}
               >
                 <strong
                   className="chatblockdiv"
-                  style={{ borderTopLeftRadius: "initial" }}
+                  style={{
+                    borderTopLeftRadius: "initial",
+                    fontSize: "17px",
+                    padding: "5px 10px",
+                  }}
                 >
                   <div style={{ color: "yellow" }}>{item.name}</div>
                   {item.text}
@@ -172,17 +190,16 @@ const RightSideBarGrpChat = ({
       </div>
       {/* </ScrollToBottom> */}
 
-      <div style={{ height: "20px", display: "flex", flexDirection: "row" }}>
-        <strong
-          style={{
-            color: "black",
-            paddingLeft: "2px",
-            paddingRight: "2px",
-          }}
-        >
-          Chat:
-        </strong>
-        <input
+      <div
+        style={{
+          height: "42px",
+          display: "flex",
+          flexDirection: "row",
+          padding: "2px",
+          backgroundColor: "black",
+        }}
+      >
+        <Input
           type="text"
           name="text"
           value={chattext}
@@ -190,20 +207,37 @@ const RightSideBarGrpChat = ({
           onChange={(e) => {
             setChatText(e.target.value);
           }}
-          style={{ flex: 1 }}
-        />
-        <input
-          type="submit"
-          value="Submit"
+          onKeyPress={(e) => {
+            console.log(e.key);
+            if (e.key === "Enter") {
+              sendMessage(e);
+            }
+          }}
           style={{
+            flex: 1,
+            fontWeight: "500",
+            fontSize: "3vh",
+            borderRadius: "15px",
+            margin: "5px 0px 5px 10px",
+          }}
+        />
+        <i
+          onClick={(e) => {
+            console.log(e);
+            sendMessage(e);
+          }}
+          className="far fa-paper-plane"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             color: "aquamarine",
             backgroundColor: "black",
-            fontSize: "15px",
+            fontSize: "18px",
             fontWeight: "bold",
             paddingBottom: "1px",
-          }}
-          onClick={(e) => {
-            sendMessage(e);
+            width: "4vw",
+            minWidth: "45px",
           }}
         />
       </div>

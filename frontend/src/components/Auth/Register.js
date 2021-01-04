@@ -8,14 +8,12 @@ import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import loginImage from "./loginImage.jpg";
-import { setAlert } from "../../reduxstuff/actions/alert";
 
 const Register = () => {
   const [formData, setformData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmpassword: "",
   });
 
   const dispatch = useDispatch();
@@ -25,12 +23,12 @@ const Register = () => {
 
   const handleSubmit = () => {
     // e.preventDefault();
-    if (formData.password == formData.confirmpassword) {
-      dispatch(register(formData.name, formData.email, formData.password));
-      return false;
-    } else {
-      dispatch(setAlert("Passwords doesn't match", "error"));
-    }
+    dispatch(register(formData.name, formData.email, formData.password));
+    setformData({
+      name: "",
+      email: "",
+      password: "",
+    });
   };
 
   const changeHandler = (e) => {
@@ -39,15 +37,7 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(formData);
-
   if (isAuthenticated) {
-    setformData({
-      name: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
-    });
     return <Redirect to="/check" />;
   }
 
@@ -148,29 +138,6 @@ const Register = () => {
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
-              onChange={(e) => {
-                changeHandler(e);
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            name="confirmpassword"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Confirm Password!",
-              },
-            ]}
-            hasFeedback
-          >
-            <Input.Password
-              style={{
-                borderRadius: "15px",
-              }}
-              name="confirmpassword"
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Confirm Password"
               onChange={(e) => {
                 changeHandler(e);
               }}
