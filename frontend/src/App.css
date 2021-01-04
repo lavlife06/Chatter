@@ -75,7 +75,8 @@ a {
   /* box-shadow: 0 4px #999; */
   margin: 5px;
   font-size: 2.8vh;
-  font-weight: 200;
+  font-weight: 400;
+  border-radius: 15px;
 }
 .clearBtn {
   font-size: 18px;
@@ -89,10 +90,11 @@ a {
 }
 .truetablink {
   /* box-shadow: 0 4px #999; */
-  background-color: rgba(18, 245, 164, 0.87);
+  background-color: aquamarine;
   margin: 5px;
   font-size: 2.8vh;
-  font-weight: 200;
+  font-weight: 400;
+  border-radius: 15px;
 }
 .tablink:active {
   /* background-color: rgba(18, 245, 164, 0.87); */
@@ -121,9 +123,23 @@ a {
     transform: rotate(360deg);
   }
 }
-.maindiv1 {
+/* .maindiv1 {
   display: flex;
   justify-content: center;
+  flex-direction: row;
+  border-width: 1px;
+  border-style: solid;
+  border-color: palegreen;
+  background-color: #04272d;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 1vh;
+  height: 6.5vh;
+} */
+.maindiv1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: row;
   border-width: 1px;
   border-style: solid;
@@ -143,4 +159,9 @@ a {
   border-color: limegreen;
   border-width: 1px;
   border-radius: 12px;
+}
+.ant-btn:hover,
+.ant-btn:focus {
+  color: black;
+  border-color: aquamarine;
 }
