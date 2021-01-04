@@ -19,7 +19,7 @@ import { createProfile, getCurrentProfile } from "./profile";
 //  Load User
 export const loadUser = () => async (dispatch) => {
   // set header
-  console.log(localStorage.token);
+
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -100,10 +100,11 @@ export const login = (email, password) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(loadUser());
-    dispatch(getCurrentProfile());
+    // dispatch(loadUser());
+    // dispatch(getCurrentProfile());
   } catch (err) {
     const errors = err.response.data.errors;
+    console.log(err)
     if (errors) {
       errors.forEach((error) => {
         dispatch(setAlert(error.msg, "error"));
