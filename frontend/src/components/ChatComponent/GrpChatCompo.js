@@ -61,40 +61,31 @@ const GrpChatCompo = ({
   }, [rooms]);
 
   useEffect(() => {
-    socket.on("newMessage", ({ room }) => {
-      let theFirstRoom;
-      if (selectedRoom) {
-        theFirstRoom = selectedRoom;
+    socket.on("newMessage", ({ room, user, name, text }) => {
+      console.log(selectedRoom);
+      if (rooms.length <= 1) {
+        setRooms((prevRooms) => [
+          {
+            ...prevRooms[0],
+            chats: [...prevRooms[0].chats, { user, name, text }],
+            unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
+          },
+        ]);
       } else {
-        theFirstRoom = rooms[0];
-      }
-      console.log(theFirstRoom);
-      if (theFirstRoom.roomName != room.roomName) {
-        if (rooms.length <= 1) {
-          setRooms((prevRooms) => [
-            {
-              ...prevRooms[0],
-              unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
-            },
-          ]);
-        } else {
-          let theNewArr = [...rooms];
-          console.log(theNewArr);
-          theNewArr.forEach((arritem, index) => {
-            console.log(arritem);
-            console.log(room);
-            if (arritem.roomName == room.roomName) {
-              console.log("matched");
-              theNewArr.splice(index, 1);
-              theNewArr.splice(0, 0, {
-                ...arritem,
-                unReadMsgLength: arritem.unReadMsgLength + 1,
-              });
-            }
-          });
-          console.log(theNewArr);
-          setRooms([...theNewArr]);
-        }
+        let theNewArr = [...rooms];
+        console.log(theNewArr);
+        theNewArr.forEach((arritem, index) => {
+          if (arritem.roomName == room.roomName) {
+            theNewArr.splice(index, 1);
+            theNewArr.splice(0, 0, {
+              ...arritem,
+              chats: [...arritem.chats, { user, name, text }],
+              unReadMsgLength: arritem.unReadMsgLength + 1,
+            });
+          }
+        });
+        console.log(theNewArr);
+        setRooms([...theNewArr]);
       }
     });
     console.log("inside on event newMessage");
@@ -109,6 +100,7 @@ const GrpChatCompo = ({
     setRooms([...rearrangedRooms]);
   };
   console.log(rooms);
+  console.log(selectedRoom);
   return (
     <Fragment>
       <Modal

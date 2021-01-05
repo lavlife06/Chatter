@@ -109,7 +109,12 @@ io.on("connection", (socket) => {
         chatRoom.roomMembers.forEach(async (member) => {
           if (user != member.user) {
             let profile = await Profile.findOne({ user: member.user });
-            io.to(profile.socketId).emit("newMessage", { room: chatRoom });
+            io.to(profile.socketId).emit("newMessage", {
+              room: chatRoom,
+              user,
+              name,
+              text,
+            });
             console.log(profile.socketId);
             console.log(profile.name);
           }
@@ -140,7 +145,12 @@ io.on("connection", (socket) => {
             let profile = await Profile.findOne({ user: member.user });
             console.log(profile.socketId);
             console.log(profile.name);
-            io.to(profile.socketId).emit("newMessage", { room: chatRoom });
+            io.to(profile.socketId).emit("newMessage", {
+              room: chatRoom,
+              user,
+              name,
+              text,
+            });
           }
         });
 

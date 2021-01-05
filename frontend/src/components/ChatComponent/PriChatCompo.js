@@ -68,38 +68,37 @@ const PriChatCompo = ({
   }, [rooms]);
 
   useEffect(() => {
-    socket.on("newMessage", ({ room }) => {
-      let theFirstRoom;
-      if (selectedRoom) {
-        theFirstRoom = selectedRoom.chatroominfo;
-      } else {
-        theFirstRoom = rooms[0].chatRoom;
-      }
-      console.log(theFirstRoom);
-      if (theFirstRoom._id != room._id) {
-        if (rooms.length <= 1) {
-          setRooms((prevRooms) => [
-            {
-              ...prevRooms[0],
-              unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
+    socket.on("newMessage", ({ room, user, name, text }) => {
+      if (rooms.length <= 1) {
+        setRooms((prevRooms) => [
+          {
+            ...prevRooms[0],
+            chatRoom: {
+              ...prevRooms[0].chatRoom,
+              chats: [...prevRooms[0].chatRoom.chats, { user, name, text }],
             },
-          ]);
-        } else {
-          let theNewArr = [...rooms];
-          console.log(theNewArr);
-          theNewArr.forEach((arritem, index) => {
-            if (arritem.chatRoom._id == room._id) {
-              theNewArr.splice(index, 1);
-              theNewArr.splice(0, 0, {
-                ...arritem,
-                unReadMsgLength: arritem.unReadMsgLength + 1,
-              });
-            }
-          });
+            unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
+          },
+        ]);
+      } else {
+        let theNewArr = [...rooms];
+        console.log(theNewArr);
+        theNewArr.forEach((arritem, index) => {
+          if (arritem.chatRoom._id == room._id) {
+            theNewArr.splice(index, 1);
+            theNewArr.splice(0, 0, {
+              ...arritem,
+              chatRoom: {
+                ...arritem.chatRoom,
+                chats: [...arritem.chatRoom.chats, { user, name, text }],
+              },
+              unReadMsgLength: arritem.unReadMsgLength + 1,
+            });
+          }
+        });
 
-          console.log(theNewArr);
-          setRooms([...theNewArr]);
-        }
+        console.log(theNewArr);
+        setRooms([...theNewArr]);
       }
     });
     console.log("inside on event newMessage");

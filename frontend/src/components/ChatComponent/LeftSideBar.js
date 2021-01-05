@@ -45,7 +45,6 @@ const LeftSideBar = ({
         {type == "groupChat" ? (
           <Fragment>
             {rooms.map((room, index) => {
-              console.table(room.chats[room.chats.length - 1]);
               return (
                 <Menu.Item
                   style={{

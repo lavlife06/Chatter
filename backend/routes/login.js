@@ -5,7 +5,7 @@ const keys = require("../config/keys");
 const User = require("../models/User");
 
 module.exports = (app) => {
-  app.get("/api/login", verify, async (req, res) => {
+  app.get("/api/login", async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select("-password");
       res.json(user);

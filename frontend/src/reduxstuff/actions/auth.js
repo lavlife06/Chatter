@@ -56,11 +56,14 @@ export const register = (name, email, password) => async (dispatch) => {
       config
     );
 
+    setAuthToken(res.data);
+
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
-    dispatch(loadUser());
+
+    // dispatch(loadUser());
     dispatch(createProfile());
   } catch (err) {
     console.log(err);
@@ -104,7 +107,7 @@ export const login = (email, password) => async (dispatch) => {
     // dispatch(getCurrentProfile());
   } catch (err) {
     const errors = err.response.data.errors;
-    console.log(err)
+    console.log(err);
     if (errors) {
       errors.forEach((error) => {
         dispatch(setAlert(error.msg, "error"));

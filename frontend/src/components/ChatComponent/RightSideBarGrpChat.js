@@ -73,22 +73,27 @@ const RightSideBarGrpChat = ({
         roomId: myParticularRoom._id,
       });
     }
-    setChatText("");
 
     // Changing room stack
     if (theRooms.length > 1) {
-      if (theRooms[0].roomName != selectedRoom.roomName) {
-        theRooms.forEach((arritem, index) => {
-          if (arritem.roomName == selectedRoom.roomName) {
+      theRooms.forEach((arritem, index) => {
+        if (arritem.roomName == selectedRoom.roomName) {
+          arritem.chats.push({
+            user: myprofile.user,
+            name: myprofile.name,
+            text: chattext,
+          });
+          if (index != 0) {
             theRooms.splice(index, 1);
             theRooms.splice(0, 0, arritem);
           }
-        });
-        console.log(theRooms);
+        }
+      });
+      console.log(theRooms);
 
-        changeRoomsStack(theRooms);
-      }
+      changeRoomsStack(theRooms);
     }
+    setChatText("");
   };
 
   const theScrollToBottom = () => {
