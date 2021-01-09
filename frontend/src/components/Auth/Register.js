@@ -24,11 +24,7 @@ const Register = () => {
   const handleSubmit = () => {
     // e.preventDefault();
     dispatch(register(formData.name, formData.email, formData.password));
-    setformData({
-      name: "",
-      email: "",
-      password: "",
-    });
+    return false;
   };
 
   const changeHandler = (e) => {

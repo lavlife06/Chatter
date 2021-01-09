@@ -23,10 +23,7 @@ const Login = () => {
     // e.preventDefault();
 
     dispatch(login(formData.email, formData.password));
-    setformData({
-      email: "",
-      password: "",
-    });
+    return false;
   };
 
   const changeHandler = (e) => {

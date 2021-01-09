@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <div className="navbardiv">
-      <div className="appname">LavChatApp</div>
+      <div className="appname">Chatter</div>
       {!isAuthenticated && (
         <Fragment>
           <Link

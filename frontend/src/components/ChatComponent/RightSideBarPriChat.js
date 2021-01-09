@@ -74,23 +74,23 @@ const RightSideBarPriChat = ({
     }
 
     // Changing room stack
-    if (theRooms.length > 1) {
-      theRooms.forEach((arritem, index) => {
-        if (arritem.roomname == selectedRoom.roomname) {
-          arritem.chatRoom.chats.push({
-            user: myprofile.user,
-            name: myprofile.name,
-            text: chattext,
-          });
-          if (index != 0) {
-            theRooms.splice(index, 1);
-            theRooms.splice(0, 0, arritem);
-          }
+    // if (theRooms.length > 1) {
+    theRooms.forEach((arritem, index) => {
+      if (arritem.roomname == selectedRoom.roomname) {
+        arritem.chatRoom.chats.push({
+          user: myprofile.user,
+          name: myprofile.name,
+          text: chattext,
+        });
+        if (index != 0) {
+          theRooms.splice(index, 1);
+          theRooms.splice(0, 0, arritem);
         }
-      });
-      console.log(theRooms);
-      changePriRoomsStack(theRooms);
-    }
+      }
+    });
+    console.log(theRooms);
+    changePriRoomsStack(theRooms);
+    // }
     setChatText("");
   };
 

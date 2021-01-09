@@ -69,37 +69,24 @@ const PriChatCompo = ({
 
   useEffect(() => {
     socket.on("newMessage", ({ room, user, name, text }) => {
-      if (rooms.length <= 1) {
-        setRooms((prevRooms) => [
-          {
-            ...prevRooms[0],
+      let theNewArr = [...rooms];
+      console.log(theNewArr);
+      theNewArr.forEach((arritem, index) => {
+        if (arritem.chatRoom._id == room._id) {
+          theNewArr.splice(index, 1);
+          theNewArr.splice(0, 0, {
+            ...arritem,
             chatRoom: {
-              ...prevRooms[0].chatRoom,
-              chats: [...prevRooms[0].chatRoom.chats, { user, name, text }],
+              ...arritem.chatRoom,
+              chats: [...arritem.chatRoom.chats, { user, name, text }],
             },
-            unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
-          },
-        ]);
-      } else {
-        let theNewArr = [...rooms];
-        console.log(theNewArr);
-        theNewArr.forEach((arritem, index) => {
-          if (arritem.chatRoom._id == room._id) {
-            theNewArr.splice(index, 1);
-            theNewArr.splice(0, 0, {
-              ...arritem,
-              chatRoom: {
-                ...arritem.chatRoom,
-                chats: [...arritem.chatRoom.chats, { user, name, text }],
-              },
-              unReadMsgLength: arritem.unReadMsgLength + 1,
-            });
-          }
-        });
+            unReadMsgLength: arritem.unReadMsgLength + 1,
+          });
+        }
+      });
 
-        console.log(theNewArr);
-        setRooms([...theNewArr]);
-      }
+      console.log(theNewArr);
+      setRooms([...theNewArr]);
     });
     console.log("inside on event newMessage");
 
