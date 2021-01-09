@@ -5,11 +5,18 @@ import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
 import { CLEAR_PROFILES, CREATE_ROOM } from "../../reduxstuff/actions/types";
 import { getMyRooms } from "../../reduxstuff/actions/room";
 import "./chat.css";
+import { Input, Modal } from "antd";
+import LeftSideBar from "./LeftSideBar";
+import CreateRoomModal from "./CreateRoomModal";
 
-const GrpChatCompo = ({ location, socket }) => {
+const GrpChatCompo = ({
+  location,
+  socket,
+  isModalVisible,
+  setIsModalVisible,
+}) => {
   const dispatch = useDispatch();
 
-  const profiles = useSelector((state) => state.profile.profiles);
   const myprofile = useSelector((state) => state.profile.myprofile);
   const myRooms = useSelector((state) => state.room.myRooms);
 
@@ -54,40 +61,31 @@ const GrpChatCompo = ({ location, socket }) => {
   }, [rooms]);
 
   useEffect(() => {
-    socket.on("newMessage", ({ room }) => {
-      let theFirstRoom;
-      if (selectedRoom) {
-        theFirstRoom = selectedRoom;
+    socket.on("newMessage", ({ room, user, name, text }) => {
+      console.log(selectedRoom);
+      if (rooms.length <= 1) {
+        setRooms((prevRooms) => [
+          {
+            ...prevRooms[0],
+            chats: [...prevRooms[0].chats, { user, name, text }],
+            unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
+          },
+        ]);
       } else {
-        theFirstRoom = rooms[0];
-      }
-      console.log(theFirstRoom);
-      if (theFirstRoom.roomName != room.roomName) {
-        if (rooms.length <= 1) {
-          setRooms((prevRooms) => [
-            {
-              ...prevRooms[0],
-              unReadMsgLength: prevRooms[0].unReadMsgLength + 1,
-            },
-          ]);
-        } else {
-          let theNewArr = [...rooms];
-          console.log(theNewArr);
-          theNewArr.forEach((arritem, index) => {
-            console.log(arritem);
-            console.log(room);
-            if (arritem.roomName == room.roomName) {
-              console.log("matched");
-              theNewArr.splice(index, 1);
-              theNewArr.splice(0, 0, {
-                ...arritem,
-                unReadMsgLength: arritem.unReadMsgLength + 1,
-              });
-            }
-          });
-          console.log(theNewArr);
-          setRooms([...theNewArr]);
-        }
+        let theNewArr = [...rooms];
+        console.log(theNewArr);
+        theNewArr.forEach((arritem, index) => {
+          if (arritem.roomName == room.roomName) {
+            theNewArr.splice(index, 1);
+            theNewArr.splice(0, 0, {
+              ...arritem,
+              chats: [...arritem.chats, { user, name, text }],
+              unReadMsgLength: arritem.unReadMsgLength + 1,
+            });
+          }
+        });
+        console.log(theNewArr);
+        setRooms([...theNewArr]);
       }
     });
     console.log("inside on event newMessage");
@@ -102,238 +100,64 @@ const GrpChatCompo = ({ location, socket }) => {
     setRooms([...rearrangedRooms]);
   };
   console.log(rooms);
+  console.log(selectedRoom);
   return (
     <Fragment>
-      <div className="GCCdiv1">
-        <div
-          style={{
-            borderColor: "limegreen",
-            borderWidth: "1px",
-            margin: "2px",
-          }}
-        >
-          <input
-            type="search"
-            name="search"
-            value={text}
-            style={{ borderRadius: "5px" }}
-            placeholder="Search your Rooms"
-            onChange={(e) => {
-              console.log(e.target.value);
-              if (!e.target.value) {
-                setText("");
-                dispatch({ type: CLEAR_PROFILES });
-              } else {
-                setText(e.target.value);
-                console.log("isko baadme dekh lenge");
-              }
-            }}
-          />
-          <i
-            className="fas fa-bars"
-            style={{
-              color: "yellow",
-              paddingLeft: "3px",
-              paddingRight: "2px",
-              marginTop: "auto",
-              marginBottom: "auto",
-            }}
-            id="modalBtn"
-            onClick={() => {
-              let modal = document.getElementById("myModal");
-              modal.style.display = "block";
-            }}
-          />
-          <div style={{ fontSize: "20px" }} id="myModal" className="modal">
-            <div className="modal-content">
-              <i
-                className="fas fa-times CloseBtn"
-                onClick={() => {
-                  let modal = document.getElementById("myModal");
-                  modal.style.display = "none";
-                  dispatch({ type: CLEAR_PROFILES });
-                  setText("");
-                  setRoomMembers([
-                    {
-                      user: myprofile.user,
-                      name: myprofile.name,
-                    },
-                  ]);
-                  setRoomName("");
-                }}
-              />
-              <div>
-                <strong>GroupName:</strong>
-                <input
-                  type="text"
-                  name="text"
-                  style={{ borderStyle: "none" }}
-                  value={roomName}
-                  placeholder="Enter your group name here"
-                  onChange={(e) => {
-                    setRoomName(e.target.value);
-                  }}
-                />
-              </div>
-              <hr style={{ height: "2px", backgroundColor: "black" }} />
-
-              <label for="search">Users:</label>
-              <input
-                type="search"
-                name="search"
-                value={text}
-                style={{ borderStyle: "none" }}
-                placeholder="Search Users here"
-                onChange={(e) => {
-                  setText(e.target.value);
-                  dispatch(getProfiles(e.target.value));
-                }}
-              />
-              <hr />
-              <div style={{ overflowY: "scroll", maxHeight: "150px" }}>
-                <div
-                  style={{
-                    fontSize: "17px",
-                    color: "gray",
-                    marginBottom: "3px",
-                  }}
-                >
-                  Suggested
-                </div>
-                {profiles &&
-                  profiles.map((person) => (
-                    <div>
-                      <i
-                        className="fas fa-user-circle"
-                        style={{ fontSize: "25px", marginRight: "7px" }}
-                      />
-                      <strong
-                        style={{
-                          // fontWeight: "normal",
-                          fontSize: "25px",
-                        }}
-                      >
-                        {person.name}
-                      </strong>
-                      <i
-                        className="fas fa-plus-circle"
-                        style={{
-                          fontSize: "25px",
-                          paddingRight: "3px",
-                          float: "right",
-                        }}
-                        onClick={() => {
-                          if (myprofile.name === person.name) {
-                            alert("You can't add yourself twice in same group");
-                          } else {
-                            setRoomMembers([
-                              ...roomMembers,
-                              {
-                                user: person.user,
-                                name: person.name,
-                                socketId: person.socketId,
-                              },
-                            ]);
-                          }
-                        }}
-                      />
-                    </div>
-                  ))}
-              </div>
-
-              {roomMembers && (
-                <Fragment>
-                  <div style={{ overflowY: "scroll", maxHeight: "150px" }}>
-                    <div
-                      style={{
-                        fontSize: "17px",
-                        color: "gray",
-                        marginBottom: "3px",
-                      }}
-                    >
-                      GroupMembers:
-                    </div>
-
-                    {roomMembers.map((member) => (
-                      <div>
-                        <i
-                          className="fas fa-user-circle"
-                          style={{ fontSize: "25px", marginRight: "7px" }}
-                        />
-                        <strong
-                          style={{
-                            // fontWeight: "normal",
-                            fontSize: "25px",
-                          }}
-                        >
-                          {member.name}
-                        </strong>
-                      </div>
-                    ))}
-                  </div>
-                </Fragment>
-              )}
-              <div style={{ textAlign: "center" }}>
-                <button
-                  style={{}}
-                  onClick={() => {
-                    console.log(roomMembers, roomName);
-                    socket.emit("createGrpChatRoom", {
-                      user: myprofile.user,
-                      roomName,
-                      roomMembers,
-                    });
-                    let modal = document.getElementById("myModal");
-                    modal.style.display = "none";
-                    dispatch({ type: CLEAR_PROFILES });
-                    setText("");
-                    setRoomMembers([
-                      {
-                        user: myprofile.user,
-                        name: myprofile.name,
-                      },
-                    ]);
-                    setRoomName("");
-                  }}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            {rooms.map((room) => (
-              <div
-                onClick={() => {
-                  socket.emit("getRoomById", { roomId: room._id });
-                  setSelectedRoom(room);
-                  if (room.unReadMsgLength > 0) {
-                    let newarr = [...rooms];
-                    newarr.forEach((arritem) => {
-                      if (arritem.roomName == room.roomName) {
-                        arritem.unReadMsgLength = 0;
-                      }
-                    });
-                    setRooms([...newarr]);
-                  }
-                }}
-                style={{
-                  borderBottomColor: "limegreen",
-                  color: "yellow",
-                  borderBottomWidth: "1px",
-                  borderBottomStyle: "solid",
-                  fontSize: "20px",
-                  textAlign: "center",
-                }}
-              >
-                {room.roomName}
-                <strong style={{ fontWeight: "normal", float: "right" }}>
-                  {room.unReadMsgLength}
-                </strong>
-              </div>
-            ))}
-          </div>
-        </div>
+      <Modal
+        title="CreateGroup"
+        style={{}}
+        visible={isModalVisible}
+        onOk={() => {
+          socket.emit("createGrpChatRoom", {
+            user: myprofile.user,
+            roomName,
+            roomMembers,
+          });
+          dispatch({ type: CLEAR_PROFILES });
+          setText("");
+          setRoomMembers([
+            {
+              user: myprofile.user,
+              name: myprofile.name,
+            },
+          ]);
+          setRoomName("");
+          setIsModalVisible(false);
+        }}
+        onCancel={() => {
+          dispatch({ type: CLEAR_PROFILES });
+          setText("");
+          setRoomMembers([
+            {
+              user: myprofile.user,
+              name: myprofile.name,
+            },
+          ]);
+          setRoomName("");
+          setIsModalVisible(false);
+        }}
+      >
+        {" "}
+        <CreateRoomModal
+          setText={setText}
+          text={text}
+          socket={socket}
+          roomName={roomName}
+          setRoomName={setRoomName}
+          myprofile={myprofile}
+          roomMembers={roomMembers}
+          setRoomMembers={setRoomMembers}
+        />{" "}
+      </Modal>
+      <div className="leftsidebardiv">
+        <LeftSideBar
+          type={"groupChat"}
+          myprofile={myprofile}
+          rooms={rooms}
+          socket={socket}
+          setRooms={setRooms}
+          setSelectedRoom={setSelectedRoom}
+        />
       </div>
       <div className="rightsidebardiv">
         {selectedRoom && (
@@ -356,3 +180,23 @@ const GrpChatCompo = ({ location, socket }) => {
 };
 
 export default GrpChatCompo;
+
+{
+  /* <Input
+  type="search"
+  style={{ borderRadius: "5px" }}
+  value={text}
+  name="search"
+  placeholder="Search your Rooms"
+  onChange={(e) => {
+    console.log(e.target.value);
+    if (!e.target.value) {
+      setText("");
+      dispatch({ type: CLEAR_PROFILES });
+    } else {
+      setText(e.target.value);
+      console.log("isko baadme dekh lenge");
+    }
+  }}
+/> */
+}

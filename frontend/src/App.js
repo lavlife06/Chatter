@@ -9,7 +9,6 @@ import { loadUser } from "./reduxstuff/actions/auth";
 import Navbar from "./components/Layout/Navbar";
 import Main from "./components/Main";
 import "./App.css";
-import Landing from "./components/Layout/Landing";
 import Check from "./components/Layout/Check";
 
 const App = () => {
@@ -24,7 +23,7 @@ const App = () => {
     <Router>
       <Fragment>
         <Navbar />
-        <Route exact path="/" component={Landing} />
+        <Route exact path="/" component={Login} />
         {/* <Alert /> */}
         <Switch>
           <Route exact path="/login" component={Login} />

@@ -12,14 +12,14 @@ import {
   // CLEAR_PROFILE,
 } from "./types";
 import axios from "axios";
-// import { setAlert } from './alert';
+import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
 import { createProfile, getCurrentProfile } from "./profile";
 
 //  Load User
 export const loadUser = () => async (dispatch) => {
   // set header
-  console.log(localStorage.token);
+
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -56,21 +56,24 @@ export const register = (name, email, password) => async (dispatch) => {
       config
     );
 
+    setAuthToken(res.data);
+
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
-    dispatch(loadUser());
+
+    // dispatch(loadUser());
     dispatch(createProfile());
   } catch (err) {
     console.log(err);
-    // const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
+    const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
 
-    // if (errors) {
-    //   errors.forEach((error) => {
-    //     dispatch(setAlert(error.msg, "danger"));
-    //   });
-    // }
+    if (errors) {
+      errors.forEach((error) => {
+        dispatch(setAlert(error.msg, "error"));
+      });
+    }
 
     dispatch({
       type: REGISTER_FAIL,
@@ -100,14 +103,15 @@ export const login = (email, password) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(loadUser());
-    dispatch(getCurrentProfile());
+    // dispatch(loadUser());
+    // dispatch(getCurrentProfile());
   } catch (err) {
     const errors = err.response.data.errors;
+    console.log(err);
     if (errors) {
       errors.forEach((error) => {
-        // dispatch(setAlert(error.msg, "danger"));
-        alert(error.msg);
+        dispatch(setAlert(error.msg, "error"));
+        // alert(error.msg);
       });
     }
     console.log(err);
