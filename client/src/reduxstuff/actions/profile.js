@@ -16,7 +16,7 @@ import {
 // Get current users profile
 export const getCurrentProfile = () => async (dispatch) => {
   try {
-    const res = await axios.get("http://127.0.0.1:5000/api/profile/me");
+    const res = await axios.get("/api/profile/me");
 
     dispatch({
       type: GET_PROFILE,
@@ -34,9 +34,7 @@ export const getCurrentProfile = () => async (dispatch) => {
 // Get all profiles
 export const getProfiles = (username) => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `http://127.0.0.1:5000/api/profile/user/${username}`
-    );
+    const res = await axios.get(`/api/profile/user/${username}`);
 
     dispatch({
       type: GET_PROFILES,
@@ -62,7 +60,7 @@ export const createProfile = () => async (dispatch) => {
     // const body = JSON.stringify({ name, email });
 
     const res = await axios.post(
-      "http://127.0.0.1:5000/api/profile/me"
+      "/api/profile/me"
       // body,
       // config
     );
@@ -99,11 +97,7 @@ export const updateProfile = (socketId) => async (dispatch) => {
 
     const body = JSON.stringify({ socketId });
 
-    const res = await axios.post(
-      "http://127.0.0.1:5000/api/profile/me",
-      body,
-      config
-    );
+    const res = await axios.post("/api/profile/me", body, config);
 
     dispatch({
       type: UPDATE_PROFILE,
@@ -129,9 +123,7 @@ export const updateProfile = (socketId) => async (dispatch) => {
 // Get profile by ID
 export const getProfileById = (userId) => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `http://127.0.0.1:5000/api/profile/user/${userId}`
-    );
+    const res = await axios.get(`/api/profile/user/${userId}`);
 
     dispatch({
       type: GET_PROFILE,
@@ -155,7 +147,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 //     };
 
 //     const res = await axios.put(
-//       "http://127.0.0.1:5000/api/profile/experience",
+//       "/api/profile/experience",
 //       formData,
 //       config
 //     );
@@ -219,7 +211,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // export const deleteExperience = (id) => async (dispatch) => {
 //   try {
 //     const res = await axios.delete(
-//       `http://127.0.0.1:5000/api/profile/experience/${id}`
+//       `/api/profile/experience/${id}`
 //     );
 
 //     dispatch({
@@ -259,7 +251,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // export const deleteAccount = () => async (dispatch) => {
 //   if (window.confirm("Are you sure? This can NOT be undone!")) {
 //     try {
-//       await axios.delete("http://127.0.0.1:5000/api/profile");
+//       await axios.delete("/api/profile");
 
 //       dispatch({ type: CLEAR_PROFILE });
 //       dispatch({ type: ACCOUNT_DELETED });

@@ -25,7 +25,7 @@ export const loadUser = () => async (dispatch) => {
   }
 
   try {
-    const res = await axios.get("http://127.0.0.1:5000/api/login");
+    const res = await axios.get("/api/login");
 
     dispatch({
       type: USER_LOADED,
@@ -50,11 +50,7 @@ export const register = (name, email, password) => async (dispatch) => {
   const body = JSON.stringify({ name, email, password });
 
   try {
-    const res = await axios.post(
-      "http://127.0.0.1:5000/api/signup",
-      body,
-      config
-    );
+    const res = await axios.post("/api/signup", body, config);
 
     setAuthToken(res.data);
 
@@ -92,11 +88,7 @@ export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post(
-      "http://127.0.0.1:5000/api/login",
-      body,
-      config
-    );
+    const res = await axios.post("/api/login", body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,

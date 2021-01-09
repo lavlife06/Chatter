@@ -8,7 +8,7 @@ import { getCurrentProfile } from "./profile";
 // get my rooms
 export const getMyRooms = () => async (dispatch) => {
   try {
-    const res = await axios.get("http://127.0.0.1:5000/api/room/myRooms");
+    const res = await axios.get("/api/room/myRooms");
 
     dispatch({
       type: GET_MYROOMS,
@@ -30,11 +30,7 @@ export const createRoom = (roomName, roomMembers) => async (dispatch) => {
   const body = JSON.stringify({ roomName, roomMembers });
 
   try {
-    const res = await axios.post(
-      "http://127.0.0.1:5000/api/room/createroom",
-      body,
-      config
-    );
+    const res = await axios.post("/api/room/createroom", body, config);
 
     dispatch({
       type: CREATE_ROOM,
@@ -65,7 +61,7 @@ export const createPriChatRoom = (roomName, roomMembers) => async (
 
   try {
     const res = await axios.post(
-      "http://127.0.0.1:5000/api/room/createPrivateChatroom",
+      "/api/room/createPrivateChatroom",
       body,
       config
     );
