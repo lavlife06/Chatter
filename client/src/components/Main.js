@@ -25,7 +25,7 @@ const Main = ({ location }) => {
   };
 
   useEffect(() => {
-    socket = io(`localhost:${process.env.PORT}`, {
+    socket = io(window.location.hostname, {
       // query: {
       //   token: localStorage.getItem("token"),
       // },

@@ -37,7 +37,13 @@ const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log("Listen to Port to 5000");
 });
+
 const io = require("socket.io")(server);
+
+io.configure(function () {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
+});
 // io.use((socket, next) => {
 //   // Verificaitn of ttoken
 //   if (socket.handshake.query && socket.handshake.query.token) {
