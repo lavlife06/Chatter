@@ -36,7 +36,7 @@
 </p>
 
 <h2 align="center"><a  href="https://pacific-crag-66308.herokuapp.com/">Live Demo</a></h2>
-![sample video gif](https://i.imgur.com/ipynGyE.gif)
+![sample video gif](https://imgur.com/MYBT6fY.gif)
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
