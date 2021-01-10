@@ -67,14 +67,16 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-- It's a mini Social Network for Developers, where they can post about different technologies and have disscusion on it. One can get information about what and where developers work and what they are currently doing.
+- This project is a Real-time Chat web-app.
+- One can chat in group conversations and if they want to chat in private, then that is also available.
 
 ### Built With ~~
 
-This is project is built with the latest MERN stack technology, React for frontend, React-Redux for state managment, Express/Node for API, server and MongoDB for database, including json-webtoken for authorization and Bycrypt for encryption and decryption
+This project is built with the latest MERN stack technology, Socket.io for Real-time chat handling, React for frontend, React-Redux for state managment, Express/Node for API, server and MongoDB for database, including json-webtoken for authorization.
 
 - [React](https://reactjs.org/)
 - [React-Redux](https://react-redux.js.org/)
+- [Socket](https://socket.io/)
 - [MongoDB](https://www.mongodb.com/cloud/atlas)
 - [Express](https://expressjs.com/)
 - [json-webtoken](https://jwt.io/)
