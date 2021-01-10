@@ -15,7 +15,6 @@
 -->
 
 <!-- [![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=plastic&logo=linkedin&color=blue)][linkedin-url] -->
-
   <h1 align="center">Chatter</h1>
   <p align="center">
 <img src="https://img.shields.io/badge/Contributions-1-yellow?color=yellow&style=plastic">
@@ -36,7 +35,11 @@
 </p>
 
 <h2 align="center"><a  href="https://pacific-crag-66308.herokuapp.com/">Live Demo</a></h2>
-![sample video gif](https://imgur.com/MYBT6fY.gif)
+
+<p align="center">
+<img src="https://imgur.com/MYBT6fY.gif" width="80%"></p>
+
+
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
