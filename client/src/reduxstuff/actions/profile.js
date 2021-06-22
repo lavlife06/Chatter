@@ -1,140 +1,163 @@
 import axios from "axios";
 
 import {
-  GET_PROFILE,
-  GET_PROFILES,
-  // GET_PROFILES,
-  PROFILE_ERROR,
-  UPDATE_PROFILE,
-  // UPDATE_PROFILE,
-  // CLEAR_PROFILE,
-  // ACCOUNT_DELETED,
-  // GET_REPOS,
-  // NO_REPOS,
+    GET_PROFILE,
+    GET_PROFILES,
+    // GET_PROFILES,
+    PROFILE_ERROR,
+    UPDATE_PROFILE,
+    // UPDATE_PROFILE,
+    // CLEAR_PROFILE,
+    // ACCOUNT_DELETED,
+    // GET_REPOS,
+    // NO_REPOS,
 } from "./types";
 
 // Get current users profile
 export const getCurrentProfile = () => async (dispatch) => {
-  try {
-    const res = await axios.get("/api/profile/me");
+    try {
+        const res = await axios.get("http://localhost:5000/api/profile/me");
 
-    dispatch({
-      type: GET_PROFILE,
-      payload: res.data,
-    });
-  } catch (err) {
-    // console.error(err.response.data.msg);
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data,
+        });
+    } catch (err) {
+        // console.error(err.response.data.msg);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
 };
 
 // Get all profiles
 export const getProfiles = (username) => async (dispatch) => {
-  try {
-    const res = await axios.get(`/api/profile/user/${username}`);
+    try {
+        const res = await axios.get(
+            `http://localhost:5000/api/profile/user/${username}`
+        );
 
-    dispatch({
-      type: GET_PROFILES,
-      payload: res.data,
-    });
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
+        dispatch({
+            type: GET_PROFILES,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
 };
 
 // Create or update profile
 export const createProfile = () => async (dispatch) => {
-  try {
-    // const config = {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // };
+    try {
+        // const config = {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // };
 
-    // const body = JSON.stringify({ name, email });
+        // const body = JSON.stringify({ name, email });
 
-    const res = await axios.post(
-      "/api/profile/me"
-      // body,
-      // config
-    );
+        const res = await axios.post(
+            "http://localhost:5000/api/profile/me"
+            // body,
+            // config
+        );
 
-    dispatch({
-      type: GET_PROFILE,
-      payload: res.data,
-    });
-  } catch (err) {
-    const errors = err.response.data.errors;
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data,
+        });
+    } catch (err) {
+        const errors = err.response.data.errors;
 
-    if (errors) {
-      errors.forEach((error) => {
-        // dispatch(setAlert(error.msg, "danger"));
-        alert(error.msg);
-      });
+        if (errors) {
+            errors.forEach((error) => {
+                // dispatch(setAlert(error.msg, "danger"));
+                alert(error.msg);
+            });
+        }
+
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
     }
-
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
 };
 
 // Create or update profile
 export const updateProfile = (socketId) => async (dispatch) => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
 
-    const body = JSON.stringify({ socketId });
+        const body = JSON.stringify({ socketId });
 
-    const res = await axios.post("/api/profile/me", body, config);
+        const res = await axios.post(
+            "http://localhost:5000/api/profile/me",
+            body,
+            config
+        );
 
-    dispatch({
-      type: UPDATE_PROFILE,
-      payload: res.data,
-    });
-  } catch (err) {
-    const errors = err.response.data.errors;
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data,
+        });
+    } catch (err) {
+        const errors = err.response.data.errors;
 
-    if (errors) {
-      errors.forEach((error) => {
-        // dispatch(setAlert(error.msg, "danger"));
-        alert(error.msg);
-      });
+        if (errors) {
+            errors.forEach((error) => {
+                // dispatch(setAlert(error.msg, "danger"));
+                alert(error.msg);
+            });
+        }
+
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
     }
-
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
 };
 
 // Get profile by ID
 export const getProfileById = (userId) => async (dispatch) => {
-  try {
-    const res = await axios.get(`/api/profile/user/${userId}`);
+    try {
+        const res = await axios.get(
+            `http://localhost:5000/api/profile/user/${userId}`
+        );
 
-    dispatch({
-      type: GET_PROFILE,
-      payload: res.data,
-    });
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
 };
 
 // // Add Experience
@@ -147,7 +170,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 //     };
 
 //     const res = await axios.put(
-//       "/api/profile/experience",
+//       "http://localhost:5000/api/profile/experience",
 //       formData,
 //       config
 //     );
@@ -183,7 +206,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 //       }
 //     };
 
-//     const res = await axios.put('/api/profile/education', formData, config);
+//     const res = await axios.put('http://localhost:5000/api/profile/education', formData, config);
 
 //     dispatch({
 //       type: UPDATE_PROFILE,
@@ -211,7 +234,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // export const deleteExperience = (id) => async (dispatch) => {
 //   try {
 //     const res = await axios.delete(
-//       `/api/profile/experience/${id}`
+//       `http://localhost:5000/api/profile/experience/${id}`
 //     );
 
 //     dispatch({
@@ -231,7 +254,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // // Delete education
 // export const deleteEducation = id => async dispatch => {
 //   try {
-//     const res = await axios.delete(`/api/profile/education/${id}`);
+//     const res = await axios.delete(`http://localhost:5000/api/profile/education/${id}`);
 
 //     dispatch({
 //       type: UPDATE_PROFILE,
@@ -251,7 +274,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // export const deleteAccount = () => async (dispatch) => {
 //   if (window.confirm("Are you sure? This can NOT be undone!")) {
 //     try {
-//       await axios.delete("/api/profile");
+//       await axios.delete("http://localhost:5000/api/profile");
 
 //       dispatch({ type: CLEAR_PROFILE });
 //       dispatch({ type: ACCOUNT_DELETED });
