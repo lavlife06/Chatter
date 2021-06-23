@@ -62,9 +62,6 @@ export const register = (name, email, password) => async (dispatch) => {
             type: REGISTER_SUCCESS,
             payload: res.data,
         });
-
-        // dispatch(loadUser());
-        dispatch(createProfile());
     } catch (err) {
         console.log(err);
         const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array

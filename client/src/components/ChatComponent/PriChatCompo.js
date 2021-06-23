@@ -37,7 +37,7 @@ const PriChatCompo = ({
 
     useEffect(() => {
         console.log(`printing socketId from Frontend:${socket.id}`);
-        dispatch(updateProfile(socket.id));
+        // dispatch(updateProfile(socket.id));
     }, [socket.id]);
 
     useEffect(() => {
@@ -50,16 +50,15 @@ const PriChatCompo = ({
     }, []);
 
     useEffect(() => {
-        socket.on("addNewPriChatRoom", ({ roomName, room }) => {
+        socket.on("addNewPriChatRoom", ({ room }) => {
             setRooms((prevrooms) => [
-                { chatRoom: room, roomname: roomName, unReadMsgLength: 0 },
+                { ...room, unReadMsgLength: 0 },
                 ...prevrooms,
             ]);
 
-            dispatch({ type: CREATE_PRICHATROOM, payload: { room, roomName } });
-            console.log(room);
+            dispatch({ type: CREATE_PRICHATROOM, payload: { room } });
+            console.log("inside on event addNewPriChatRoom", room);
         });
-        console.log("inside on event addNewPriChatRoom");
 
         return () => {
             socket.off("addNewPriChatRoom");
@@ -76,13 +75,7 @@ const PriChatCompo = ({
                     theNewArr.splice(index, 1);
                     theNewArr.splice(0, 0, {
                         ...arritem,
-                        chatRoom: {
-                            ...arritem.chatRoom,
-                            chats: [
-                                ...arritem.chatRoom.chats,
-                                { user, name, text },
-                            ],
-                        },
+                        chats: [...arritem.chats, { user, name, text }],
                         unReadMsgLength: arritem.unReadMsgLength + 1,
                     });
                 }
@@ -102,7 +95,6 @@ const PriChatCompo = ({
     const changePriRoomsStack = (rearrangedRooms) => {
         setRooms([...rearrangedRooms]);
     };
-    console.log(rooms);
     return (
         <Fragment>
             <Modal

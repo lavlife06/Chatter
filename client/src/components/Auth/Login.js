@@ -42,11 +42,12 @@ const Login = () => {
             [e.target.name]: e.target.value,
         });
     };
+
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
         console.log(isAuthenticated, myprofileLoading, myRoomsLoading);
         return <Redirect to="/main" />;
     }
-    console.log(formData);
+    // console.log(formData);
     return (
         <div
             style={{

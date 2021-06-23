@@ -75,7 +75,7 @@ const GrpChatCompo = ({
             console.log(theNewArr);
 
             theNewArr.forEach((arritem, index) => {
-                if (arritem.roomName == room.roomName) {
+                if (arritem.roomName == room) { //room = roomname
                     theNewArr.splice(index, 1);
                     theNewArr.splice(0, 0, {
                         ...arritem,
