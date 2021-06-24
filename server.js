@@ -156,10 +156,12 @@ io.on("connection", (socket) => {
     socket.on(
         "sendPriMessage",
         async ({ user, name, text, roomIds }, callback) => {
-            console.log(roomIds[0].user, roomIds[1].user);
+            console.log(io.sockets.adapter.rooms, "rooms");
+
+            console.log("room0", roomIds[0].roomid, "room1", roomIds[1].roomid);
 
             io.to(roomIds[0].roomid).emit("message", { user, name, text });
-            io.to(roomIds[1].roomid).emit("message", { user, name, text });
+            // io.to(roomIds[1].roomid).emit("message", { user, name, text });
 
             try {
                 let chatRoom0 = await Room.findOne({
