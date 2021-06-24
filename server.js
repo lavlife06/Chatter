@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
     // });
 
     socket.on("joined", ({ name }, callback) => {
+        console.log(io.sockets.adapter.rooms);
         console.log(`my name ${name},${socket.id}`);
     });
 
@@ -297,15 +298,23 @@ io.on("connection", (socket) => {
 
                     if (!index) {
                         memberProfile.myPrivateChatRooms.push({
-                            roomId: room1._id,
                             user: theRoomMembers[1].user,
-                            name: theRoomMembers[1].name,
+                            roomId: room1._id,
+                            roomName: theRoomMembers[1].name,
+                        });
+                        memberProfile.myRooms.push({
+                            roomId: room1._id,
+                            roomName: theRoomMembers[1].name,
                         });
                     } else {
                         memberProfile.myPrivateChatRooms.push({
-                            roomId: room2._id,
                             user: theRoomMembers[0].user,
-                            name: theRoomMembers[0].name,
+                            roomId: room2._id,
+                            roomName: theRoomMembers[0].name,
+                        });
+                        memberProfile.myRooms.push({
+                            roomId: room2._id,
+                            roomName: theRoomMembers[0].name,
                         });
                     }
 
@@ -316,6 +325,8 @@ io.on("connection", (socket) => {
                             "addNewPriChatRoom",
                             {
                                 room: room1,
+                                myprivaterooms:
+                                    memberProfile.myPrivateChatRooms,
                             }
                         );
                     } else {
@@ -323,6 +334,8 @@ io.on("connection", (socket) => {
                             "addNewPriChatRoom",
                             {
                                 room: room2,
+                                myprivaterooms:
+                                    memberProfile.myPrivateChatRooms,
                             }
                         );
                     }

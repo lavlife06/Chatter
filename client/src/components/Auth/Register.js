@@ -44,7 +44,7 @@ const Register = () => {
         });
     };
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
-        console.log(isAuthenticated, myprofileLoading, myRoomsLoading);
+        // console.log(isAuthenticated, myprofileLoading, myRoomsLoading);
         return <Redirect to="/main" />;
     }
 

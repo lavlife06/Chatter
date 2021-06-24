@@ -4,6 +4,7 @@ import {
     GET_PROFILE,
     GET_PROFILES,
     REGISTER_SUCCESS,
+    UPDATE_PRICHATROOMS,
     // GET_PROFILES,
     // PROFILE_ERROR,
     UPDATE_PROFILE,
@@ -33,6 +34,12 @@ const reducers = (state = initialState, action) => {
             return {
                 ...state,
                 myprofile: payload.profile,
+                loading: false,
+            };
+        case UPDATE_PRICHATROOMS:
+            return {
+                ...state,
+                myprofile: { ...state.myprofile, myPrivateChatRooms: payload },
                 loading: false,
             };
         case GET_PROFILES:

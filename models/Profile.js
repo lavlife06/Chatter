@@ -37,6 +37,10 @@ const profileSchema = new Schema({
     ],
     myPrivateChatRooms: [
         {
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
             roomId: {
                 type: Schema.Types.ObjectId,
                 ref: "Room",

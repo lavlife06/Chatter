@@ -27,7 +27,7 @@ const RightSideBarGrpChat = ({
             dispatch({ type: GET_ROOM_BY_ID, payload: room });
         });
         if (myParticularRoom) {
-            if (myParticularRoom.roomName == selectedRoom.roomName) {
+            if (myParticularRoom._id == selectedRoom._id) {
                 setLoading(false);
                 setChats(myParticularRoom.chats);
             }
@@ -40,29 +40,44 @@ const RightSideBarGrpChat = ({
 
     useEffect(() => {
         if (myParticularRoom) {
-            socket.emit(
-                "joinedRoom",
-                {
-                    user,
-                    name,
-                    room: myParticularRoom.roomName,
-                    roomId: myParticularRoom._id,
-                },
-                ({ welcomeMessage }) => {
-                    alert(welcomeMessage);
-                }
-            );
+            if (myParticularRoom.roomtype == "private") {
+                console.log("inside useEffect for joined", myParticularRoom);
+                socket.emit("joinedPriRoom", {
+                    roomIds: myParticularRoom.roomIds,
+                });
+            } else {
+                socket.emit(
+                    "joinedRoom",
+                    {
+                        user,
+                        name,
+                        room: myParticularRoom.roomName,
+                        roomId: myParticularRoom._id,
+                    },
+                    ({ welcomeMessage }) => {
+                        alert(welcomeMessage);
+                    }
+                );
+            }
             console.log("inside useEffect for joined");
         }
         return () => {
             if (myParticularRoom) {
-                socket.emit("leaveRoom", {
-                    user,
-                    name,
-                    room: myParticularRoom._id,
-                });
-                console.log("inside unmount of RightSideBar");
-                socket.off("joinedRoom");
+                if (myParticularRoom.roomtype == "private") {
+                    socket.emit("leavePriRoom", {
+                        roomIds: myParticularRoom.roomIds,
+                    });
+                    console.log("inside unmount of RightSideBarPriChat");
+                    socket.off("joinedPriRoom");
+                } else {
+                    socket.emit("leaveRoom", {
+                        user,
+                        name,
+                        room: myParticularRoom._id,
+                    });
+                    console.log("inside unmount of RightSideBar");
+                    socket.off("joinedRoom");
+                }
             }
         };
     }, [myParticularRoom]);
@@ -70,19 +85,30 @@ const RightSideBarGrpChat = ({
     const sendMessage = (e) => {
         e.preventDefault();
 
-        if (chattext) {
-            socket.emit("sendGrpMessage", {
-                user,
-                name,
-                text: chattext,
-                room: myParticularRoom._id,
-            });
+        if (myParticularRoom.roomtype == "private") {
+            if (chattext) {
+                socket.emit("sendPriMessage", {
+                    user,
+                    name,
+                    text: chattext,
+                    roomIds: myParticularRoom.roomIds,
+                });
+            }
+        } else {
+            if (chattext) {
+                socket.emit("sendGrpMessage", {
+                    user,
+                    name,
+                    text: chattext,
+                    room: myParticularRoom._id,
+                });
+            }
         }
 
         // Changing room stack
         // if (theRooms.length > 1) {
         theRooms.forEach((arritem, index) => {
-            if (arritem.roomName == selectedRoom.roomName) {
+            if (arritem._id == selectedRoom._id) {
                 arritem.chats.push({
                     user: myprofile.user,
                     name: myprofile.name,

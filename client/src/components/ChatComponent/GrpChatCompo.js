@@ -1,19 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RightSideBarGrpChat from "./RightSideBarGrpChat";
 // import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
-import { CLEAR_PROFILES, CREATE_ROOM } from "../../reduxstuff/actions/types";
+import {
+    CLEAR_PROFILES,
+    CREATE_ROOM,
+    UPDATE_PRICHATROOMS,
+} from "../../reduxstuff/actions/types";
 // import { getMyRooms } from "../../reduxstuff/actions/room";
 import "./chat.css";
 import { Modal } from "antd";
 import LeftSideBar from "./LeftSideBar";
 import CreateRoomModal from "./CreateRoomModal";
+import ChatPrivateModal from "./ChatPrivateModal";
 
 const GrpChatCompo = ({
     location,
     socket,
-    isModalVisible,
-    setIsModalVisible,
+    isGroupModalVisible,
+    setIsGroupModalVisible,
+    isPriModalVisible,
+    setIsPriModalVisible,
 }) => {
     const dispatch = useDispatch();
 
@@ -39,18 +47,17 @@ const GrpChatCompo = ({
 
     //  for initialising every room with some more data
     useEffect(() => {
-        console.log(myRooms);
         let theChangedRooms = myRooms.map((theRoom) => {
             return { ...theRoom, unReadMsgLength: 0 };
         });
         setRooms([...theChangedRooms]);
-        console.log("inside setRooms");
+        console.log("inside setRooms", myRooms);
     }, []);
 
     // handling newcreatedGroup
     useEffect(() => {
         socket.on("addNewGrpChatRoom", ({ room }) => {
-            console.log(room);
+            console.log("inside on event addNewGrpChatRoom", room);
             setRooms((prevrooms) => [
                 { ...room, unReadMsgLength: 0 },
                 ...prevrooms,
@@ -58,11 +65,28 @@ const GrpChatCompo = ({
             dispatch({ type: CREATE_ROOM, payload: room });
         });
 
-        console.log("inside on event addNewGrpChatRoom");
-
         return () => {
             socket.off("addNewGrpChatRoom");
             console.log("inside unmount of off.addNewGrpChatRoom");
+        };
+    }, [rooms]);
+
+    // handling newcreatedPriGroup
+    useEffect(() => {
+        socket.on("addNewPriChatRoom", ({ room, myprivaterooms }) => {
+            setRooms((prevrooms) => [
+                { ...room, unReadMsgLength: 0 },
+                ...prevrooms,
+            ]);
+
+            dispatch({ type: CREATE_ROOM, payload: { room } });
+            dispatch({ type: UPDATE_PRICHATROOMS, payload: myprivaterooms });
+            console.log("inside on event addNewPriChatRoom", room);
+        });
+
+        return () => {
+            socket.off("addNewPriChatRoom");
+            console.log("inside unmount of off.addNewPriChatRoom");
         };
     }, [rooms]);
 
@@ -112,7 +136,7 @@ const GrpChatCompo = ({
             <Modal
                 title="CreateGroup"
                 style={{}}
-                visible={isModalVisible}
+                visible={isGroupModalVisible}
                 onOk={() => {
                     socket.emit("createGrpChatRoom", {
                         user: myprofile.user,
@@ -128,7 +152,7 @@ const GrpChatCompo = ({
                         },
                     ]);
                     setRoomName("");
-                    setIsModalVisible(false);
+                    setIsGroupModalVisible(false);
                 }}
                 onCancel={() => {
                     dispatch({ type: CLEAR_PROFILES });
@@ -140,7 +164,7 @@ const GrpChatCompo = ({
                         },
                     ]);
                     setRoomName("");
-                    setIsModalVisible(false);
+                    setIsGroupModalVisible(false);
                 }}
             >
                 {" "}
@@ -153,6 +177,44 @@ const GrpChatCompo = ({
                     myprofile={myprofile}
                     roomMembers={roomMembers}
                     setRoomMembers={setRoomMembers}
+                />{" "}
+            </Modal>
+            <Modal
+                title="Start Private Chat"
+                visible={isPriModalVisible}
+                onOk={() => {
+                    dispatch({ type: CLEAR_PROFILES });
+                    setText("");
+                    setRoomMembers([
+                        {
+                            user: myprofile.user,
+                            name: myprofile.name,
+                        },
+                    ]);
+                    setIsPriModalVisible(false);
+                }}
+                onCancel={() => {
+                    dispatch({ type: CLEAR_PROFILES });
+                    setText("");
+                    setRoomMembers([
+                        {
+                            user: myprofile.user,
+                            name: myprofile.name,
+                        },
+                    ]);
+                    setIsPriModalVisible(false);
+                }}
+            >
+                {" "}
+                <ChatPrivateModal
+                    setText={setText}
+                    text={text}
+                    socket={socket}
+                    myprofile={myprofile}
+                    roomMembers={roomMembers}
+                    setRoomMembers={setRoomMembers}
+                    setSelectedRoom={setSelectedRoom}
+                    setIsPriModalVisible={setIsPriModalVisible}
                 />{" "}
             </Modal>
             <div className="leftsidebardiv">

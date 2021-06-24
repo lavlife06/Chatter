@@ -18,12 +18,8 @@ const Main = ({ location }) => {
     const myprofile = useSelector((state) => state.profile.myprofile);
 
     // const [socket, setSocket] = useState(null);
-    const [showGroupChat, setShowGroupChat] = useState(true);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
+    const [isGroupModalVisible, setIsGroupModalVisible] = useState(false);
+    const [isPriModalVisible, setIsPriModalVisible] = useState(false);
 
     useEffect(() => {
         socket = io("localhost:5000", {
@@ -45,29 +41,15 @@ const Main = ({ location }) => {
                 clearInterval(checker);
             }
         }, 700);
+
+        return () => {
+            console.log(socket);
+            socket.disconnect(true);
+            console.log("inside unmount of Main");
+            socket.off("joined");
+            console.log(socket);
+        };
     }, []);
-
-    // useEffect(() => {
-    //     console.log(myprofileLoading, myRoomsLoading);
-
-    //     console.log(
-    //         "inside mount of Main, socketinstance before",
-    //         socketinstance.connected
-    //     );
-
-    //     console.log(
-    //         "inside mount of Main, socketinstance after",
-    //         socketinstance
-    //     );
-
-    //     return () => {
-    //         console.log(socketinstance);
-    //         socketinstance.disconnect(true);
-    //         console.log("inside unmount of Main");
-    //         socketinstance.off("joined");
-    //         console.log(socketinstance);
-    //     };
-    // }, [socketinstance]);
 
     if (!myRoomsLoading && !myprofileLoading && socket) {
         return (
@@ -90,7 +72,10 @@ const Main = ({ location }) => {
                                 fontSize: "2.5vh",
                             }}
                             icon={<PlusOutlined />}
-                            onClick={showModal}
+                            onClick={() => {
+                                setIsPriModalVisible(false);
+                                setIsGroupModalVisible(true);
+                            }}
                         >
                             Create Room
                         </Button>
@@ -104,66 +89,23 @@ const Main = ({ location }) => {
                                 fontSize: "2.5vh",
                             }}
                             icon={<PlusOutlined />}
-                            onClick={showModal}
+                            onClick={() => {
+                                setIsGroupModalVisible(false);
+                                setIsPriModalVisible(true);
+                            }}
                         >
                             Chat Private
                         </Button>
                     </Fragment>
-
-                    {/* right part of header */}
-                    <div style={{ display: "flex", justifyContent: "row" }}>
-                        <Button
-                            className={
-                                showGroupChat ? "truetablink" : "tablink"
-                            }
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                fontWeight: "800",
-                            }}
-                            onClick={() => {
-                                if (!showGroupChat) {
-                                    dispatch({ type: CLEAR_PARTICULAR_ROOM });
-                                    setShowGroupChat(true);
-                                }
-                            }}
-                        >
-                            GroupChat
-                        </Button>
-                        <Button
-                            className={
-                                showGroupChat ? "tablink" : "truetablink"
-                            }
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                fontWeight: "800",
-                            }}
-                            onClick={() => {
-                                if (showGroupChat) {
-                                    dispatch({ type: CLEAR_PARTICULAR_ROOM });
-                                    setShowGroupChat(false);
-                                }
-                            }}
-                        >
-                            PrivateChat
-                        </Button>
-                    </div>
                 </div>
                 <div className="maindiv2">
-                    {showGroupChat ? (
-                        <GrpChatCompo
-                            socket={socket}
-                            isModalVisible={isModalVisible}
-                            setIsModalVisible={setIsModalVisible}
-                        />
-                    ) : (
-                        <PriChatCompo
-                            socket={socket}
-                            isModalVisible={isModalVisible}
-                            setIsModalVisible={setIsModalVisible}
-                        />
-                    )}
+                    <GrpChatCompo
+                        socket={socket}
+                        isGroupModalVisible={isGroupModalVisible}
+                        setIsGroupModalVisible={setIsGroupModalVisible}
+                        isPriModalVisible={isPriModalVisible}
+                        setIsPriModalVisible={setIsPriModalVisible}
+                    />
                 </div>
             </div>
         );

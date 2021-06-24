@@ -73,7 +73,7 @@ const RightSideBarPriChat = ({
         // Changing room stack
         // if (theRooms.length > 1) {
         theRooms.forEach((arritem, index) => {
-            if (arritem.roomName == selectedRoom.roomName) {
+            if (arritem._id == selectedRoom._id) {
                 arritem.chats.push({
                     user: myprofile.user,
                     name: myprofile.name,
