@@ -71,13 +71,17 @@ const PriChatCompo = ({
             let theNewArr = [...rooms];
             console.log(theNewArr);
             theNewArr.forEach((arritem, index) => {
-                if (arritem.chatRoom._id == room._id) {
-                    theNewArr.splice(index, 1);
-                    theNewArr.splice(0, 0, {
+                console.log(arritem._id, room, "outside if statement");
+                if (arritem._id == room) {
+                    console.log(arritem._id, room, "inside if statement");
+                    let slicedpart1 = theNewArr.splice(index, 1);
+                    let slicedpart2 = theNewArr.splice(0, 0, {
                         ...arritem,
                         chats: [...arritem.chats, { user, name, text }],
                         unReadMsgLength: arritem.unReadMsgLength + 1,
                     });
+                    console.log(slicedpart1, "1", slicedpart2, "2");
+                    console.log(theNewArr, "in if statement");
                 }
             });
 

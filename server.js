@@ -58,15 +58,15 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
     console.log("Hey i am socket.io and it seems that i am connected");
 
-    console.log(io.sockets.adapter.rooms);
+    // console.log(io.sockets.adapter.rooms);
 
-    function getConnectedSockets() {
-        return Object.values(io.of("/").connected);
-    }
+    // function getConnectedSockets() {
+    //     return Object.values(io.of("/").connected);
+    // }
 
-    getConnectedSockets().forEach(function (s) {
-        s.disconnect(true);
-    });
+    // getConnectedSockets().forEach(function (s) {
+    //     s.disconnect(true);
+    // });
 
     socket.on("joined", ({ name }, callback) => {
         console.log(`my name ${name},${socket.id}`);
@@ -112,7 +112,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("joinedPriRoom", ({ roomIds }, callback) => {
-        // console.log(io.sockets.adapter.rooms);
+        console.log(io.sockets.adapter.rooms);
         socket.join(roomIds[0].roomid);
         socket.join(roomIds[1].roomid);
         // console.log("joinroom");
@@ -156,7 +156,7 @@ io.on("connection", (socket) => {
     socket.on(
         "sendPriMessage",
         async ({ user, name, text, roomIds }, callback) => {
-            console.log(roomIds);
+            console.log(roomIds[0].user, roomIds[1].user);
 
             io.to(roomIds[0].roomid).emit("message", { user, name, text });
             io.to(roomIds[1].roomid).emit("message", { user, name, text });
@@ -175,16 +175,23 @@ io.on("connection", (socket) => {
                         let profile = await Profile.findOne({
                             user: member.user,
                         });
-                        console.log(profile.socketId);
-                        console.log(profile.name);
+                        console.log(profile.socketId, profile.name);
+                        let roomid;
                         let roomname;
                         if (user == roomIds[0].user) {
+                            roomid = chatRoom1._id;
                             roomname = chatRoom0.roomName;
                         } else {
+                            roomid = chatRoom0._id;
                             roomname = chatRoom1.roomName;
                         }
+                        console.log(
+                            roomid,
+                            roomname,
+                            "room to which newmessage is emitted"
+                        );
                         io.to(profile.socketId).emit("newMessage", {
-                            room: roomname,
+                            room: roomid,
                             user,
                             name,
                             text,
