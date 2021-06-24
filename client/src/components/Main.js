@@ -92,7 +92,21 @@ const Main = ({ location }) => {
                             icon={<PlusOutlined />}
                             onClick={showModal}
                         >
-                            {showGroupChat ? "Create Room" : "Chat Private"}
+                            Create Room
+                        </Button>
+                        <Button
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                fontWeight: "800",
+                                marginLeft: "1vw",
+                                borderRadius: "15px",
+                                fontSize: "2.5vh",
+                            }}
+                            icon={<PlusOutlined />}
+                            onClick={showModal}
+                        >
+                            Chat Private
                         </Button>
                     </Fragment>
 

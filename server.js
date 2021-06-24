@@ -73,9 +73,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on("leaveRoom", ({ user, name, room }) => {
-        // console.log(io.sockets.adapter.rooms);
-        // console.log(socket.rooms);
-        // console.log("leaveroom");
         socket.broadcast.to(room).emit("message", {
             user,
             name,
@@ -94,11 +91,10 @@ io.on("connection", (socket) => {
         socket.leave(roomIds[1].roomid);
     });
 
-    socket.on("joinedRoom", ({ user, name, room }, callback) => {
+    socket.on("joinedRoom", ({ user, name, room, roomId }, callback) => {
         console.log(io.sockets.adapter.rooms);
         // console.log(socket.rooms);
-        console.log(socket.id);
-        socket.join(room);
+        socket.join(roomId);
         socket.emit("message", {
             user,
             name,
@@ -121,11 +117,11 @@ io.on("connection", (socket) => {
 
     socket.on(
         "sendGrpMessage",
-        async ({ user, name, text, room, roomId }, callback) => {
+        async ({ user, name, text, room }, callback) => {
             io.to(room).emit("message", { user, name, text });
             try {
                 let chatRoom = await Room.findOne({
-                    _id: roomId,
+                    _id: room,
                 });
 
                 chatRoom.roomMembers.forEach(async (member) => {
@@ -134,7 +130,7 @@ io.on("connection", (socket) => {
                             user: member.user,
                         });
                         io.to(profile.socketId).emit("newMessage", {
-                            room: chatRoom.roomName,
+                            room,
                             user,
                             name,
                             text,
@@ -222,6 +218,7 @@ io.on("connection", (socket) => {
                     user,
                     roomName,
                     roomMembers,
+                    roomtype: "group",
                 });
                 await room.save();
 

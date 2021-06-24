@@ -42,7 +42,12 @@ const RightSideBarGrpChat = ({
         if (myParticularRoom) {
             socket.emit(
                 "joinedRoom",
-                { user, name, room: myParticularRoom.roomName },
+                {
+                    user,
+                    name,
+                    room: myParticularRoom.roomName,
+                    roomId: myParticularRoom._id,
+                },
                 ({ welcomeMessage }) => {
                     alert(welcomeMessage);
                 }
@@ -54,7 +59,7 @@ const RightSideBarGrpChat = ({
                 socket.emit("leaveRoom", {
                     user,
                     name,
-                    room: myParticularRoom.roomName,
+                    room: myParticularRoom._id,
                 });
                 console.log("inside unmount of RightSideBar");
                 socket.off("joinedRoom");
@@ -70,8 +75,7 @@ const RightSideBarGrpChat = ({
                 user,
                 name,
                 text: chattext,
-                room: myParticularRoom.roomName,
-                roomId: myParticularRoom._id,
+                room: myParticularRoom._id,
             });
         }
 
