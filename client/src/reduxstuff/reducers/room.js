@@ -10,7 +10,7 @@ import {
 const initialState = {
     myRooms: [],
     myPriChatRooms: [],
-    particularRoom: {},
+    particularRoom: null,
     loading: true,
 };
 
@@ -48,13 +48,13 @@ const reducers = (state = initialState, action) => {
                 ...state,
                 myRooms: [],
                 myPriChatRooms: [],
-                particularRoom: {},
+                particularRoom: null,
                 loading: true,
             };
         case CLEAR_PARTICULAR_ROOM:
             return {
                 ...state,
-                particularRoom: {},
+                particularRoom: null,
                 loading: false,
             };
         default:
