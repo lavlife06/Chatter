@@ -1,40 +1,40 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
-import GrpChatCompo from "./ChatComponent/GrpChatCompo";
-import PriChatCompo from "./ChatComponent/PriChatCompo";
-import { CLEAR_PARTICULAR_ROOM } from "../reduxstuff/actions/types";
 import Spinner from "./Layout/Spinner";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { updateProfile } from "../reduxstuff/actions/profile";
-let socket;
+import RoomStack from "./ChatComponent/roomStack";
+import { SETUP_SOCKET } from "../reduxstuff/actions/types";
 
-const Main = ({ location }) => {
+const Main = () => {
     const dispatch = useDispatch();
 
     const myRoomsLoading = useSelector((state) => state.room.loading);
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const myprofile = useSelector((state) => state.profile.myprofile);
+    const socket = useSelector((state) => state.auth.socket);
 
     // const [socket, setSocket] = useState(null);
     const [isGroupModalVisible, setIsGroupModalVisible] = useState(false);
     const [isPriModalVisible, setIsPriModalVisible] = useState(false);
 
     useEffect(() => {
-        socket = io("localhost:5000", {
+        let socketinstance = io("localhost:5000", {
             // query: {
             //   token: localStorage.getItem("token"),
             // },
         });
         // let mysocketid;
         let checker = setInterval(() => {
-            if (socket.connected) {
-                console.log(socket.id);
+            if (socketinstance.connected) {
+                console.log(socketinstance.id);
 
-                dispatch(updateProfile(socket.id));
+                dispatch(updateProfile(socketinstance.id));
+                dispatch({ type: SETUP_SOCKET, payload: socketinstance });
 
-                socket.emit("joined", {
+                socketinstance.emit("joined", {
                     name: myprofile.name,
                 });
 
@@ -43,11 +43,11 @@ const Main = ({ location }) => {
         }, 700);
 
         return () => {
-            console.log(socket);
-            socket.disconnect(true);
+            console.log(socketinstance);
+            socketinstance.disconnect(true);
             console.log("inside unmount of Main");
-            socket.off("joined");
-            console.log(socket);
+            socketinstance.off("joined");
+            console.log(socketinstance);
         };
     }, []);
 
@@ -99,8 +99,7 @@ const Main = ({ location }) => {
                     </Fragment>
                 </div>
                 <div className="maindiv2">
-                    <GrpChatCompo
-                        socket={socket}
+                    <RoomStack
                         isGroupModalVisible={isGroupModalVisible}
                         setIsGroupModalVisible={setIsGroupModalVisible}
                         isPriModalVisible={isPriModalVisible}

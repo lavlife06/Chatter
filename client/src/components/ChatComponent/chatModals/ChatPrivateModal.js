@@ -1,13 +1,13 @@
-import React, { Fragment, useState } from "react";
-import { Modal, Input, Button } from "antd";
-import { CLEAR_PROFILES } from "../../reduxstuff/actions/types";
-import { getProfiles } from "../../reduxstuff/actions/profile";
+/* eslint-disable eqeqeq */
+import React, { Fragment } from "react";
+import { Input, Button } from "antd";
+import { CLEAR_PROFILES } from "../../../reduxstuff/actions/types";
+import { getProfiles } from "../../../reduxstuff/actions/profile";
 import { useDispatch, useSelector } from "react-redux";
 // import "./chat.css";
 import { PlusOutlined } from "@ant-design/icons";
 
 const ChatPrivateModal = ({
-    socket,
     text,
     setText,
     myprofile,
@@ -19,6 +19,7 @@ const ChatPrivateModal = ({
     const dispatch = useDispatch();
 
     const profiles = useSelector((state) => state.profile.profiles);
+    const socket = useSelector((state) => state.auth.socket);
 
     return (
         <>

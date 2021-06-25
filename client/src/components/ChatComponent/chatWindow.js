@@ -1,34 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 import "./chat.css";
 import { Input } from "antd";
 
-const RightSideBarPriChat = ({
-    selectedRoom,
-    location,
-    socket,
-    //   myprofile,
-    changePriRoomsStack,
-    theRooms,
-}) => {
+const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
     const dispatch = useDispatch();
+
+    const myprofile = useSelector((state) => state.profile.myprofile);
+    const socket = useSelector((state) => state.auth.socket);
+
+    const [loading, setLoading] = useState(true);
     const [chattext, setChatText] = useState("");
     const [chats, setChats] = useState([]);
-    const myprofile = useSelector((state) => state.profile.myprofile);
 
     const { user, name } = myprofile;
-    const [loading, setLoading] = useState(true);
-
     const myParticularRoom = useSelector((state) => state.room.particularRoom);
 
     useEffect(() => {
         socket.on("getRoomById", ({ room }) => {
             dispatch({ type: GET_ROOM_BY_ID, payload: room });
-            console.log(room, "getroombyid");
         });
         if (myParticularRoom) {
-            console.log("inside useEffect for getroombyid", myParticularRoom);
             if (myParticularRoom._id == selectedRoom._id) {
                 setLoading(false);
                 setChats(myParticularRoom.chats);
@@ -42,18 +37,44 @@ const RightSideBarPriChat = ({
 
     useEffect(() => {
         if (myParticularRoom) {
-            console.log("inside useEffect for joined", myParticularRoom);
-            socket.emit("joinedPriRoom", {
-                roomIds: myParticularRoom.roomIds,
-            });
+            if (myParticularRoom.roomtype == "private") {
+                console.log("inside useEffect for joined", myParticularRoom);
+                socket.emit("joinedPriRoom", {
+                    roomIds: myParticularRoom.roomIds,
+                });
+            } else {
+                socket.emit(
+                    "joinedRoom",
+                    {
+                        user,
+                        name,
+                        room: myParticularRoom.roomName,
+                        roomId: myParticularRoom._id,
+                    },
+                    ({ welcomeMessage }) => {
+                        alert(welcomeMessage);
+                    }
+                );
+            }
+            console.log("inside useEffect for joined");
         }
         return () => {
             if (myParticularRoom) {
-                socket.emit("leavePriRoom", {
-                    roomIds: myParticularRoom.roomIds,
-                });
-                console.log("inside unmount of RightSideBarPriChat");
-                socket.off("joinedPriRoom");
+                if (myParticularRoom.roomtype == "private") {
+                    socket.emit("leavePriRoom", {
+                        roomIds: myParticularRoom.roomIds,
+                    });
+                    console.log("inside unmount of RightSideBarPriChat");
+                    socket.off("joinedPriRoom");
+                } else {
+                    socket.emit("leaveRoom", {
+                        user,
+                        name,
+                        room: myParticularRoom._id,
+                    });
+                    console.log("inside unmount of RightSideBar");
+                    socket.off("joinedRoom");
+                }
             }
         };
     }, [myParticularRoom]);
@@ -61,13 +82,24 @@ const RightSideBarPriChat = ({
     const sendMessage = (e) => {
         e.preventDefault();
 
-        if (chattext) {
-            socket.emit("sendPriMessage", {
-                user,
-                name,
-                text: chattext,
-                roomIds: myParticularRoom.roomIds,
-            });
+        if (myParticularRoom.roomtype == "private") {
+            if (chattext) {
+                socket.emit("sendPriMessage", {
+                    user,
+                    name,
+                    text: chattext,
+                    roomIds: myParticularRoom.roomIds,
+                });
+            }
+        } else {
+            if (chattext) {
+                socket.emit("sendGrpMessage", {
+                    user,
+                    name,
+                    text: chattext,
+                    room: myParticularRoom._id,
+                });
+            }
         }
 
         // Changing room stack
@@ -86,7 +118,8 @@ const RightSideBarPriChat = ({
             }
         });
         console.log(theRooms);
-        changePriRoomsStack(theRooms);
+
+        changeRoomsStack(theRooms);
         // }
         setChatText("");
     };
@@ -105,16 +138,14 @@ const RightSideBarPriChat = ({
             socket.on("message", ({ user, name, text }) => {
                 setChats((prevchats) => [...prevchats, { user, name, text }]);
             });
-            theScrollToBottom();
             console.log("inside useEffect for message");
+            theScrollToBottom();
         }
 
         return () => {
             if (myParticularRoom) {
                 socket.off("message");
-                console.log(
-                    "inside unmount of off.message(RightSideBarPriChat)"
-                );
+                console.log("inside unmount of off.message(RightSideBar)");
             }
         };
     }, [chats]);
@@ -122,7 +153,6 @@ const RightSideBarPriChat = ({
     if (loading) {
         return <div>Loading...</div>;
     }
-
     return (
         // <div style={{ padding: "2px" }}>
         <Fragment>
@@ -149,6 +179,7 @@ const RightSideBarPriChat = ({
                 id="chatcontainer"
                 style={{ height: "90%", overflowY: "scroll", padding: "7px" }}
             >
+                {/* <ScrollToBottom className="scrollBottom"> */}
                 {chats.map((item) => (
                     <Fragment>
                         {item.name === name ? (
@@ -197,6 +228,8 @@ const RightSideBarPriChat = ({
                     </Fragment>
                 ))}
             </div>
+            {/* </ScrollToBottom> */}
+
             <div
                 style={{
                     height: "42px",
@@ -252,4 +285,4 @@ const RightSideBarPriChat = ({
     );
 };
 
-export default RightSideBarPriChat;
+export default ChatWindow;

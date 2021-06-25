@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import RightSideBarGrpChat from "./RightSideBarGrpChat";
 // import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
 import {
     CLEAR_PROFILES,
@@ -11,13 +11,13 @@ import {
 // import { getMyRooms } from "../../reduxstuff/actions/room";
 import "./chat.css";
 import { Modal } from "antd";
-import LeftSideBar from "./LeftSideBar";
-import CreateRoomModal from "./CreateRoomModal";
-import ChatPrivateModal from "./ChatPrivateModal";
+import CreateRoomModal from "./chatModals/CreateRoomModal";
+import ChatPrivateModal from "./chatModals/ChatPrivateModal";
+import Rooms from "./rooms";
+import ChatWindow from "./chatWindow";
 
-const GrpChatCompo = ({
+const RoomStack = ({
     location,
-    socket,
     isGroupModalVisible,
     setIsGroupModalVisible,
     isPriModalVisible,
@@ -27,6 +27,7 @@ const GrpChatCompo = ({
 
     const myprofile = useSelector((state) => state.profile.myprofile);
     const myRooms = useSelector((state) => state.room.myRooms);
+    const socket = useSelector((state) => state.auth.socket);
 
     const [text, setText] = useState("");
     const [roomName, setRoomName] = useState("");
@@ -218,21 +219,19 @@ const GrpChatCompo = ({
                 />{" "}
             </Modal>
             <div className="leftsidebardiv">
-                <LeftSideBar
+                <Rooms
                     type={"groupChat"}
                     myprofile={myprofile}
                     rooms={rooms}
-                    socket={socket}
                     setRooms={setRooms}
                     setSelectedRoom={setSelectedRoom}
                 />
             </div>
             <div className="rightsidebardiv">
                 {selectedRoom && (
-                    <RightSideBarGrpChat
+                    <ChatWindow
                         selectedRoom={selectedRoom}
                         location={location}
-                        socket={socket}
                         changeRoomsStack={changeRoomsStack}
                         theRooms={rooms}
                     />
@@ -247,4 +246,4 @@ const GrpChatCompo = ({
     );
 };
 
-export default GrpChatCompo;
+export default RoomStack;

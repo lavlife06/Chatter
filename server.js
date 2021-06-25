@@ -39,23 +39,26 @@ const server = app.listen(PORT, () => {
 });
 
 const io = require("socket.io")(server);
-// io.use((socket, next) => {
-//   // Verificaitn of ttoken
-//   if (socket.handshake.query && socket.handshake.query.token) {
-//     jwt.verify(
-//       socket.handshake.query.token,
-//       keys.jwtSecret,
-//       function (err, decoded) {
-//         if (err) return next(new Error("Authentication error"));
-//         socket.decoded.user = decoded.user;
-//         next();
-//       }
-//     );
-//   } else {
-//     next(new Error("Authentication error"));
-//   }
-// });
-io.on("connection", (socket) => {
+
+io.use((socket, next) => {
+    // Verificaitn of ttoken
+    if (socket.handshake.query && socket.handshake.query.token) {
+        jwt.verify(
+            socket.handshake.query.token,
+            keys.jwtSecret,
+            function (err, decoded) {
+                if (err) return next(new Error("Authentication error"));
+                socket.user = decoded.user;
+                if (decoded.socketid) {
+                    socket.id = decoded.socketid;
+                }
+                next();
+            }
+        );
+    } else {
+        next(new Error("Authentication error"));
+    }
+}).on("connection", (socket) => {
     console.log("Hey i am socket.io and it seems that i am connected");
 
     // console.log(io.sockets.adapter.rooms);

@@ -49,6 +49,7 @@ module.exports = (app) => {
                     email: user.email,
                     tag: user.tag,
                 },
+                socketid: null,
             };
 
             jwt.sign(
