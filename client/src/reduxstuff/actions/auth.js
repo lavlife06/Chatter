@@ -1,8 +1,6 @@
 import {
     REGISTER_FAIL,
     REGISTER_SUCCESS,
-    AUTH_ERROR,
-    USER_LOADED,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
@@ -14,30 +12,6 @@ import {
 import axios from "axios";
 import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
-import { createProfile, getCurrentProfile } from "./profile";
-
-//  Load User
-export const loadUser = () => async (dispatch) => {
-    // set header
-
-    if (localStorage.token) {
-        setAuthToken(localStorage.token);
-    }
-
-    try {
-        const res = await axios.get("http://localhost:5000/api/login");
-
-        dispatch({
-            type: USER_LOADED,
-            payload: res.data,
-        });
-    } catch (err) {
-        console.log("there is an error userdata-loading");
-        dispatch({
-            type: AUTH_ERROR,
-        });
-    }
-};
 
 // Regiseter user
 export const register = (name, email, password) => async (dispatch) => {
@@ -56,7 +30,9 @@ export const register = (name, email, password) => async (dispatch) => {
             config
         );
 
-        setAuthToken(res.data);
+        setAuthToken(res.data.token);
+
+        localStorage.setItem("token", res.data.token);
 
         dispatch({
             type: REGISTER_SUCCESS,
@@ -95,13 +71,14 @@ export const login = (email, password) => async (dispatch) => {
             config
         );
 
+        setAuthToken(res.data.token);
+
+        localStorage.setItem("token", res.data.token);
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,
         });
-
-        // dispatch(loadUser());
-        // dispatch(getCurrentProfile());
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(err);

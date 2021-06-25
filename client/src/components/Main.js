@@ -7,6 +7,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { updateProfile } from "../reduxstuff/actions/profile";
 import RoomStack from "./ChatComponent/roomStack";
 import { SETUP_SOCKET } from "../reduxstuff/actions/types";
+import jwt from "jsonwebtoken";
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -15,39 +16,50 @@ const Main = () => {
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const myprofile = useSelector((state) => state.profile.myprofile);
     const socket = useSelector((state) => state.auth.socket);
+    const token = useSelector((state) => state.auth.token);
 
     // const [socket, setSocket] = useState(null);
     const [isGroupModalVisible, setIsGroupModalVisible] = useState(false);
     const [isPriModalVisible, setIsPriModalVisible] = useState(false);
 
+    console.log(token, "token from main");
+
     useEffect(() => {
-        let socketinstance = io("localhost:5000", {
-            // query: {
-            //   token: localStorage.getItem("token"),
-            // },
-        });
-        // let mysocketid;
-        let checker = setInterval(() => {
-            if (socketinstance.connected) {
-                console.log(socketinstance.id);
+        let socketinstance;
+        if (token) {
+            socketinstance = io("localhost:5000", {
+                query: {
+                    token,
+                },
+            });
+            // let mysocketid;
+            let checker = setInterval(() => {
+                if (socketinstance.connected) {
+                    console.log(socketinstance.id);
+                    if (myprofile.socketId != "") {
+                        socketinstance.id = myprofile.socketId;
+                    } else {
+                        dispatch(updateProfile(socketinstance.id));
+                    }
+                    dispatch({ type: SETUP_SOCKET, payload: socketinstance });
 
-                dispatch(updateProfile(socketinstance.id));
-                dispatch({ type: SETUP_SOCKET, payload: socketinstance });
+                    socketinstance.emit("joined", {
+                        name: myprofile.name,
+                    });
 
-                socketinstance.emit("joined", {
-                    name: myprofile.name,
-                });
-
-                clearInterval(checker);
-            }
-        }, 700);
+                    clearInterval(checker);
+                }
+            }, 700);
+        }
 
         return () => {
-            console.log(socketinstance);
-            socketinstance.disconnect(true);
-            console.log("inside unmount of Main");
-            socketinstance.off("joined");
-            console.log(socketinstance);
+            if (token) {
+                console.log(socketinstance);
+                socketinstance.disconnect(true);
+                console.log("inside unmount of Main");
+                socketinstance.off("joined");
+                console.log(socketinstance);
+            }
         };
     }, []);
 

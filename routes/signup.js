@@ -47,7 +47,6 @@ module.exports = (app) => {
                     id: user._id,
                     name: user.name,
                     email: user.email,
-                    tag: user.tag,
                 },
                 socketid: null,
             };

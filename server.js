@@ -48,6 +48,7 @@ io.use((socket, next) => {
             keys.jwtSecret,
             function (err, decoded) {
                 if (err) return next(new Error("Authentication error"));
+                console.log(decoded, "decoded");
                 socket.user = decoded.user;
                 if (decoded.socketid) {
                     socket.id = decoded.socketid;
