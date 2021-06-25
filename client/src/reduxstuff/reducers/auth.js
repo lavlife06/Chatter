@@ -11,7 +11,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-    token: localStorage.getItem("token"),
+    token: null,
     socket: null,
     isAuthenticated: null,
     loading: true,

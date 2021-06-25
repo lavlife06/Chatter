@@ -14,10 +14,13 @@ import {
 } from "./types";
 
 // Get current users profile
-export const getCurrentProfile = () => async (dispatch) => {
+export const getCurrentProfile = (token) => async (dispatch) => {
     try {
-        const res = await axios.get("http://localhost:5000/api/profile/me");
-
+        const res = await axios.get("http://localhost:5000/api/profile/me", {
+            headers: {
+                "x-auth-token": token,
+            },
+        });
         dispatch({
             type: GET_PROFILE,
             payload: res.data,

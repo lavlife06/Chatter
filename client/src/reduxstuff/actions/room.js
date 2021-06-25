@@ -6,9 +6,13 @@ import { getCurrentProfile } from "./profile";
 // import { createProfile, getCurrentProfile } from "./profile";
 
 // get my rooms
-export const getMyRooms = () => async (dispatch) => {
+export const getMyRooms = (token) => async (dispatch) => {
     try {
-        const res = await axios.get("http://localhost:5000/api/room/myRooms");
+        const res = await axios.get("http://localhost:5000/api/room/myRooms", {
+            headers: {
+                "x-auth-token": token,
+            },
+        });
 
         dispatch({
             type: GET_MYROOMS,

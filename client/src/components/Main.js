@@ -7,7 +7,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import { updateProfile } from "../reduxstuff/actions/profile";
 import RoomStack from "./ChatComponent/roomStack";
 import { SETUP_SOCKET } from "../reduxstuff/actions/types";
-import jwt from "jsonwebtoken";
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -121,6 +120,7 @@ const Main = () => {
             </div>
         );
     } else {
+        console.log("spinner from Main");
         return <Spinner />;
     }
 };

@@ -12,6 +12,8 @@ import {
 import axios from "axios";
 import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
+import { getCurrentProfile } from "./profile";
+import { getMyRooms } from "./room";
 
 // Regiseter user
 export const register = (name, email, password) => async (dispatch) => {
@@ -74,6 +76,9 @@ export const login = (email, password) => async (dispatch) => {
         setAuthToken(res.data.token);
 
         localStorage.setItem("token", res.data.token);
+
+        dispatch(getCurrentProfile(res.data.token));
+        dispatch(getMyRooms(res.data.token));
 
         dispatch({
             type: LOGIN_SUCCESS,
