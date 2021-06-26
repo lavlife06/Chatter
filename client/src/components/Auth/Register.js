@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { register } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../Layout/Spinner";
 import "../Layout/layout.css";
 import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";

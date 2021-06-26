@@ -2,19 +2,18 @@
 /* eslint-disable eqeqeq */
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { getProfiles, updateProfile } from "../../reduxstuff/actions/profile";
 import {
     CLEAR_PROFILES,
     CREATE_ROOM,
     UPDATE_PRICHATROOMS,
 } from "../../reduxstuff/actions/types";
-// import { getMyRooms } from "../../reduxstuff/actions/room";
 import "./chat.css";
 import { Modal } from "antd";
 import CreateRoomModal from "./chatModals/CreateRoomModal";
 import ChatPrivateModal from "./chatModals/ChatPrivateModal";
 import Rooms from "./rooms";
 import ChatWindow from "./chatWindow";
+import Helper from "../helperFunctions/helper";
 
 const RoomStack = ({
     location,
@@ -34,6 +33,8 @@ const RoomStack = ({
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [rooms, setRooms] = useState([]);
 
+    // const [newMessage] = Helper();
+
     const [roomMembers, setRoomMembers] = useState([
         {
             user: myprofile.user,
@@ -43,7 +44,6 @@ const RoomStack = ({
 
     useEffect(() => {
         console.log(`printing socketId from Frontend:${socket.id}`);
-        // dispatch(updateProfile(socket.id));
     }, [socket.id]);
 
     //  for initialising every room with some more data
@@ -52,13 +52,11 @@ const RoomStack = ({
             return { ...theRoom, unReadMsgLength: 0 };
         });
         setRooms([...theChangedRooms]);
-        console.log("inside setRooms", myRooms);
     }, []);
 
     // handling newcreatedGroup
     useEffect(() => {
         socket.on("addNewGrpChatRoom", ({ room }) => {
-            console.log("inside on event addNewGrpChatRoom", room);
             setRooms((prevrooms) => [
                 { ...room, unReadMsgLength: 0 },
                 ...prevrooms,
@@ -82,7 +80,6 @@ const RoomStack = ({
 
             dispatch({ type: CREATE_ROOM, payload: { room } });
             dispatch({ type: UPDATE_PRICHATROOMS, payload: myprivaterooms });
-            console.log("inside on event addNewPriChatRoom", room);
         });
 
         return () => {
@@ -93,33 +90,20 @@ const RoomStack = ({
 
     useEffect(() => {
         socket.on("newMessage", ({ room, user, name, text }) => {
-            console.log(selectedRoom);
-
             let theNewArr = [...rooms];
 
-            console.log(theNewArr);
-
             theNewArr.forEach((arritem, index) => {
-                console.log(arritem._id, room, "outside if statement");
-
                 if (arritem._id == room) {
-                    console.log(arritem._id, room, "inside if statement");
-                    let slicedpart1 = theNewArr.splice(index, 1);
-                    let slicedpart2 = theNewArr.splice(0, 0, {
+                    theNewArr.splice(index, 1);
+                    theNewArr.splice(0, 0, {
                         ...arritem,
                         chats: [...arritem.chats, { user, name, text }],
                         unReadMsgLength: arritem.unReadMsgLength + 1,
                     });
-                    console.log(slicedpart1, "1", slicedpart2, "2");
-                    console.log(theNewArr, "in if statement");
                 }
             });
-
-            console.log(theNewArr);
-
             setRooms([...theNewArr]);
         });
-        console.log("inside on event newMessage");
 
         return () => {
             socket.off("newMessage");
@@ -130,8 +114,7 @@ const RoomStack = ({
     const changeRoomsStack = (rearrangedRooms) => {
         setRooms([...rearrangedRooms]);
     };
-    console.log(rooms);
-    console.log(selectedRoom);
+
     return (
         <Fragment>
             <Modal

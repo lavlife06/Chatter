@@ -38,7 +38,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
     useEffect(() => {
         if (myParticularRoom) {
             if (myParticularRoom.roomtype == "private") {
-                console.log("inside useEffect for joined", myParticularRoom);
                 socket.emit("joinedPriRoom", {
                     roomIds: myParticularRoom.roomIds,
                 });
@@ -56,7 +55,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                     }
                 );
             }
-            console.log("inside useEffect for joined");
         }
         return () => {
             if (myParticularRoom) {
@@ -64,7 +62,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                     socket.emit("leavePriRoom", {
                         roomIds: myParticularRoom.roomIds,
                     });
-                    console.log("inside unmount of RightSideBarPriChat");
                     socket.off("joinedPriRoom");
                 } else {
                     socket.emit("leaveRoom", {
@@ -72,7 +69,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                         name,
                         room: myParticularRoom._id,
                     });
-                    console.log("inside unmount of RightSideBar");
                     socket.off("joinedRoom");
                 }
             }
@@ -103,7 +99,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
         }
 
         // Changing room stack
-        // if (theRooms.length > 1) {
         theRooms.forEach((arritem, index) => {
             if (arritem._id == selectedRoom._id) {
                 arritem.chats.push({
@@ -117,10 +112,8 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                 }
             }
         });
-        console.log(theRooms);
 
         changeRoomsStack(theRooms);
-        // }
         setChatText("");
     };
 
@@ -138,14 +131,12 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
             socket.on("message", ({ user, name, text }) => {
                 setChats((prevchats) => [...prevchats, { user, name, text }]);
             });
-            console.log("inside useEffect for message");
             theScrollToBottom();
         }
 
         return () => {
             if (myParticularRoom) {
                 socket.off("message");
-                console.log("inside unmount of off.message(RightSideBar)");
             }
         };
     }, [chats]);

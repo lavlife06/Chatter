@@ -3,8 +3,7 @@
 import { Menu } from "antd";
 import React, { Fragment } from "react";
 import "./chat.css";
-import { /*useDispatch,*/ useSelector } from "react-redux";
-// import Room from "./room";
+import { useSelector } from "react-redux";
 
 const Rooms = ({ myprofile, rooms, setRooms, setSelectedRoom }) => {
     const socket = useSelector((state) => state.auth.socket);
@@ -153,14 +152,3 @@ const Rooms = ({ myprofile, rooms, setRooms, setSelectedRoom }) => {
 };
 
 export default Rooms;
-// {room.chats[chats.length - 1].name}
-{
-    /* <Room
-                                room={room}
-                                rooms={rooms}
-                                index={index}
-                                socket={socket}
-                                setRooms={setRooms}
-                                setSelectedRoom={setSelectedRoom}
-                            /> */
-}

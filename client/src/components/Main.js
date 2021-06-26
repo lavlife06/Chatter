@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
@@ -17,11 +18,8 @@ const Main = () => {
     const socket = useSelector((state) => state.auth.socket);
     const token = useSelector((state) => state.auth.token);
 
-    // const [socket, setSocket] = useState(null);
     const [isGroupModalVisible, setIsGroupModalVisible] = useState(false);
     const [isPriModalVisible, setIsPriModalVisible] = useState(false);
-
-    console.log(token, "token from main");
 
     useEffect(() => {
         let socketinstance;
@@ -34,7 +32,6 @@ const Main = () => {
             // let mysocketid;
             let checker = setInterval(() => {
                 if (socketinstance.connected) {
-                    console.log(socketinstance.id);
                     if (myprofile.socketId != "") {
                         socketinstance.id = myprofile.socketId;
                     } else {
@@ -53,11 +50,8 @@ const Main = () => {
 
         return () => {
             if (token) {
-                console.log(socketinstance);
                 socketinstance.disconnect(true);
-                console.log("inside unmount of Main");
                 socketinstance.off("joined");
-                console.log(socketinstance);
             }
         };
     }, []);
@@ -120,7 +114,6 @@ const Main = () => {
             </div>
         );
     } else {
-        console.log("spinner from Main");
         return <Spinner />;
     }
 };

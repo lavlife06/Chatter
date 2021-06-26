@@ -31,12 +31,6 @@ const reducers = (state = initialState, action) => {
                 myRooms: [payload, ...state.myRooms],
                 loading: false,
             };
-        case CREATE_PRICHATROOM:
-            return {
-                ...state,
-                myPriChatRooms: [payload, ...state.myPriChatRooms],
-                loading: false,
-            };
         case GET_ROOM_BY_ID:
             return {
                 ...state,

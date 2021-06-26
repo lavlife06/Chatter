@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { login } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +35,6 @@ const Login = () => {
     };
 
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
-        // console.log(isAuthenticated, myprofileLoading, myRoomsLoading);
         return <Redirect to="/main" />;
     }
     // console.log(formData);

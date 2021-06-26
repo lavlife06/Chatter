@@ -1,9 +1,6 @@
 import { CREATE_PRICHATROOM, CREATE_ROOM, GET_MYROOMS } from "./types";
 import axios from "axios";
 import { getCurrentProfile } from "./profile";
-// import { setAlert } from './alert';
-// import setAuthToken from "../utils/setAuthToken";
-// import { createProfile, getCurrentProfile } from "./profile";
 
 // get my rooms
 export const getMyRooms = (token) => async (dispatch) => {
@@ -54,37 +51,3 @@ export const createRoom = (roomName, roomMembers) => async (dispatch) => {
         }
     }
 };
-
-// Create Private Message room
-export const createPriChatRoom =
-    (roomName, roomMembers) => async (dispatch) => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-
-        const body = JSON.stringify({ roomMembers });
-
-        try {
-            const res = await axios.post(
-                "http://localhost:5000/api/room/createPrivateChatroom",
-                body,
-                config
-            );
-
-            dispatch({
-                type: CREATE_PRICHATROOM,
-                payload: { theCreatedRoom: res.data, roomName },
-            });
-            dispatch(getCurrentProfile());
-        } catch (err) {
-            const errors = err.response.data.errors;
-            if (errors) {
-                errors.forEach((error) => {
-                    // dispatch(setAlert(error.msg, "danger"));
-                    alert(error.msg);
-                });
-            }
-        }
-    };
