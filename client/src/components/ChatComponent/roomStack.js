@@ -13,7 +13,7 @@ import CreateRoomModal from "./chatModals/CreateRoomModal";
 import ChatPrivateModal from "./chatModals/ChatPrivateModal";
 import Rooms from "./rooms";
 import ChatWindow from "./chatWindow";
-import Helper from "../helperFunctions/helper";
+// import Helper from "../helperFunctions/helper";
 
 const RoomStack = ({
     location,
@@ -61,7 +61,6 @@ const RoomStack = ({
                 { ...room, unReadMsgLength: 0 },
                 ...prevrooms,
             ]);
-            dispatch({ type: CREATE_ROOM, payload: room });
         });
 
         return () => {
@@ -78,7 +77,6 @@ const RoomStack = ({
                 ...prevrooms,
             ]);
 
-            dispatch({ type: CREATE_ROOM, payload: { room } });
             dispatch({ type: UPDATE_PRICHATROOMS, payload: myprivaterooms });
         });
 

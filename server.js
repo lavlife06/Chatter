@@ -7,6 +7,10 @@ const connectDB = require("./config/db");
 const User = require("./models/User");
 const Room = require("./models/Room");
 const Profile = require("./models/Profile");
+const {
+    sendPrivateMessage,
+    createPrivateChatroom,
+} = require("./helperFunctions/privateChat");
 const app = express();
 
 // Implementing cors
@@ -129,7 +133,13 @@ io.use((socket, next) => {
                     _id: room,
                 });
 
-                chatRoom.roomMembers.forEach(async (member) => {
+                for (
+                    let index = 0;
+                    index < chatRoom.roomMembers.length;
+                    index++
+                ) {
+                    const member = chatRoom.roomMembers[index];
+
                     if (user != member.user) {
                         let profile = await Profile.findOne({
                             user: member.user,
@@ -143,7 +153,7 @@ io.use((socket, next) => {
                         console.log(profile.socketId);
                         console.log(profile.name);
                     }
-                });
+                }
 
                 chatRoom.chats.push({ user, name, text });
 
@@ -157,59 +167,19 @@ io.use((socket, next) => {
     socket.on(
         "sendPriMessage",
         async ({ user, name, text, roomIds }, callback) => {
-            console.log(io.sockets.adapter.rooms, "rooms");
-
-            console.log("room0", roomIds[0].roomid, "room1", roomIds[1].roomid);
-
+            // console.log(io.sockets.adapter.rooms, "rooms");
+            // console.log("room0", roomIds[0].roomid, "room1", roomIds[1].roomid);
             io.to(roomIds[0].roomid).emit("message", { user, name, text });
             // io.to(roomIds[1].roomid).emit("message", { user, name, text });
 
-            try {
-                let chatRoom0 = await Room.findOne({
-                    _id: roomIds[0].roomid,
-                });
+            let res = await sendPrivateMessage(roomIds, user, name, text);
 
-                let chatRoom1 = await Room.findOne({
-                    _id: roomIds[1].roomid,
-                });
-
-                chatRoom0.roomMembers.forEach(async (member) => {
-                    if (user != member.user) {
-                        let profile = await Profile.findOne({
-                            user: member.user,
-                        });
-                        console.log(profile.socketId, profile.name);
-                        let roomid;
-                        let roomname;
-                        if (user == roomIds[0].user) {
-                            roomid = chatRoom1._id;
-                            roomname = chatRoom0.roomName;
-                        } else {
-                            roomid = chatRoom0._id;
-                            roomname = chatRoom1.roomName;
-                        }
-                        console.log(
-                            roomid,
-                            roomname,
-                            "room to which newmessage is emitted"
-                        );
-                        io.to(profile.socketId).emit("newMessage", {
-                            room: roomid,
-                            user,
-                            name,
-                            text,
-                        });
-                    }
-                });
-
-                chatRoom0.chats.push({ user, name, text });
-                chatRoom1.chats.push({ user, name, text });
-
-                await chatRoom0.save();
-                await chatRoom1.save();
-            } catch (error) {
-                callback(error);
-            }
+            io.to(res.recieverSocketId).emit("newMessage", {
+                room: res.roomid,
+                user,
+                name,
+                text,
+            });
         }
     );
 
@@ -227,7 +197,9 @@ io.use((socket, next) => {
                 });
                 await room.save();
 
-                roomMembers.forEach(async (memberDetail) => {
+                for (let index = 0; index < roomMembers.length; index++) {
+                    const memberDetail = roomMembers[index];
+
                     let roomId = room._id;
                     try {
                         let memberProfile = await Profile.findOne({
@@ -250,7 +222,7 @@ io.use((socket, next) => {
                         // callback(err);
                         console.error(err.message);
                     }
-                });
+                }
             } catch (err) {
                 // callback(err);
                 console.error(err.message);
@@ -263,98 +235,19 @@ io.use((socket, next) => {
 
         //  Creating Room
         console.log(roomMembers);
-        try {
-            let room1 = new Room({
-                roomtype: "private",
-                user: roomMembers[0].user,
-                roomName: roomMembers[1].name,
-                roomMembers,
-            });
 
-            let room2 = new Room({
-                roomtype: "private",
-                user: roomMembers[1].user,
-                roomName: roomMembers[0].name,
-                roomMembers,
-            });
+        let usersInfo = await createPrivateChatroom(roomMembers);
 
-            await room1.save();
-            await room2.save();
+        const { user1, user2 } = usersInfo;
 
-            let roomIds = [
-                { roomid: room1._id, user: room1.user },
-                { roomid: room2._id, user: room2.user },
-            ];
-
-            room1.roomIds = roomIds;
-            room2.roomIds = roomIds;
-
-            await room1.save();
-            await room2.save();
-
-            let theRoomMembers = [...roomMembers];
-
-            roomMembers.forEach(async (memberDetail, index) => {
-                try {
-                    let memberProfile = await Profile.findOne({
-                        user: memberDetail.user,
-                    });
-
-                    if (!index) {
-                        memberProfile.myPrivateChatRooms.push({
-                            user: theRoomMembers[1].user,
-                            roomId: room1._id,
-                            roomName: theRoomMembers[1].name,
-                        });
-                        memberProfile.myRooms.push({
-                            roomId: room1._id,
-                            roomName: theRoomMembers[1].name,
-                        });
-                    } else {
-                        memberProfile.myPrivateChatRooms.push({
-                            user: theRoomMembers[0].user,
-                            roomId: room2._id,
-                            roomName: theRoomMembers[0].name,
-                        });
-                        memberProfile.myRooms.push({
-                            roomId: room2._id,
-                            roomName: theRoomMembers[0].name,
-                        });
-                    }
-
-                    await memberProfile.save();
-
-                    if (!index) {
-                        io.to(memberProfile.socketId).emit(
-                            "addNewPriChatRoom",
-                            {
-                                room: room1,
-                                myprivaterooms:
-                                    memberProfile.myPrivateChatRooms,
-                            }
-                        );
-                    } else {
-                        io.to(memberProfile.socketId).emit(
-                            "addNewPriChatRoom",
-                            {
-                                room: room2,
-                                myprivaterooms:
-                                    memberProfile.myPrivateChatRooms,
-                            }
-                        );
-                    }
-
-                    console.log(
-                        `event createdPriChatRoom emmited to ${memberProfile.name}`
-                    );
-                    console.log(memberProfile.socketId);
-                } catch (err) {
-                    console.error(err.message);
-                }
-            });
-        } catch (err) {
-            console.error(err.message);
-        }
+        io.to(user1.userSocketid).emit("addNewPriChatRoom", {
+            room: user1.userRoom,
+            myprivaterooms: user1.userPrivateChatRooms,
+        });
+        io.to(user2.userSocketid).emit("addNewPriChatRoom", {
+            room: user2.userRoom,
+            myprivaterooms: user2.userPrivateChatRooms,
+        });
     });
 
     socket.on("getRoomById", async ({ roomId }, callback) => {

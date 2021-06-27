@@ -6,16 +6,6 @@ const User = require("../models/User");
 const Profile = require("../models/Profile");
 
 module.exports = (app) => {
-    app.get("/api/login", async (req, res) => {
-        try {
-            const user = await User.findById(req.user.id).select("-password");
-            res.json(user);
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send("Server Error");
-        }
-    });
-
     app.post("/api/login", async (req, res) => {
         let { email, password } = req.body;
         console.log(req.body);
