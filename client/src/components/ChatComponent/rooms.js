@@ -1,12 +1,42 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-lone-blocks */
-import { Menu } from "antd";
 import React, { Fragment } from "react";
 import "./chat.css";
 import { useSelector } from "react-redux";
+import { Menu, Dropdown } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
-const Rooms = ({ myprofile, rooms, setRooms, setSelectedRoom }) => {
+const Rooms = ({
+    myprofile,
+    rooms,
+    setRooms,
+    setSelectedRoom,
+    setIsPriModalVisible,
+    setIsGroupModalVisible,
+}) => {
     const socket = useSelector((state) => state.auth.socket);
+    const menu = (
+        <Menu>
+            <Menu.Item
+                key="1"
+                onClick={() => {
+                    setIsPriModalVisible(false);
+                    setIsGroupModalVisible(true);
+                }}
+            >
+                <strong>Create Room</strong>
+            </Menu.Item>
+            <Menu.Item
+                key="1"
+                onClick={() => {
+                    setIsGroupModalVisible(false);
+                    setIsPriModalVisible(true);
+                }}
+            >
+                <strong>Chat Private</strong>
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <Fragment>
@@ -30,6 +60,9 @@ const Rooms = ({ myprofile, rooms, setRooms, setSelectedRoom }) => {
                 >
                     {myprofile.name}
                 </strong>
+                <Dropdown overlay={menu} trigger={["click"]}>
+                    <DownOutlined />
+                </Dropdown>
             </div>
             <Menu
                 style={{

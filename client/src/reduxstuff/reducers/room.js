@@ -3,7 +3,6 @@ import {
     GET_MYROOMS,
     GET_ROOM_BY_ID,
     CLEAR_ROOMS,
-    CREATE_PRICHATROOM,
     CLEAR_PARTICULAR_ROOM,
 } from "../actions/types";
 

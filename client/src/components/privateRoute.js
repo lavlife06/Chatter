@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import { useSelector } from "react-redux";
-import Spinner from "./Layout/Spinner";
+// import Spinner from "./Layout/Spinner";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const myRoomsLoading = useSelector((state) => state.room.loading);

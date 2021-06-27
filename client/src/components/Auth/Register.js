@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { register } from "../../reduxstuff/actions/auth";
@@ -22,6 +23,8 @@ const Register = () => {
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const myRoomsLoading = useSelector((state) => state.room.loading);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         if (isAuthenticated) {
             if (!myprofileLoading) {
@@ -30,9 +33,16 @@ const Register = () => {
         }
     }, [isAuthenticated, myprofileLoading]);
 
+    useEffect(() => {
+        if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
+            setLoading(false);
+        }
+    }, [isAuthenticated, myprofileLoading, myRoomsLoading]);
+
     const handleSubmit = () => {
         // e.preventDefault();
         dispatch(register(formData.name, formData.email, formData.password));
+        setLoading(true);
         return false;
     };
 
@@ -64,7 +74,7 @@ const Register = () => {
                 <img
                     src={loginImage}
                     style={{ width: "100%", height: "100%" }}
-                    alt="login image"
+                    alt="login pic"
                 />
             </div>
             <div
@@ -173,6 +183,7 @@ const Register = () => {
                             type="primary"
                             htmlType="submit"
                             className="login-form-button"
+                            loading={loading}
                             style={{ width: "100%" }}
                             onSubmit={handleSubmit}
                         >

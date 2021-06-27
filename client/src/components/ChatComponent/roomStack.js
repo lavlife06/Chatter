@@ -4,7 +4,6 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     CLEAR_PROFILES,
-    CREATE_ROOM,
     UPDATE_PRICHATROOMS,
 } from "../../reduxstuff/actions/types";
 import "./chat.css";
@@ -15,13 +14,7 @@ import Rooms from "./rooms";
 import ChatWindow from "./chatWindow";
 // import Helper from "../helperFunctions/helper";
 
-const RoomStack = ({
-    location,
-    isGroupModalVisible,
-    setIsGroupModalVisible,
-    isPriModalVisible,
-    setIsPriModalVisible,
-}) => {
+const RoomStack = () => {
     const dispatch = useDispatch();
 
     const myprofile = useSelector((state) => state.profile.myprofile);
@@ -32,6 +25,9 @@ const RoomStack = ({
     const [roomName, setRoomName] = useState("");
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [rooms, setRooms] = useState([]);
+
+    const [isGroupModalVisible, setIsGroupModalVisible] = useState(false);
+    const [isPriModalVisible, setIsPriModalVisible] = useState(false);
 
     // const [newMessage] = Helper();
 
@@ -206,13 +202,14 @@ const RoomStack = ({
                     rooms={rooms}
                     setRooms={setRooms}
                     setSelectedRoom={setSelectedRoom}
+                    setIsGroupModalVisible={setIsGroupModalVisible}
+                    setIsPriModalVisible={setIsPriModalVisible}
                 />
             </div>
             <div className="rightsidebardiv">
                 {selectedRoom && (
                     <ChatWindow
                         selectedRoom={selectedRoom}
-                        location={location}
                         changeRoomsStack={changeRoomsStack}
                         theRooms={rooms}
                     />

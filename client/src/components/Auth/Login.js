@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { login } from "../../reduxstuff/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,10 +20,11 @@ const Login = () => {
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const myRoomsLoading = useSelector((state) => state.room.loading);
 
-    const handleSubmit = () => {
-        // e.preventDefault();
+    const [loading, setLoading] = useState(false);
 
+    const handleSubmit = () => {
         dispatch(login(formData.email, formData.password));
+        setLoading(true);
         return false;
     };
 
@@ -33,6 +34,12 @@ const Login = () => {
             [e.target.name]: e.target.value,
         });
     };
+
+    useEffect(() => {
+        if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
+            setLoading(false);
+        }
+    }, [isAuthenticated, myprofileLoading, myRoomsLoading]);
 
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
         return <Redirect to="/main" />;
@@ -44,7 +51,6 @@ const Login = () => {
                 marginRight: "20%",
                 marginLeft: "20%",
                 borderRadius: "5px",
-                backgroundColor: "#f2f2f2",
                 padding: "20px",
                 display: "flex",
                 flexDirection: "row",
@@ -56,7 +62,7 @@ const Login = () => {
                 <img
                     src={loginImage}
                     style={{ width: "100%", height: "100%" }}
-                    alt="login image"
+                    alt="login pic"
                 />
             </div>
             <div
@@ -145,6 +151,7 @@ const Login = () => {
                             type="primary"
                             htmlType="submit"
                             className="login-form-button"
+                            loading={loading}
                             style={{ width: "100%" }}
                             onSubmit={handleSubmit}
                         >
