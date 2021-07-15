@@ -36,6 +36,8 @@ export const register = (name, email, password) => async (dispatch) => {
 
         localStorage.setItem("token", res.data.token);
 
+        dispatch(getMyRooms(res.data.token));
+
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data,

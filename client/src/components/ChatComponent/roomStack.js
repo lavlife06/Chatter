@@ -206,20 +206,42 @@ const RoomStack = () => {
                     setIsPriModalVisible={setIsPriModalVisible}
                 />
             </div>
-            <div className="rightsidebardiv">
-                {selectedRoom && (
+            {selectedRoom ? (
+                <div className="rightsidebardiv">
                     <ChatWindow
                         selectedRoom={selectedRoom}
                         changeRoomsStack={changeRoomsStack}
                         theRooms={rooms}
                     />
-                )}
-                {!selectedRoom && (
+                </div>
+            ) : (
+                <div
+                    className="rightsidebardiv"
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                    <div>
+                        <i
+                            onClick={(e) => {
+                                setIsGroupModalVisible(true);
+                            }}
+                            className="far fa-paper-plane"
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                color: "black",
+                                fontSize: "35px",
+                                fontWeight: "bold",
+                                paddingBottom: "1px",
+                                cursor: "pointer",
+                            }}
+                        />
+                    </div>
                     <h1 style={{ marginLeft: "5px", color: "black" }}>
-                        Hey Join any room and start chatting
+                        Enjoy joining or creating group or chat private
                     </h1>
-                )}
-            </div>
+                </div>
+            )}
         </Fragment>
     );
 };

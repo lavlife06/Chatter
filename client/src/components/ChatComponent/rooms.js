@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 import "./chat.css";
 import { useSelector } from "react-redux";
 import { Menu, Dropdown } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { BarsOutlined, MoreOutlined } from "@ant-design/icons";
 
 const Rooms = ({
     myprofile,
@@ -41,27 +41,29 @@ const Rooms = ({
     return (
         <Fragment>
             <div className="myinfodiv">
-                <i
-                    className="far fa-user usersIcon"
-                    style={{
-                        color: "aquamarine",
-                        fontSize: "25px",
-                        borderColor: "aquamarine",
-                        padding: "5px 7px",
-                        marginRight: "15px",
-                    }}
-                />
-                <strong
-                    style={{
-                        color: "white",
-                        fontSize: "25px",
-                        marginBottom: "5px",
-                    }}
-                >
-                    {myprofile.name}
-                </strong>
+                <div>
+                    <i
+                        className="far fa-user usersIcon"
+                        style={{
+                            color: "aquamarine",
+                            fontSize: "25px",
+                            borderColor: "aquamarine",
+                            padding: "5px 7px",
+                            marginRight: "15px",
+                        }}
+                    />
+                    <strong
+                        style={{
+                            color: "white",
+                            fontSize: "25px",
+                            marginBottom: "5px",
+                        }}
+                    >
+                        {myprofile.name}
+                    </strong>
+                </div>
                 <Dropdown overlay={menu} trigger={["click"]}>
-                    <DownOutlined />
+                    <MoreOutlined style={{ fontSize: "30px" }} />
                 </Dropdown>
             </div>
             <Menu

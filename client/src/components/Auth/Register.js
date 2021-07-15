@@ -8,7 +8,6 @@ import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import loginImage from "./loginImage.jpg";
-import { getMyRooms } from "../../reduxstuff/actions/room";
 
 const Register = () => {
     const [formData, setformData] = useState({
@@ -24,14 +23,6 @@ const Register = () => {
     const myRoomsLoading = useSelector((state) => state.room.loading);
 
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            if (!myprofileLoading) {
-                dispatch(getMyRooms());
-            }
-        }
-    }, [isAuthenticated, myprofileLoading]);
 
     useEffect(() => {
         if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
