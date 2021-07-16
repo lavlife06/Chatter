@@ -81,47 +81,22 @@ io.use((socket, next) => {
         console.log(`my name ${name},${socket.id}`);
     });
 
-    socket.on("leaveRoom", ({ user, name, room }) => {
-        socket.broadcast.to(room).emit("message", {
-            user,
-            name,
-            text: `${name} has left the room!`,
-        });
-
+    socket.on("leaveRoom", ({ room }) => {
         socket.leave(room);
     });
 
     socket.on("leavePriRoom", ({ roomIds }) => {
-        // console.log(io.sockets.adapter.rooms);
-        // // console.log(socket.rooms);
-        // console.log("leaveroom");
-
         socket.leave(roomIds[0].roomid);
         socket.leave(roomIds[1].roomid);
     });
 
-    socket.on("joinedRoom", ({ user, name, room, roomId }, callback) => {
-        console.log(io.sockets.adapter.rooms);
-        // console.log(socket.rooms);
+    socket.on("joinedRoom", ({ roomId }, callback) => {
         socket.join(roomId);
-        socket.emit("message", {
-            user,
-            name,
-            text: `${name}, welcome to room ${room}.`,
-        });
-
-        socket.broadcast
-            .to(room)
-            .emit("message", { user, name, text: `${name} has joined!` });
-        // console.log("joinroom");
     });
 
     socket.on("joinedPriRoom", ({ roomIds }, callback) => {
-        console.log(io.sockets.adapter.rooms);
         socket.join(roomIds[0].roomid);
         socket.join(roomIds[1].roomid);
-        // console.log("joinroom");
-        // user.push(socketId);
     });
 
     socket.on(
@@ -150,8 +125,8 @@ io.use((socket, next) => {
                             name,
                             text,
                         });
-                        console.log(profile.socketId);
-                        console.log(profile.name);
+                        // console.log(profile.socketId);
+                        // console.log(profile.name);
                     }
                 }
 
@@ -167,10 +142,7 @@ io.use((socket, next) => {
     socket.on(
         "sendPriMessage",
         async ({ user, name, text, roomIds }, callback) => {
-            // console.log(io.sockets.adapter.rooms, "rooms");
-            // console.log("room0", roomIds[0].roomid, "room1", roomIds[1].roomid);
             io.to(roomIds[0].roomid).emit("message", { user, name, text });
-            // io.to(roomIds[1].roomid).emit("message", { user, name, text });
 
             let res = await sendPrivateMessage(roomIds, user, name, text);
 
