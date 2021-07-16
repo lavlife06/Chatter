@@ -109,6 +109,31 @@ const RoomStack = () => {
         setRooms([...rearrangedRooms]);
     };
 
+    const groupChatModalHandler = () => {
+        dispatch({ type: CLEAR_PROFILES });
+        setText("");
+        setRoomMembers([
+            {
+                user: myprofile.user,
+                name: myprofile.name,
+            },
+        ]);
+        setRoomName("");
+        setIsGroupModalVisible(false);
+    };
+
+    const privateChatModalHandler = (params) => {
+        dispatch({ type: CLEAR_PROFILES });
+        setText("");
+        setRoomMembers([
+            {
+                user: myprofile.user,
+                name: myprofile.name,
+            },
+        ]);
+        setIsPriModalVisible(false);
+    };
+
     return (
         <Fragment>
             <Modal
@@ -121,28 +146,10 @@ const RoomStack = () => {
                         roomName,
                         roomMembers,
                     });
-                    dispatch({ type: CLEAR_PROFILES });
-                    setText("");
-                    setRoomMembers([
-                        {
-                            user: myprofile.user,
-                            name: myprofile.name,
-                        },
-                    ]);
-                    setRoomName("");
-                    setIsGroupModalVisible(false);
+                    groupChatModalHandler();
                 }}
                 onCancel={() => {
-                    dispatch({ type: CLEAR_PROFILES });
-                    setText("");
-                    setRoomMembers([
-                        {
-                            user: myprofile.user,
-                            name: myprofile.name,
-                        },
-                    ]);
-                    setRoomName("");
-                    setIsGroupModalVisible(false);
+                    groupChatModalHandler();
                 }}
             >
                 {" "}
@@ -160,28 +167,8 @@ const RoomStack = () => {
             <Modal
                 title="Start Private Chat"
                 visible={isPriModalVisible}
-                onOk={() => {
-                    dispatch({ type: CLEAR_PROFILES });
-                    setText("");
-                    setRoomMembers([
-                        {
-                            user: myprofile.user,
-                            name: myprofile.name,
-                        },
-                    ]);
-                    setIsPriModalVisible(false);
-                }}
-                onCancel={() => {
-                    dispatch({ type: CLEAR_PROFILES });
-                    setText("");
-                    setRoomMembers([
-                        {
-                            user: myprofile.user,
-                            name: myprofile.name,
-                        },
-                    ]);
-                    setIsPriModalVisible(false);
-                }}
+                onOk={privateChatModalHandler}
+                onCancel={privateChatModalHandler}
             >
                 {" "}
                 <ChatPrivateModal
@@ -237,7 +224,14 @@ const RoomStack = () => {
                             }}
                         />
                     </div>
-                    <h1 style={{ marginLeft: "5px", color: "black" }}>
+                    <h1
+                        style={{
+                            marginLeft: "5px",
+                            color: "black",
+                            fontWeight: "300",
+                            marginTop: "20px",
+                        }}
+                    >
                         Enjoy joining or creating group or chat private
                     </h1>
                 </div>

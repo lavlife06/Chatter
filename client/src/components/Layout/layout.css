@@ -1,35 +1,88 @@
 .navbardiv {
-  display: flex;
-  flex-direction: row;
-  padding-right: 10px;
-  padding-left: 10px;
-  background-color: #001529;
-  line-height: 7vh;
-  margin-bottom: 10px;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: #274472;
+    line-height: 7vh;
+    margin-bottom: 10px;
+    align-items: center;
 }
 .login {
-  background-color: #a9fd00;
-  border-radius: 15px;
-  height: 5vh;
-  padding-left: 8px;
-  padding-right: 8px;
-  font-size: 20px;
+    background-color: white;
+    color: rgb(24, 144, 255);
+    border-radius: 15px;
+    height: 5vh;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 20px;
+    font-weight: 400;
 }
 .register {
-  background-color: #3ff5df;
-  border-radius: 15px;
-  height: 5vh;
-  padding-left: 8px;
-  padding-right: 8px;
-  font-size: 20px;
+    background-color: rgb(24, 144, 255);
+    color: white;
+    border-radius: 15px;
+    height: 5vh;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 20px;
+    font-weight: 400;
 }
 .appname {
-  flex: 5;
-  font-size: 30px;
-  font-weight: 700;
-  margin: 7px 15px;
-  background: -webkit-linear-gradient(#29e5fa, #0fff66);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    flex: 5 1;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 7px 15px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-color: white;
+}
+.auth {
+    display: flex;
+    margin-top: 8vh;
+    margin-right: 20%;
+    margin-left: 20%;
+    border-radius: 12px;
+    padding: 20px;
+    padding-bottom: 8px;
+    flex-direction: row;
+    font-size: 4vh;
+    min-height: 45vh;
+    /* max-height: vh; */
+    box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px,
+        rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px,
+        rgb(0 0 0 / 9%) 0px -3px 5px;
+    background-color: white;
+}
+.dataloading {
+    position: absolute;
+    left: 45%;
+    top: 30%;
+    z-index: 1;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 50px;
+    height: 50px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+.roomloading {
+    margin-top: 28%;
+    margin-left: 47%;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 50px;
+    height: 50px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

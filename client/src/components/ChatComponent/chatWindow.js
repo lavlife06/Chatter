@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 import "./chat.css";
 import { Input } from "antd";
+import Spinner from "../Layout/Spinner";
 
 const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
     const dispatch = useDispatch();
@@ -45,9 +46,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                 socket.emit(
                     "joinedRoom",
                     {
-                        user,
-                        name,
-                        room: myParticularRoom.roomName,
                         roomId: myParticularRoom._id,
                     },
                     ({ welcomeMessage }) => {
@@ -65,8 +63,6 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                     socket.off("joinedPriRoom");
                 } else {
                     socket.emit("leaveRoom", {
-                        user,
-                        name,
                         room: myParticularRoom._id,
                     });
                     socket.off("joinedRoom");
@@ -142,23 +138,26 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
     }, [chats]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Spinner type={"roomloading"} />;
     }
     return (
         // <div style={{ padding: "2px" }}>
         <Fragment>
             <div className="groupinfodiv">
-                <i
-                    className="fas fa-users usersIcon"
-                    style={{
-                        fontSize: "20px",
-                        borderColor: "aquamarine",
-                        padding: "7px 5px",
-                    }}
-                />
+                {myParticularRoom.roomtype === "group" ? (
+                    <i className="fas fa-users roomicon" />
+                ) : (
+                    <i
+                        className="far fa-user myprofileicon"
+                        style={{
+                            padding: "7px 10px",
+                        }}
+                    />
+                )}
+                {/* <i className="fas fa-users groupicon" /> */}
                 <strong
                     style={{
-                        color: "aquamarine",
+                        color: "black",
                         fontSize: "25px",
                         marginBottom: "6px",
                     }}
@@ -166,11 +165,7 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                     {myParticularRoom.roomName}
                 </strong>
             </div>
-            <div
-                id="chatcontainer"
-                style={{ height: "90%", overflowY: "scroll", padding: "7px" }}
-            >
-                {/* <ScrollToBottom className="scrollBottom"> */}
+            <div id="chatcontainer">
                 {chats.map((item) => (
                     <Fragment>
                         {item.name === name ? (
@@ -187,6 +182,8 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                                         borderTopRightRadius: "initial",
                                         fontSize: "17px",
                                         padding: "5px 10px",
+                                        fontWeight: "400",
+                                        color: "black",
                                     }}
                                 >
                                     {" "}
@@ -201,33 +198,52 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                                     marginBottom: "0.8vh",
                                 }}
                             >
-                                <strong
-                                    className="chatblockdiv"
-                                    style={{
-                                        borderTopLeftRadius: "initial",
-                                        fontSize: "17px",
-                                        padding: "5px 10px",
-                                    }}
-                                >
-                                    <div style={{ color: "yellow" }}>
-                                        {item.name}
-                                    </div>
-                                    {item.text}
-                                </strong>
+                                {myParticularRoom.roomtype === "group" ? (
+                                    <strong
+                                        className="chatblockdiv"
+                                        style={{
+                                            borderTopLeftRadius: "initial",
+                                            fontSize: "17px",
+                                            padding: "5px 10px",
+                                            fontWeight: "400",
+                                            // backgroundColor: " #a9e2e2",
+                                            // color: "black",
+                                        }}
+                                    >
+                                        <div style={{ color: "black" }}>
+                                            {item.name}
+                                        </div>
+
+                                        {item.text}
+                                    </strong>
+                                ) : (
+                                    <strong
+                                        className="chatblockdiv"
+                                        style={{
+                                            borderTopLeftRadius: "initial",
+                                            fontSize: "17px",
+                                            padding: "5px 10px",
+                                            fontWeight: "400",
+                                            backgroundColor: "#41729f",
+                                            color: "white",
+                                        }}
+                                    >
+                                        {item.text}
+                                    </strong>
+                                )}
                             </div>
                         )}
                     </Fragment>
                 ))}
             </div>
-            {/* </ScrollToBottom> */}
-
             <div
                 style={{
                     height: "42px",
                     display: "flex",
                     flexDirection: "row",
                     padding: "2px",
-                    backgroundColor: "black",
+                    backgroundColor: "white",
+                    borderBottomRightRadius: "12px",
                 }}
             >
                 <Input
@@ -247,7 +263,7 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                     style={{
                         flex: 1,
                         fontWeight: "500",
-                        fontSize: "3vh",
+                        fontSize: "2.2vh",
                         borderRadius: "15px",
                         margin: "5px 0px 5px 10px",
                     }}
@@ -262,13 +278,14 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "aquamarine",
-                        backgroundColor: "black",
+                        color: "black",
+                        backgroundColor: "white",
                         fontSize: "18px",
                         fontWeight: "bold",
                         paddingBottom: "1px",
                         width: "4vw",
                         minWidth: "45px",
+                        borderBottomRightRadius: "12px",
                     }}
                 />
             </div>

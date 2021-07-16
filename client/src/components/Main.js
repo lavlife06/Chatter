@@ -66,7 +66,7 @@ const Main = () => {
             </div>
         );
     } else {
-        return <Spinner />;
+        return <Spinner type={"dataloading"} />;
     }
 };
 

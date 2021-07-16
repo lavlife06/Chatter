@@ -8,6 +8,7 @@ import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import loginImage from "./loginImage.jpg";
+import AuthSvg from "../../svg/authSvg";
 
 const Register = () => {
     const [formData, setformData] = useState({
@@ -34,6 +35,9 @@ const Register = () => {
         // e.preventDefault();
         dispatch(register(formData.name, formData.email, formData.password));
         setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 3000);
         return false;
     };
 
@@ -49,24 +53,9 @@ const Register = () => {
     }
 
     return (
-        <div
-            style={{
-                marginRight: "20%",
-                marginLeft: "20%",
-                borderRadius: "5px",
-                padding: "20px",
-                display: "flex",
-                flexDirection: "row",
-                backgroundColor: "#01ffb6",
-                fontSize: "4vh",
-            }}
-        >
-            <div style={{ flex: 3, marginRight: "2%" }}>
-                <img
-                    src={loginImage}
-                    style={{ width: "100%", height: "100%" }}
-                    alt="login pic"
-                />
+        <div className="auth">
+            <div style={{ flex: 3, marginRight: "2%", height: "55vh" }}>
+                <AuthSvg />
             </div>
             <div
                 style={{
@@ -175,14 +164,23 @@ const Register = () => {
                             htmlType="submit"
                             className="login-form-button"
                             loading={loading}
-                            style={{ width: "100%" }}
+                            style={{
+                                width: "100%",
+                                backgroundColor: "white",
+                                color: "rgb(24, 144, 255)",
+                            }}
                             onSubmit={handleSubmit}
                         >
                             Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
-                <p>
+                <p
+                    style={{
+                        fontSize: "20px",
+                        marginBottom: "0px",
+                    }}
+                >
                     Already have an account?{" "}
                     <Link
                         to="/login"
@@ -196,8 +194,8 @@ const Register = () => {
                             className="login-form-button"
                             size="large"
                             style={{
-                                backgroundColor: "rgb(0, 21, 41)",
-                                color: "#a9fd00",
+                                backgroundColor: "rgb(24, 144, 255)",
+                                color: "white",
                                 borderRadius: "15px",
                             }}
                         >

@@ -43,13 +43,10 @@ const Rooms = ({
             <div className="myinfodiv">
                 <div>
                     <i
-                        className="far fa-user usersIcon"
+                        className="far fa-user myprofileicon"
                         style={{
-                            color: "aquamarine",
-                            fontSize: "25px",
-                            borderColor: "aquamarine",
-                            padding: "5px 7px",
-                            marginRight: "15px",
+                            borderColor: "white",
+                            color: "white",
                         }}
                     />
                     <strong
@@ -63,15 +60,20 @@ const Rooms = ({
                     </strong>
                 </div>
                 <Dropdown overlay={menu} trigger={["click"]}>
-                    <MoreOutlined style={{ fontSize: "30px" }} />
+                    <MoreOutlined
+                        style={{ fontSize: "30px", color: "white" }}
+                    />
                 </Dropdown>
             </div>
             <Menu
+                className="menu"
                 style={{
-                    overflowY: "scroll",
+                    overflow: "auto",
                     height: "68vh",
-                    borderRadius: "12px",
+                    // borderRadius: "12px",
+                    borderBottomLeftRadius: "12px",
                     fontSize: "17px",
+                    backgroundColor: "#C3E0E5",
                 }}
                 defaultSelectedKeys={["0"]}
                 defaultOpenKeys={["sub1"]}
@@ -82,12 +84,14 @@ const Rooms = ({
                     {rooms.map((room, index) => {
                         return (
                             <Menu.Item
+                                // className="menuitem"
                                 style={{
-                                    paddingLeft: "1px",
+                                    paddingLeft: "2.2vw",
                                     display: "flex",
                                     flexDirection: "row",
                                     alignItems: "center",
                                     height: "8vh",
+                                    // borderBottom: "1px solid black",
                                 }}
                                 key={index}
                                 onClick={() => {
@@ -106,18 +110,16 @@ const Rooms = ({
                                     }
                                 }}
                             >
-                                <i
-                                    className="fas fa-users usersIcon"
-                                    style={{
-                                        // color: "rgba(255, 255, 255, 0.65)",
-                                        color: "white",
-                                        borderColor: "white",
-                                        borderWidth: "1px",
-                                        padding: "9px 7px",
-                                        fontSize: "23px",
-                                        marginRight: "15px",
-                                    }}
-                                />
+                                {room.roomtype === "group" ? (
+                                    <i className="fas fa-users roomicon" />
+                                ) : (
+                                    <i
+                                        className="far fa-user myprofileicon"
+                                        style={{
+                                            padding: "7px 10px",
+                                        }}
+                                    />
+                                )}
                                 <div
                                     style={{
                                         display: "flex",
@@ -131,7 +133,7 @@ const Rooms = ({
                                             fontWeight: "400",
                                             fontSize: "20px",
                                             marginBottom: "4px",
-                                            color: "white",
+                                            color: "black",
                                         }}
                                     >
                                         {room.roomName}
@@ -142,6 +144,7 @@ const Rooms = ({
                                                 lineHeight: "2vh",
                                                 fontWeight: "normal",
                                                 fontSize: "15px",
+                                                color: "black",
                                             }}
                                         >
                                             {
@@ -154,6 +157,7 @@ const Rooms = ({
                                                     paddingLeft: "2px",
                                                     paddingRight: "3px",
                                                     fontWeight: "normal",
+                                                    color: "black",
                                                 }}
                                             >
                                                 :
@@ -161,6 +165,7 @@ const Rooms = ({
                                             <strong
                                                 style={{
                                                     fontWeight: "normal",
+                                                    color: "black",
                                                 }}
                                             >
                                                 {

@@ -7,6 +7,7 @@ import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import loginImage from "./loginImage.jpg";
+import AuthSvg from "../../svg/authSvg";
 
 const Login = () => {
     const [formData, setformData] = useState({
@@ -25,6 +26,9 @@ const Login = () => {
     const handleSubmit = () => {
         dispatch(login(formData.email, formData.password));
         setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 3000);
         return false;
     };
 
@@ -46,24 +50,15 @@ const Login = () => {
     }
     // console.log(formData);
     return (
-        <div
-            style={{
-                marginRight: "20%",
-                marginLeft: "20%",
-                borderRadius: "5px",
-                padding: "20px",
-                display: "flex",
-                flexDirection: "row",
-                backgroundColor: "#01ffb6",
-                fontSize: "4vh",
-            }}
-        >
-            <div style={{ flex: 3, marginRight: "2%" }}>
-                <img
-                    src={loginImage}
-                    style={{ width: "100%", height: "100%" }}
-                    alt="login pic"
-                />
+        <div className="auth">
+            <div
+                style={{
+                    flex: 3,
+                    marginRight: "2%",
+                    height: "50vh",
+                }}
+            >
+                <AuthSvg />
             </div>
             <div
                 style={{
@@ -152,14 +147,23 @@ const Login = () => {
                             htmlType="submit"
                             className="login-form-button"
                             loading={loading}
-                            style={{ width: "100%" }}
+                            style={{
+                                width: "100%",
+                                backgroundColor: "white",
+                                color: "rgb(24, 144, 255)",
+                            }}
                             onSubmit={handleSubmit}
                         >
                             Log in
                         </Button>
                     </Form.Item>
                 </Form>
-                <p>
+                <p
+                    style={{
+                        fontSize: "20px",
+                        marginBottom: "0px",
+                    }}
+                >
                     Don't have an account?{" "}
                     <Link
                         to="/signup"
@@ -173,8 +177,8 @@ const Login = () => {
                             className="login-form-button"
                             size="large"
                             style={{
-                                backgroundColor: "rgb(0, 21, 41)",
-                                color: "#a9fd00",
+                                backgroundColor: "rgb(24, 144, 255)",
+                                color: "white",
                                 borderRadius: "15px",
                             }}
                         >

@@ -1,35 +1,30 @@
 .rightsidebardiv {
     display: flex;
-    flex: 3;
-    /* align-items: center;
-    justify-content: center; */
-    border-width: 1px;
-    border-color: limegreen;
-    border-left-color: black;
+    flex: 3 1;
+    border-width: 0px;
     border-style: solid;
     flex-direction: column;
-    /* padding: 2px; */
-    background-color: aqua;
+    background-color: white;
+    border-radius: 12px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 .chatblockdiv {
     border-radius: 9px;
-    /* border-width: 1px; */
-    /* border-color: black; */
-    /* border-style: solid; */
     font-weight: 400;
     font-size: 2.3vh;
     padding: 5px;
     margin-bottom: 3px;
-    color: cyan;
-    background-color: #001529;
-    /* border-top-left-radius: initial; */
+    color: #808080;
+    background-color: white;
     margin-right: 2px;
+    box-shadow: 0px 5px 10px rgb(0 0 0 / 7%);
 }
 .leftsidebardiv {
-    width: 25vw;
+    width: 21vw;
     min-width: 300px;
     border-radius: 12px 0px 0px 12px;
-    padding: 0.3vh 0.3vw 0.3vh 0.3vw;
+    /* padding: 0.3vh 0.3vw 0.3vh 0.3vw; */
 }
 .scrollBottom {
     height: 87%;
@@ -72,6 +67,33 @@
     margin: auto 27vw;
 }
 
+.myprofileicon {
+    border: 2px solid black;
+    border-radius: 50%;
+    color: black;
+    font-size: 25px;
+    padding: 5px 7px;
+    margin-right: 15px;
+}
+
+.roomicon {
+    margin-right: 10px;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding: 9px 7px;
+    font-size: 23px;
+    margin-right: 15px;
+    color: black;
+}
+
+.groupicon {
+    margin-right: 10px;
+    border: 2px solid black;
+    border-radius: 50%;
+    font-size: 20px;
+    padding: 7px 5px;
+}
+
 .usersIcon {
     margin-right: 10px;
     border: 2px solid black;
@@ -87,21 +109,21 @@ li {
     height: 9vh;
     align-items: center;
     padding-left: 15px;
-    background-color: #04101a;
-    color: aquamarine;
+    background-color: white;
+    /* background-color: #e2e3e7; */
+    color: black;
+    border-top-right-radius: 15px;
 }
 .myinfodiv {
-    border-bottom: 1px solid aquamarine;
+    /* border-bottom: 1px solid aquamarine; */
     display: flex;
     justify-content: space-between;
-    height: 11vh;
+    height: 8.1vh;
     align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
-    /* background-color: #8fd8ac; */
-    background-color: #0d2146;
-    color: aquamarine;
-    /* color: black; */
+    padding-left: 1.3vw;
+    background-color: #41729f;
+    /* background-color: #55bc7e; */
+    color: #808080;
     margin-bottom: 1px;
     border-top-left-radius: 15px;
 }
@@ -112,12 +134,26 @@ li {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid white;
+    border: 1px solid black;
     border-radius: 50%;
     height: 18px;
     width: 18px;
     font-size: 14px;
+    color: black;
 }
+
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: #002c78cf;
+    background-color: #c3e0e5;
+    color: white;
+}
+
+#chatcontainer {
+    height: 90%;
+    overflow: auto;
+    padding: 7px;
+    background-color: #e2e3e7;
+}
+
+.menu::-webkit-scrollbar {
+    display: none;
 }

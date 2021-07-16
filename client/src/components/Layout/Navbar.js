@@ -20,10 +20,6 @@ const Navbar = () => {
                         className="register"
                         to="/signup"
                         onClick={() => {
-                            let login = document.getElementById("login");
-                            let register = document.getElementById("register");
-                            register.style.backgroundColor = "#a9fd00";
-                            login.style.backgroundColor = "#3ff5df";
                             dispatch(logout());
                         }}
                     >
@@ -34,10 +30,6 @@ const Navbar = () => {
                         className="login"
                         to="/login"
                         onClick={() => {
-                            let login = document.getElementById("login");
-                            let register = document.getElementById("register");
-                            login.style.backgroundColor = "#a9fd00";
-                            register.style.backgroundColor = "#3ff5df";
                             dispatch(logout());
                         }}
                     >
@@ -60,7 +52,7 @@ const Navbar = () => {
                                 fontWeight: "800",
                                 borderRadius: "15px",
                                 fontSize: "2.5vh",
-                                backgroundColor: "cyan",
+                                backgroundColor: "white",
                             }}
                             icon={
                                 <i

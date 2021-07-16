@@ -1,167 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,300&display=swap");
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 :root {
-  --primary-color: #17a2b8;
-  --dark-color: #343a40;
-  --light-color: #f4f4f4;
-  --danger-color: #dc3545;
-  --success-color: #28a745;
+    --primary-color: #17a2b8;
+    --dark-color: #343a40;
+    --light-color: #f4f4f4;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
 }
 html,
 body {
-  /* background-image: url("./img/unsplashimg.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover; */
-  height: 100vh;
-  background: linear-gradient(to bottom, #00ccff 0%, #99ff99 100%);
-  /* padding-bottom: 20px; */
+    height: 100vh;
+    width: 100vw;
+    /* background-image: url("./img/Inn.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover; */
+    font-family: "Poppins";
 }
 
 /* The Close Button */
 .CloseBtn {
-  color: black;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+    color: black;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 a {
-  color: black;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
-  margin-left: 10px;
-  font-weight: bold;
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    font-weight: bold;
 }
 
-/* Style the tab */
-/* .tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-} */
-
-/* Style the buttons inside the tab */
-/* .tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-  font-size: 17px;
-} */
-
-/* Change background color of buttons on hover */
-/* .tab button:hover {
-  background-color: #ddd;
-} */
-
-/* Create an active/current tablink class */
 .tablink {
-  /* box-shadow: 0 4px #999; */
-  margin: 5px;
-  font-size: 2.8vh;
-  font-weight: 400;
-  border-radius: 15px;
+    /* box-shadow: 0 4px #999; */
+    margin: 5px;
+    font-size: 2.8vh;
+    font-weight: 400;
+    border-radius: 15px;
 }
 .clearBtn {
-  font-size: 18px;
-  margin-left: 2px;
-  /* border-radius: 50%; */
-  /* border: 1px solid whitesmoke; */
-  color: lightcoral;
-  /* color: black; */
-  font-weight: bold;
-  cursor: pointer;
+    font-size: 18px;
+    margin-left: 2px;
+    color: lightcoral;
+    font-weight: bold;
+    cursor: pointer;
 }
 .truetablink {
-  /* box-shadow: 0 4px #999; */
-  background-color: aquamarine;
-  margin: 5px;
-  font-size: 2.8vh;
-  font-weight: 400;
-  border-radius: 15px;
+    background-color: aquamarine;
+    margin: 5px;
+    font-size: 2.8vh;
+    font-weight: 400;
+    border-radius: 15px;
 }
 .tablink:active {
-  /* background-color: rgba(18, 245, 164, 0.87); */
-  /* box-shadow: 0 5px #666; */
-  transform: translateY(3px);
+    transform: translateY(3px);
 }
 
-.loader {
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  z-index: 1;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 50px;
-  height: 50px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-/* .maindiv1 {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  border-width: 1px;
-  border-style: solid;
-  border-color: palegreen;
-  background-color: #04272d;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 1vh;
-  height: 6.5vh;
-} */
 .maindiv1 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  border-width: 1px;
-  border-style: solid;
-  border-color: palegreen;
-  background-color: #04272d;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 1vh;
-  height: 6.5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border-width: 1px;
+    border-style: solid;
+    border-color: palegreen;
+    background-color: #04272d;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 1vh;
+    height: 6.5vh;
 }
 .maindiv2 {
-  display: flex;
-  margin-left: 10%;
-  margin-right: 10%;
-  height: 80vh;
-  background-color: #04272d;
-  border-color: limegreen;
-  border-width: 1px;
-  border-radius: 12px;
+    display: flex;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px,
+        rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px,
+        rgb(0 0 0 / 9%) 0px -3px 5px;
+    margin-top: 25px;
 }
 .ant-btn:hover,
 .ant-btn:focus {
-  color: black;
-  border-color: aquamarine;
+    color: black;
+    border-color: aquamarine;
 }
