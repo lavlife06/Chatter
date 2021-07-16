@@ -12,6 +12,7 @@ const {
     createPrivateChatroom,
 } = require("./helperFunctions/privateChat");
 const app = express();
+const path = require("path");
 
 // Implementing cors
 app.use(cors());
