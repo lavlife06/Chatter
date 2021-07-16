@@ -20,7 +20,7 @@ const Main = () => {
     useEffect(() => {
         let socketinstance;
         if (token) {
-            socketinstance = io("pacific-crag-66308.herokuapp.com:5000", {
+            socketinstance = io("chatter-chatapplication.herokuapp.com:5000", {
                 query: {
                     token,
                 },

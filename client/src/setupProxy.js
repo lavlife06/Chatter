@@ -3,7 +3,7 @@ module.exports = function (app) {
     app.use(
         "/api/*",
         createProxyMiddleware({
-            target: "https://pacific-crag-66308.herokuapp.com/:5000",
+            target: "https://chatter-chatapplication.herokuapp.com/:5000",
         })
     );
 };
