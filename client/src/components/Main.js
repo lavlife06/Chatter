@@ -21,7 +21,7 @@ const Main = () => {
         let socketinstance;
         if (token) {
             socketinstance = io(
-                "https://chatter-chatapplication.herokuapp.com:5000",
+                "https://chatter-chatapplication.herokuapp.com",
                 {
                     query: {
                         token,
