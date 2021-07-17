@@ -24,10 +24,15 @@ const reducers = (state = initialState, action) => {
 
     switch (type) {
         case GET_PROFILE:
-        case UPDATE_PROFILE:
             return {
                 ...state,
                 myprofile: payload,
+                loading: false,
+            };
+        case UPDATE_PROFILE:
+            return {
+                ...state,
+                myprofile: payload.profile,
                 loading: false,
             };
         case REGISTER_SUCCESS:
