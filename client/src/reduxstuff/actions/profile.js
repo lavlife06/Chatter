@@ -1,4 +1,5 @@
 import axios from "axios";
+import setAuthToken from "../utils/setAuthToken";
 
 import {
     GET_PROFILE,
@@ -64,6 +65,10 @@ export const updateProfile = (socketId) => async (dispatch) => {
 
         const res = await axios.post("/api/profile/me", body, config);
 
+        setAuthToken(res.data.token);
+
+        localStorage.setItem("token", res.data.token);
+        
         dispatch({
             type: UPDATE_PROFILE,
             payload: res.data,
