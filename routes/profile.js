@@ -1,6 +1,8 @@
 const verify = require("../verifytokenmw/verify_mv");
 const User = require("../models/User");
 const Profile = require("../models/Profile");
+const jwt = require("jsonwebtoken");
+const keys = require("../config/keys");
 
 module.exports = (app) => {
     app.get("/api/profile/me", verify, async (req, res) => {
@@ -46,7 +48,24 @@ module.exports = (app) => {
                 { new: true, upsert: true }
             );
             console.log("updating new profile");
-            res.json(profile);
+            
+            let payload = {
+                user: {
+                    id: req.user.id,
+                },
+                socketid: profile.socketId || null,
+            };
+
+            jwt.sign(payload, keys.jwtSecret, (err, token) => {
+                if (err) {
+                    res.status(400).json({
+                        errors: [
+                            { msg: "Something went wrong, please try again " },
+                        ],
+                    });
+                }
+                res.json({ profile, token });
+            });
         } catch (err) {
             res.status(500).send("Server Error");
             console.error(err.message);
