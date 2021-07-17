@@ -7,6 +7,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     SETUP_SOCKET,
+    UPDATE_PROFILE,
     // ACCOUNT_DELETED,
 } from "../actions/types";
 
@@ -35,6 +36,12 @@ const reducers = (state = initialState, action) => {
                 ...state,
                 token: payload.token,
                 isAuthenticated: true,
+                loading: false,
+            };
+        case UPDATE_PROFILE:
+            return {
+                ...state,
+                token: payload.token,
                 loading: false,
             };
         case SETUP_SOCKET:

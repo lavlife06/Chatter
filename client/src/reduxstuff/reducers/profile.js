@@ -5,11 +5,7 @@ import {
     GET_PROFILES,
     REGISTER_SUCCESS,
     UPDATE_PRICHATROOMS,
-    // GET_PROFILES,
-    // PROFILE_ERROR,
     UPDATE_PROFILE,
-    // GET_REPOS,
-    // NO_REPOS,
 } from "../actions/types";
 
 const initialState = {
@@ -24,10 +20,15 @@ const reducers = (state = initialState, action) => {
 
     switch (type) {
         case GET_PROFILE:
-        case UPDATE_PROFILE:
             return {
                 ...state,
                 myprofile: payload,
+                loading: false,
+            };
+        case UPDATE_PROFILE:
+            return {
+                ...state,
+                myprofile: payload.profile,
                 loading: false,
             };
         case REGISTER_SUCCESS:
