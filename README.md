@@ -43,6 +43,9 @@
 email: test@gmail.com <br/>
 password: test1234
 
+email: test2@gmail.com <br/>
+password: test1234
+
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
