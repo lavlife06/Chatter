@@ -39,6 +39,9 @@
 <!-- <p align="center">
 <img src="https://imgur.com/MYBT6fY.gif" width="80%"></p> -->
 
+## Login Details for Testing
+email: test@gmail.com <br/>
+password: test1234
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
