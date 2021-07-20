@@ -3,6 +3,7 @@ import { getProfiles } from "../../../reduxstuff/actions/profile";
 import { useDispatch, useSelector } from "react-redux";
 // import "./chat.css";
 import { Input } from "antd";
+import { CLEAR_PROFILES } from "../../../reduxstuff/actions/types";
 
 const CreateRoomModal = ({
     text,
@@ -65,8 +66,13 @@ const CreateRoomModal = ({
                     }}
                     placeholder="Search Users here"
                     onChange={(e) => {
-                        setText(e.target.value);
-                        dispatch(getProfiles(e.target.value));
+                        if (!e.target.value) {
+                            setText("");
+                            dispatch({ type: CLEAR_PROFILES });
+                        } else {
+                            setText(e.target.value);
+                            dispatch(getProfiles(e.target.value));
+                        }
                     }}
                 />
             </div>
