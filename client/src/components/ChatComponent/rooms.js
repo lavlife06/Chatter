@@ -83,106 +83,147 @@ const Rooms = ({
                 <Fragment>
                     {rooms.map((room, index) => {
                         return (
-                            <Menu.Item
-                                // className="menuitem"
-                                style={{
-                                    paddingLeft: "2.2vw",
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    height: "8vh",
-                                    // borderBottom: "1px solid black",
-                                }}
-                                key={index}
-                                onClick={() => {
-                                    socket.emit("getRoomById", {
-                                        roomId: room._id,
-                                    });
-                                    setSelectedRoom(room);
-                                    if (room.unReadMsgLength > 0) {
-                                        let newarr = [...rooms];
-                                        newarr.forEach((arritem) => {
-                                            if (arritem._id == room._id) {
-                                                arritem.unReadMsgLength = 0;
-                                            }
-                                        });
-                                        setRooms([...newarr]);
-                                    }
-                                }}
-                            >
-                                {room.roomtype === "group" ? (
-                                    <i className="fas fa-users roomicon" />
-                                ) : (
-                                    <i
-                                        className="far fa-user myprofileicon"
-                                        style={{
-                                            padding: "7px 10px",
-                                        }}
-                                    />
-                                )}
-                                <div
+                            <Fragment>
+                                <Menu.Item
+                                    // className="ant-menu-item"
                                     style={{
                                         display: "flex",
-                                        flexDirection: "column",
-                                        marginBottom: "5px",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        height: "8vh",
+                                        margin: "0px",
+                                        padding: "0px",
+                                        // paddingLeft: "2vw",
+                                        // borderBottom: "1px solid black",
+                                    }}
+                                    key={index}
+                                    onClick={() => {
+                                        socket.emit("getRoomById", {
+                                            roomId: room._id,
+                                        });
+                                        setSelectedRoom(room);
+                                        if (room.unReadMsgLength > 0) {
+                                            let newarr = [...rooms];
+                                            newarr.forEach((arritem) => {
+                                                if (arritem._id == room._id) {
+                                                    arritem.unReadMsgLength = 0;
+                                                }
+                                            });
+                                            setRooms([...newarr]);
+                                        }
                                     }}
                                 >
-                                    <strong
+                                    {room.roomtype === "group" ? (
+                                        <i
+                                            className="fas fa-users roomicon"
+                                            style={{
+                                                marginRight: "1vw",
+                                                padding:
+                                                    "calc(0.7vh + 3px) calc(0.8vh)",
+                                                fontSize:
+                                                    "calc(1.5vh + calc(1.1vw))",
+                                            }}
+                                        />
+                                    ) : (
+                                        <i
+                                            className="far fa-user myprofileicon"
+                                            style={{
+                                                marginRight: "1vw",
+                                                padding:
+                                                    "calc(0.7vh + 3px) calc(1.37vh)",
+                                                fontSize:
+                                                    "calc(1.5vh + calc(1.1vw))",
+                                            }}
+                                        />
+                                    )}
+                                    <div
                                         style={{
-                                            lineHeight: "initial",
-                                            fontWeight: "400",
-                                            fontSize: "20px",
-                                            marginBottom: "4px",
-                                            color: "black",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            marginBottom: "5px",
                                         }}
                                     >
-                                        {room.roomName}
-                                    </strong>
-                                    {room.chats.length != 0 ? (
                                         <strong
                                             style={{
-                                                lineHeight: "2vh",
-                                                fontWeight: "normal",
-                                                fontSize: "15px",
+                                                lineHeight: "initial",
+                                                fontWeight: "500",
+                                                fontSize:
+                                                    "calc(1.5vh + 0.35vw + 3.7px)",
+                                                marginBottom: "4px",
                                                 color: "black",
                                             }}
                                         >
-                                            {
-                                                room.chats[
-                                                    room.chats.length - 1
-                                                ].name
-                                            }
+                                            {room.roomName}
+                                        </strong>
+                                        {room.chats.length != 0 ? (
                                             <strong
                                                 style={{
-                                                    paddingLeft: "2px",
-                                                    paddingRight: "3px",
+                                                    lineHeight: "2vh",
                                                     fontWeight: "normal",
-                                                    color: "black",
-                                                }}
-                                            >
-                                                :
-                                            </strong>
-                                            <strong
-                                                style={{
-                                                    fontWeight: "normal",
+                                                    fontSize:
+                                                        "calc(1.5vh + 0.1vw + 3px)",
                                                     color: "black",
                                                 }}
                                             >
                                                 {
                                                     room.chats[
                                                         room.chats.length - 1
-                                                    ].text
+                                                    ].name
                                                 }
+                                                <strong
+                                                    style={{
+                                                        paddingLeft: "2px",
+                                                        paddingRight: "3px",
+                                                        fontWeight: "normal",
+                                                        color: "black",
+                                                    }}
+                                                >
+                                                    :
+                                                </strong>
+                                                <strong
+                                                    style={{
+                                                        fontWeight: "normal",
+                                                        color: "black",
+                                                    }}
+                                                >
+                                                    {room.chats[
+                                                        room.chats.length - 1
+                                                    ].text.slice(
+                                                        0,
+                                                        22 -
+                                                            room.chats[
+                                                                room.chats
+                                                                    .length - 1
+                                                            ].name.length
+                                                    )}
+                                                    {room.chats[
+                                                        room.chats.length - 1
+                                                    ].text.length +
+                                                        room.chats[
+                                                            room.chats.length -
+                                                                1
+                                                        ].name.length >
+                                                    23
+                                                        ? "..."
+                                                        : ""}
+                                                </strong>
                                             </strong>
+                                        ) : null}
+                                    </div>
+                                    {room.unReadMsgLength != 0 ? (
+                                        <strong className="unreadmsg">
+                                            {room.unReadMsgLength}
                                         </strong>
                                     ) : null}
-                                </div>
-                                {room.unReadMsgLength != 0 ? (
-                                    <strong className="unreadmsg">
-                                        {room.unReadMsgLength}
-                                    </strong>
-                                ) : null}
-                            </Menu.Item>
+                                </Menu.Item>
+                                {/* <hr
+                                    style={{
+                                        border: "1px solid gray",
+                                        borderRadius: "5px",
+                                        margin: "0 1vw 0 2vw",
+                                    }}
+                                /> */}
+                            </Fragment>
                         );
                     })}
                 </Fragment>

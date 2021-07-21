@@ -7,7 +7,7 @@ import {
     UPDATE_PRICHATROOMS,
 } from "../../reduxstuff/actions/types";
 import "./chat.css";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import CreateRoomModal from "./chatModals/CreateRoomModal";
 import ChatPrivateModal from "./chatModals/ChatPrivateModal";
 import Rooms from "./rooms";
@@ -230,10 +230,25 @@ const RoomStack = () => {
                             color: "black",
                             fontWeight: "300",
                             marginTop: "20px",
+                            fontSize: "calc(12px + 1vw)",
                         }}
                     >
                         Enjoy joining or creating group or chat private
                     </h1>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        // className="login-form-button"
+                        style={{
+                            backgroundColor: "black",
+                            color: "white",
+                        }}
+                        onSubmit={() => {
+                            setIsGroupModalVisible(true);
+                        }}
+                    >
+                        Create Group
+                    </Button>
                 </div>
             )}
         </Fragment>

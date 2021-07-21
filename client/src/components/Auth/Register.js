@@ -7,7 +7,6 @@ import "../Layout/layout.css";
 import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import loginImage from "./loginImage.jpg";
 import AuthSvg from "../../svg/authSvg";
 
 const Register = () => {
@@ -54,7 +53,10 @@ const Register = () => {
 
     return (
         <div className="auth">
-            <div style={{ flex: 3, marginRight: "2%", height: "55vh" }}>
+            <div
+                className="authsvgregister"
+                style={{ flex: 3, marginRight: "2%", height: "55vh" }}
+            >
                 <AuthSvg />
             </div>
             <div
@@ -80,6 +82,9 @@ const Register = () => {
                             },
                         ]}
                         hasFeedback
+                        style={{
+                            marginBottom: "13px",
+                        }}
                     >
                         <Input
                             style={{
@@ -104,6 +109,9 @@ const Register = () => {
                             },
                         ]}
                         hasFeedback
+                        style={{
+                            marginBottom: "13px",
+                        }}
                     >
                         <Input
                             style={{
@@ -127,6 +135,9 @@ const Register = () => {
                             },
                         ]}
                         hasFeedback
+                        style={{
+                            marginBottom: "13px",
+                        }}
                     >
                         <Input.Password
                             style={{
@@ -147,6 +158,7 @@ const Register = () => {
                         style={{
                             fontSize: "2.5vh",
                             fontWeight: "500",
+                            margin: "0px",
                         }}
                     >
                         <Form.Item
@@ -158,7 +170,11 @@ const Register = () => {
                         </Form.Item>
                     </Form.Item>
 
-                    <Form.Item>
+                    <Form.Item
+                        style={{
+                            marginBottom: "9px",
+                        }}
+                    >
                         <Button
                             type="primary"
                             htmlType="submit"
@@ -168,6 +184,8 @@ const Register = () => {
                                 width: "100%",
                                 backgroundColor: "white",
                                 color: "rgb(24, 144, 255)",
+                                padding: "0px",
+                                height: "5vh",
                             }}
                             onSubmit={handleSubmit}
                         >
@@ -194,9 +212,12 @@ const Register = () => {
                             className="login-form-button"
                             size="large"
                             style={{
+                                display: "flex",
                                 backgroundColor: "rgb(24, 144, 255)",
                                 color: "white",
                                 borderRadius: "15px",
+                                height: "5vh",
+                                alignItems: "center",
                             }}
                         >
                             Login
