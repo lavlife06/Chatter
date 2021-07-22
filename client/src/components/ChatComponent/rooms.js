@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 import "./chat.css";
 import { useSelector } from "react-redux";
 import { Menu, Dropdown } from "antd";
-import { BarsOutlined, MoreOutlined } from "@ant-design/icons";
+import { MoreOutlined } from "@ant-design/icons";
 
 const Rooms = ({
     myprofile,
@@ -54,6 +54,7 @@ const Rooms = ({
                             color: "white",
                             fontSize: "25px",
                             marginBottom: "5px",
+                            fontWeight: "500",
                         }}
                     >
                         {myprofile.name}
@@ -190,7 +191,7 @@ const Rooms = ({
                                                         room.chats.length - 1
                                                     ].text.slice(
                                                         0,
-                                                        22 -
+                                                        19 -
                                                             room.chats[
                                                                 room.chats
                                                                     .length - 1

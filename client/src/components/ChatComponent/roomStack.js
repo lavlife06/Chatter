@@ -38,6 +38,19 @@ const RoomStack = () => {
         },
     ]);
 
+    const [windowWidth, setWindowWidth] = React.useState(window.outerWidth);
+    const breakpoint = 452;
+
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setWindowWidth(window.outerWidth);
+        };
+        window.addEventListener("resize", handleWindowResize);
+
+        // Return a function from the effect that removes the event listener
+        return () => window.removeEventListener("resize", handleWindowResize);
+    }, []);
+
     useEffect(() => {
         console.log(`printing socketId from Frontend:${socket.id}`);
     }, [socket.id]);
@@ -134,6 +147,20 @@ const RoomStack = () => {
         setIsPriModalVisible(false);
     };
 
+    const roomsStack = () => (
+        <div className="leftsidebardiv">
+            <Rooms
+                type={"groupChat"}
+                myprofile={myprofile}
+                rooms={rooms}
+                setRooms={setRooms}
+                setSelectedRoom={setSelectedRoom}
+                setIsGroupModalVisible={setIsGroupModalVisible}
+                setIsPriModalVisible={setIsPriModalVisible}
+            />
+        </div>
+    );
+
     return (
         <Fragment>
             <Modal
@@ -182,26 +209,29 @@ const RoomStack = () => {
                     setIsPriModalVisible={setIsPriModalVisible}
                 />{" "}
             </Modal>
-            <div className="leftsidebardiv">
-                <Rooms
-                    type={"groupChat"}
-                    myprofile={myprofile}
-                    rooms={rooms}
-                    setRooms={setRooms}
-                    setSelectedRoom={setSelectedRoom}
-                    setIsGroupModalVisible={setIsGroupModalVisible}
-                    setIsPriModalVisible={setIsPriModalVisible}
-                />
-            </div>
-            {selectedRoom ? (
+            {windowWidth < breakpoint && !selectedRoom ? roomsStack() : null}
+            {windowWidth < breakpoint && selectedRoom ? (
                 <div className="rightsidebardiv">
                     <ChatWindow
                         selectedRoom={selectedRoom}
                         changeRoomsStack={changeRoomsStack}
                         theRooms={rooms}
+                        setSelectedRoom={setSelectedRoom}
                     />
                 </div>
-            ) : (
+            ) : null}
+            {windowWidth > breakpoint ? roomsStack() : null}
+            {windowWidth > breakpoint && selectedRoom ? (
+                <div className="rightsidebardiv">
+                    <ChatWindow
+                        selectedRoom={selectedRoom}
+                        changeRoomsStack={changeRoomsStack}
+                        theRooms={rooms}
+                        setSelectedRoom={setSelectedRoom}
+                    />
+                </div>
+            ) : null}
+            {windowWidth > breakpoint && !selectedRoom ? (
                 <div
                     className="rightsidebardiv"
                     style={{ justifyContent: "center", alignItems: "center" }}
@@ -240,8 +270,8 @@ const RoomStack = () => {
                         htmlType="submit"
                         // className="login-form-button"
                         style={{
-                            backgroundColor: "black",
                             color: "white",
+                            borderRadius: "8px",
                         }}
                         onSubmit={() => {
                             setIsGroupModalVisible(true);
@@ -250,7 +280,7 @@ const RoomStack = () => {
                         Create Group
                     </Button>
                 </div>
-            )}
+            ) : null}
         </Fragment>
     );
 };

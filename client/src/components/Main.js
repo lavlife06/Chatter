@@ -54,12 +54,7 @@ const Main = () => {
 
     if (!myRoomsLoading && !myprofileLoading && socket) {
         return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                }}
-            >
+            <div className="mainContainer">
                 <div className="maindiv2">
                     <RoomStack />
                 </div>
