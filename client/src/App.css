@@ -102,3 +102,30 @@ a {
     color: black;
     border-color: aquamarine;
 }
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 768px) {
+    .maindiv2 {
+        margin-right: 3%;
+        margin-left: 3%;
+        width: fit-content;
+    }
+    .mainContainer {
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .maindiv2 {
+        margin-right: 5%;
+        margin-left: 5%;
+        width: fit-content;
+    }
+    .mainContainer {
+        align-items: center;
+    }
+}

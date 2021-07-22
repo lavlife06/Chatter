@@ -6,8 +6,14 @@ import { GET_ROOM_BY_ID } from "../../reduxstuff/actions/types";
 import "./chat.css";
 import { Input } from "antd";
 import Spinner from "../Layout/Spinner";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
-const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
+const ChatWindow = ({
+    selectedRoom,
+    changeRoomsStack,
+    theRooms,
+    setSelectedRoom,
+}) => {
     const dispatch = useDispatch();
 
     const myprofile = useSelector((state) => state.profile.myprofile);
@@ -144,24 +150,29 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
         // <div style={{ padding: "2px" }}>
         <Fragment>
             <div className="groupinfodiv">
+                <ArrowLeftOutlined
+                    className="backarrow"
+                    onClick={() => {
+                        setSelectedRoom(null);
+                        if (myParticularRoom.roomtype == "private") {
+                            socket.emit("leavePriRoom", {
+                                roomIds: myParticularRoom.roomIds,
+                            });
+                            socket.off("joinedPriRoom");
+                        } else {
+                            socket.emit("leaveRoom", {
+                                room: myParticularRoom._id,
+                            });
+                            socket.off("joinedRoom");
+                        }
+                    }}
+                />
                 {myParticularRoom.roomtype === "group" ? (
                     <i className="fas fa-users roomicon" />
                 ) : (
-                    <i
-                        className="far fa-user myprofileicon"
-                        style={{
-                            padding: "7px 10px",
-                        }}
-                    />
+                    <i className="far fa-user roommyprofileicon" />
                 )}
-                {/* <i className="fas fa-users groupicon" /> */}
-                <strong
-                    style={{
-                        color: "black",
-                        fontSize: "25px",
-                        marginBottom: "6px",
-                    }}
-                >
+                <strong className="roomName">
                     {myParticularRoom.roomName}
                 </strong>
             </div>
@@ -176,17 +187,7 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                                     marginBottom: "0.8vh",
                                 }}
                             >
-                                <strong
-                                    className="chatblockdiv"
-                                    style={{
-                                        borderTopRightRadius: "initial",
-                                        fontSize: "17px",
-                                        padding: "5px 10px",
-                                        fontWeight: "400",
-                                        color: "black",
-                                    }}
-                                >
-                                    {" "}
+                                <strong className="minechatblockdiv">
                                     {item.text}
                                 </strong>
                             </div>
@@ -199,35 +200,14 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                                 }}
                             >
                                 {myParticularRoom.roomtype === "group" ? (
-                                    <strong
-                                        className="chatblockdiv"
-                                        style={{
-                                            borderTopLeftRadius: "initial",
-                                            fontSize: "17px",
-                                            padding: "5px 10px",
-                                            fontWeight: "400",
-                                            // backgroundColor: " #a9e2e2",
-                                            // color: "black",
-                                        }}
-                                    >
-                                        <div style={{ color: "black" }}>
+                                    <strong className="groupchatblockdiv">
+                                        <div className="groupmembername">
                                             {item.name}
                                         </div>
-
                                         {item.text}
                                     </strong>
                                 ) : (
-                                    <strong
-                                        className="chatblockdiv"
-                                        style={{
-                                            borderTopLeftRadius: "initial",
-                                            fontSize: "17px",
-                                            padding: "5px 10px",
-                                            fontWeight: "400",
-                                            backgroundColor: "#41729f",
-                                            color: "white",
-                                        }}
-                                    >
+                                    <strong className="privatechatblockdiv">
                                         {item.text}
                                     </strong>
                                 )}
@@ -236,16 +216,7 @@ const ChatWindow = ({ selectedRoom, changeRoomsStack, theRooms }) => {
                     </Fragment>
                 ))}
             </div>
-            <div
-                style={{
-                    height: "42px",
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "2px",
-                    backgroundColor: "white",
-                    borderBottomRightRadius: "12px",
-                }}
-            >
+            <div className="chatinput">
                 <Input
                     type="text"
                     name="text"
