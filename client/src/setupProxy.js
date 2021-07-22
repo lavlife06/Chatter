@@ -3,7 +3,7 @@ module.exports = function (app) {
     app.use(
         "/api/*",
         createProxyMiddleware({
-            target: "https://chatter-chatapplication.herokuapp.com/",
+            target: "http://localhost:5000",
         })
     );
 };

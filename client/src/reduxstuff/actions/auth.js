@@ -26,7 +26,11 @@ export const register = (name, email, password) => async (dispatch) => {
     const body = JSON.stringify({ name, email, password });
 
     try {
-        const res = await axios.post("/api/signup", body, config);
+        const res = await axios.post(
+            "http://localhost:5000/api/signup",
+            body,
+            config
+        );
 
         setAuthToken(res.data.token);
 
@@ -65,7 +69,11 @@ export const login = (email, password) => async (dispatch) => {
     const body = JSON.stringify({ email, password });
 
     try {
-        const res = await axios.post("/api/login", body, config);
+        const res = await axios.post(
+            "http://localhost:5000/api/login",
+            body,
+            config
+        );
 
         setAuthToken(res.data.token);
 

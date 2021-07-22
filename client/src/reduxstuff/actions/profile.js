@@ -11,7 +11,7 @@ import {
 // Get current users profile
 export const getCurrentProfile = (token) => async (dispatch) => {
     try {
-        const res = await axios.get("/api/profile/me", {
+        const res = await axios.get("http://localhost:5000/api/profile/me", {
             headers: {
                 "x-auth-token": token,
             },
@@ -35,7 +35,9 @@ export const getCurrentProfile = (token) => async (dispatch) => {
 // Get all profiles
 export const getProfiles = (username) => async (dispatch) => {
     try {
-        const res = await axios.get(`/api/profile/user/${username}`);
+        const res = await axios.get(
+            `http://localhost:5000/api/profile/user/${username}`
+        );
 
         dispatch({
             type: GET_PROFILES,
@@ -63,7 +65,11 @@ export const updateProfile = (socketId) => async (dispatch) => {
 
         const body = JSON.stringify({ socketId });
 
-        const res = await axios.post("/api/profile/me", body, config);
+        const res = await axios.post(
+            "http://localhost:5000/api/profile/me",
+            body,
+            config
+        );
 
         setAuthToken(res.data.token);
 
