@@ -44,7 +44,7 @@ const ChatPrivateModal = ({
                     value={text}
                     placeholder="Search for users and chat with them"
                     onChange={(e) => {
-                        console.log(e.target.value);
+                        // console.log(e.target.value);
                         if (!e.target.value) {
                             setText("");
                             dispatch({ type: CLEAR_PROFILES });

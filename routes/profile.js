@@ -48,7 +48,7 @@ module.exports = (app) => {
                 { new: true, upsert: true }
             );
             console.log("updating new profile");
-            
+
             let payload = {
                 user: {
                     id: req.user.id,

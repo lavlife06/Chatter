@@ -54,15 +54,7 @@ const Navbar = () => {
                                 fontSize: "2.5vh",
                                 backgroundColor: "white",
                             }}
-                            icon={
-                                <i
-                                    class="fas fa-sign-out-alt"
-                                    style={{
-                                        fontSize: "2.5vh",
-                                        marginRight: "3px",
-                                    }}
-                                />
-                            }
+                            icon={<i class="fas fa-sign-out-alt logouticon" />}
                             onClick={() => {
                                 dispatch(logout());
                             }}

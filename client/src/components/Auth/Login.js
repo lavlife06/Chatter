@@ -6,7 +6,6 @@ import "../Layout/layout.css";
 import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import loginImage from "./loginImage.jpg";
 import AuthSvg from "../../svg/authSvg";
 
 const Login = () => {
@@ -52,6 +51,7 @@ const Login = () => {
     return (
         <div className="auth">
             <div
+                className="authsvglogin"
                 style={{
                     flex: 3,
                     marginRight: "2%",
@@ -130,6 +130,7 @@ const Login = () => {
                         style={{
                             fontSize: "2.5vh",
                             fontWeight: "500",
+                            margin: "0px",
                         }}
                     >
                         <Form.Item
@@ -147,10 +148,13 @@ const Login = () => {
                             htmlType="submit"
                             className="login-form-button"
                             loading={loading}
+                            // size="middle"
                             style={{
                                 width: "100%",
                                 backgroundColor: "white",
                                 color: "rgb(24, 144, 255)",
+                                padding: "0px",
+                                height: "5vh",
                             }}
                             onSubmit={handleSubmit}
                         >
@@ -177,9 +181,12 @@ const Login = () => {
                             className="login-form-button"
                             size="large"
                             style={{
+                                display: "flex",
                                 backgroundColor: "rgb(24, 144, 255)",
                                 color: "white",
                                 borderRadius: "15px",
+                                height: "5vh",
+                                alignItems: "center",
                             }}
                         >
                             SignUp

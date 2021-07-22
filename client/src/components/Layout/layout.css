@@ -78,11 +78,66 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
 }
+
+.logouticon {
+    margin-right: 3px;
+    font-size: 2.5vh;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .auth {
+        margin-right: 5%;
+        margin-left: 5%;
+        padding: 10px;
+    }
+    /* .authsvg {
+        flex: 2;
+    } */
+}
+
+@media only screen and (max-width: 415px) {
+    .auth {
+        display: flex;
+        margin-top: 5vh;
+        margin-bottom: 4vh;
+        border-radius: 12px;
+        flex-direction: column;
+        font-size: 4vh;
+        min-height: 45vh;
+        /* max-height: vh; */
+        box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px,
+            rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px,
+            rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
+        background-color: white;
+        margin-right: 5%;
+        margin-left: 5%;
+        padding: 15px;
+    }
+    #login {
+        display: none;
+    }
+    #register {
+        display: none;
+    }
+    .authsvgregister {
+        max-height: 33vh;
+    }
+    .authsvgregister svg {
+        height: 90%;
+    }
+    .authsvglogin svg {
+        height: 86%;
+    }
+    .authsvglogin {
+        max-height: 35vh;
     }
 }

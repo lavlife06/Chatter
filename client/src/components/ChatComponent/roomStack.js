@@ -7,7 +7,7 @@ import {
     UPDATE_PRICHATROOMS,
 } from "../../reduxstuff/actions/types";
 import "./chat.css";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import CreateRoomModal from "./chatModals/CreateRoomModal";
 import ChatPrivateModal from "./chatModals/ChatPrivateModal";
 import Rooms from "./rooms";
@@ -37,6 +37,19 @@ const RoomStack = () => {
             name: myprofile.name,
         },
     ]);
+
+    const [windowWidth, setWindowWidth] = React.useState(window.outerWidth);
+    const breakpoint = 452;
+
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setWindowWidth(window.outerWidth);
+        };
+        window.addEventListener("resize", handleWindowResize);
+
+        // Return a function from the effect that removes the event listener
+        return () => window.removeEventListener("resize", handleWindowResize);
+    }, []);
 
     useEffect(() => {
         console.log(`printing socketId from Frontend:${socket.id}`);
@@ -134,6 +147,20 @@ const RoomStack = () => {
         setIsPriModalVisible(false);
     };
 
+    const roomsStack = () => (
+        <div className="leftsidebardiv">
+            <Rooms
+                type={"groupChat"}
+                myprofile={myprofile}
+                rooms={rooms}
+                setRooms={setRooms}
+                setSelectedRoom={setSelectedRoom}
+                setIsGroupModalVisible={setIsGroupModalVisible}
+                setIsPriModalVisible={setIsPriModalVisible}
+            />
+        </div>
+    );
+
     return (
         <Fragment>
             <Modal
@@ -182,26 +209,29 @@ const RoomStack = () => {
                     setIsPriModalVisible={setIsPriModalVisible}
                 />{" "}
             </Modal>
-            <div className="leftsidebardiv">
-                <Rooms
-                    type={"groupChat"}
-                    myprofile={myprofile}
-                    rooms={rooms}
-                    setRooms={setRooms}
-                    setSelectedRoom={setSelectedRoom}
-                    setIsGroupModalVisible={setIsGroupModalVisible}
-                    setIsPriModalVisible={setIsPriModalVisible}
-                />
-            </div>
-            {selectedRoom ? (
+            {windowWidth < breakpoint && !selectedRoom ? roomsStack() : null}
+            {windowWidth < breakpoint && selectedRoom ? (
                 <div className="rightsidebardiv">
                     <ChatWindow
                         selectedRoom={selectedRoom}
                         changeRoomsStack={changeRoomsStack}
                         theRooms={rooms}
+                        setSelectedRoom={setSelectedRoom}
                     />
                 </div>
-            ) : (
+            ) : null}
+            {windowWidth > breakpoint ? roomsStack() : null}
+            {windowWidth > breakpoint && selectedRoom ? (
+                <div className="rightsidebardiv">
+                    <ChatWindow
+                        selectedRoom={selectedRoom}
+                        changeRoomsStack={changeRoomsStack}
+                        theRooms={rooms}
+                        setSelectedRoom={setSelectedRoom}
+                    />
+                </div>
+            ) : null}
+            {windowWidth > breakpoint && !selectedRoom ? (
                 <div
                     className="rightsidebardiv"
                     style={{ justifyContent: "center", alignItems: "center" }}
@@ -230,12 +260,27 @@ const RoomStack = () => {
                             color: "black",
                             fontWeight: "300",
                             marginTop: "20px",
+                            fontSize: "calc(12px + 1vw)",
                         }}
                     >
                         Enjoy joining or creating group or chat private
                     </h1>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        // className="login-form-button"
+                        style={{
+                            color: "white",
+                            borderRadius: "8px",
+                        }}
+                        onSubmit={() => {
+                            setIsGroupModalVisible(true);
+                        }}
+                    >
+                        Create Group
+                    </Button>
                 </div>
-            )}
+            ) : null}
         </Fragment>
     );
 };

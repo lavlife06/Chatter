@@ -68,7 +68,6 @@ export const updateProfile = (socketId) => async (dispatch) => {
         setAuthToken(res.data.token);
 
         localStorage.setItem("token", res.data.token);
-        
         dispatch({
             type: UPDATE_PROFILE,
             payload: res.data,

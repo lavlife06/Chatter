@@ -34,6 +34,18 @@
 
 </p>
 
+<!-- <h2 align="center"><a  href="https://pacific-crag-66308.herokuapp.com/">Live Demo</a></h2> -->
+
+<!-- <p align="center">
+<img src="https://imgur.com/MYBT6fY.gif" width="80%"></p> -->
+
+## Login Details for Testing
+email: test@gmail.com <br/>
+password: test1234
+
+email: test2@gmail.com <br/>
+password: test1234
+
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">

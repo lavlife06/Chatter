@@ -5,11 +5,7 @@ import {
     GET_PROFILES,
     REGISTER_SUCCESS,
     UPDATE_PRICHATROOMS,
-    // GET_PROFILES,
-    // PROFILE_ERROR,
     UPDATE_PROFILE,
-    // GET_REPOS,
-    // NO_REPOS,
 } from "../actions/types";
 
 const initialState = {
