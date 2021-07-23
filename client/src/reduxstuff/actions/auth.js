@@ -39,7 +39,7 @@ export const register = (name, email, password) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
 
         if (errors) {
@@ -80,14 +80,14 @@ export const login = (email, password) => async (dispatch) => {
         });
     } catch (err) {
         const errors = err.response.data.errors;
-        console.log(err);
+        // console.log(err);
         if (errors) {
             errors.forEach((error) => {
                 dispatch(setAlert(error.msg, "error"));
                 // alert(error.msg);
             });
         }
-        console.log(err);
+        // console.log(err);
         dispatch({
             type: LOGIN_FAIL,
         });
