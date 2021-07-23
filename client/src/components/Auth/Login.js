@@ -20,14 +20,17 @@ const Login = () => {
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const myRoomsLoading = useSelector((state) => state.room.loading);
 
+    const [timeout, settimeout] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = () => {
         dispatch(login(formData.email, formData.password));
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000);
+        settimeout(
+            setTimeout(() => {
+                setLoading(false);
+            }, 3000)
+        );
         return false;
     };
 
@@ -41,10 +44,16 @@ const Login = () => {
     useEffect(() => {
         if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
             setLoading(false);
+            clearTimeout(timeout);
+            settimeout(null);
         }
     }, [isAuthenticated, myprofileLoading, myRoomsLoading]);
 
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
+        if (timeout) {
+            clearTimeout(timeout);
+            settimeout(null);
+        }
         return <Redirect to="/main" />;
     }
     // console.log(formData);
