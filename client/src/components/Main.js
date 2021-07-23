@@ -20,11 +20,14 @@ const Main = () => {
     useEffect(() => {
         let socketinstance;
         if (token) {
-            socketinstance = io("http://192.168.0.116:5000", {
-                query: {
-                    token,
-                },
-            });
+            socketinstance = io(
+                "https://chatter-chatapplication.herokuapp.com/",
+                {
+                    query: {
+                        token,
+                    },
+                }
+            );
             // let mysocketid;
             let checker = setInterval(() => {
                 if (socketinstance.connected) {
