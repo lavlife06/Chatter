@@ -27,7 +27,7 @@ export const register = (name, email, password) => async (dispatch) => {
 
     try {
         const res = await axios.post(
-            "http://localhost:5000/api/signup",
+            "http://192.168.0.116:5000/api/signup",
             body,
             config
         );
@@ -70,7 +70,7 @@ export const login = (email, password) => async (dispatch) => {
 
     try {
         const res = await axios.post(
-            "http://localhost:5000/api/login",
+            "http://192.168.0.116:5000/api/login",
             body,
             config
         );

@@ -22,23 +22,28 @@ const Register = () => {
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const myRoomsLoading = useSelector((state) => state.room.loading);
 
+    const [timeout, settimeout] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
-            setLoading(false);
-        }
-    }, [isAuthenticated, myprofileLoading, myRoomsLoading]);
 
     const handleSubmit = () => {
         // e.preventDefault();
         dispatch(register(formData.name, formData.email, formData.password));
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000);
+        settimeout(
+            setTimeout(() => {
+                setLoading(false);
+            }, 3000)
+        );
         return false;
     };
+
+    useEffect(() => {
+        if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
+            setLoading(false);
+            clearTimeout(timeout);
+            settimeout(null);
+        }
+    }, [isAuthenticated, myprofileLoading, myRoomsLoading]);
 
     const changeHandler = (e) => {
         setformData({
@@ -47,7 +52,10 @@ const Register = () => {
         });
     };
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
-        // console.log(isAuthenticated, myprofileLoading, myRoomsLoading);
+        if (timeout) {
+            clearTimeout(timeout);
+            settimeout(null);
+        }
         return <Redirect to="/main" />;
     }
 
