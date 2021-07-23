@@ -20,7 +20,7 @@ const Main = () => {
     useEffect(() => {
         let socketinstance;
         if (token) {
-            socketinstance = io("localhost:5000", {
+            socketinstance = io("http://192.168.0.116:5000", {
                 query: {
                     token,
                 },

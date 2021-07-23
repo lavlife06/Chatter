@@ -39,7 +39,7 @@ const RoomStack = () => {
     ]);
 
     const [windowWidth, setWindowWidth] = React.useState(window.outerWidth);
-    const breakpoint = 452;
+    const breakpoint = 450;
 
     useEffect(() => {
         const handleWindowResize = () => {
@@ -209,8 +209,8 @@ const RoomStack = () => {
                     setIsPriModalVisible={setIsPriModalVisible}
                 />{" "}
             </Modal>
-            {windowWidth < breakpoint && !selectedRoom ? roomsStack() : null}
-            {windowWidth < breakpoint && selectedRoom ? (
+            {windowWidth <= breakpoint && !selectedRoom ? roomsStack() : null}
+            {windowWidth <= breakpoint && selectedRoom ? (
                 <div className="rightsidebardiv">
                     <ChatWindow
                         selectedRoom={selectedRoom}
@@ -241,17 +241,7 @@ const RoomStack = () => {
                             onClick={(e) => {
                                 setIsGroupModalVisible(true);
                             }}
-                            className="far fa-paper-plane"
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                color: "black",
-                                fontSize: "35px",
-                                fontWeight: "bold",
-                                paddingBottom: "1px",
-                                cursor: "pointer",
-                            }}
+                            className="far fa-paper-plane sendmessageicon"
                         />
                     </div>
                     <h1
@@ -260,10 +250,10 @@ const RoomStack = () => {
                             color: "black",
                             fontWeight: "300",
                             marginTop: "20px",
-                            fontSize: "calc(12px + 1vw)",
+                            fontSize: "25px",
                         }}
                     >
-                        Enjoy joining or creating group or chat private
+                        Enjoy group chat and chat private
                     </h1>
                     <Button
                         type="primary"
@@ -273,7 +263,7 @@ const RoomStack = () => {
                             color: "white",
                             borderRadius: "8px",
                         }}
-                        onSubmit={() => {
+                        onClick={() => {
                             setIsGroupModalVisible(true);
                         }}
                     >
