@@ -8,7 +8,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const myRoomsLoading = useSelector((state) => state.room.loading);
     const myprofileLoading = useSelector((state) => state.profile.loading);
     const token = useSelector((state) => state.auth.token);
-    console.log(!myprofileLoading, !myRoomsLoading, token);
     return (
         <Route
             {...rest}
