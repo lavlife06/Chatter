@@ -108,7 +108,7 @@ The only thing required to download other dependencies is npm.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/lavlife06/DevConnector.git
+   git clone https://github.com/lavlife06/Chatter.git
    ```
 2. Install NPM packages
    ```sh
