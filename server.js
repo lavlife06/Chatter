@@ -38,9 +38,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 5000;
-console.log(PORT);
+// console.log(PORT);
 const server = app.listen(PORT, () => {
-    console.log("Listen to Port to 5000");
+    console.log("Listen to Port to ", PORT);
 });
 
 const io = require("socket.io")(server);
@@ -53,7 +53,7 @@ io.use((socket, next) => {
             keys.jwtSecret,
             function (err, decoded) {
                 if (err) return next(new Error("Authentication error"));
-                console.log(decoded, "decoded");
+                // console.log(decoded, "decoded");
                 socket.user = decoded.user;
                 if (decoded.socketid) {
                     socket.id = decoded.socketid;
@@ -65,7 +65,7 @@ io.use((socket, next) => {
         next(new Error("Authentication error"));
     }
 }).on("connection", (socket) => {
-    console.log("Hey i am socket.io and it seems that i am connected");
+    // console.log("Hey i am socket.io and it seems that i am connected");
 
     // console.log(io.sockets.adapter.rooms);
 
@@ -78,8 +78,8 @@ io.use((socket, next) => {
     // });
 
     socket.on("joined", ({ name }, callback) => {
-        console.log(io.sockets.adapter.rooms);
-        console.log(`my name ${name},${socket.id}`);
+        // console.log(io.sockets.adapter.rooms);
+        // console.log(`my name ${name},${socket.id}`);
     });
 
     socket.on("leaveRoom", ({ room }) => {
@@ -160,7 +160,7 @@ io.use((socket, next) => {
         "createGrpChatRoom",
         async ({ user, roomName, roomMembers }, callback) => {
             //  Creating Room
-            console.log(io.sockets.adapter.rooms);
+            // console.log(io.sockets.adapter.rooms);
             try {
                 let room = new Room({
                     user,
@@ -187,27 +187,27 @@ io.use((socket, next) => {
                             "addNewGrpChatRoom",
                             { room }
                         );
-                        console.log(
-                            `event createdGrpChatRoom emmited to ${memberProfile.name}`
-                        );
-                        console.log(memberProfile.socketId);
+                        // console.log(
+                        //     `event createdGrpChatRoom emmited to ${memberProfile.name}`
+                        // );
+                        // console.log(memberProfile.socketId);
                     } catch (err) {
                         // callback(err);
-                        console.error(err.message);
+                        // console.error(err.message);
                     }
                 }
             } catch (err) {
                 // callback(err);
-                console.error(err.message);
+                // console.error(err.message);
             }
         }
     );
 
     socket.on("createPriChatRoom", async ({ user, roomMembers }, callback) => {
-        console.log(io.sockets.adapter.rooms);
+        // console.log(io.sockets.adapter.rooms);
 
         //  Creating Room
-        console.log(roomMembers);
+        // console.log(roomMembers);
 
         let usersInfo = await createPrivateChatroom(roomMembers);
 
@@ -233,8 +233,8 @@ io.use((socket, next) => {
     });
 
     socket.on("disconnect", () => {
-        console.log(socket.connected);
-        console.log("User have left");
-        console.log(io.sockets.adapter.rooms);
+        // console.log(socket.connected);
+        // console.log("User have left");
+        // console.log(io.sockets.adapter.rooms);
     });
 });

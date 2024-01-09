@@ -38,7 +38,7 @@ const ChatWindow = ({
         }
         return () => {
             socket.off("getRoomById");
-            console.log("inside unmount of getroombyid");
+            // console.log("inside unmount of getroombyid");
         };
     }, [myParticularRoom]);
 
@@ -226,7 +226,7 @@ const ChatWindow = ({
                         setChatText(e.target.value);
                     }}
                     onKeyPress={(e) => {
-                        console.log(e.key);
+                        // console.log(e.key);
                         if (e.key === "Enter") {
                             sendMessage(e);
                         }
@@ -241,7 +241,7 @@ const ChatWindow = ({
                 />
                 <i
                     onClick={(e) => {
-                        console.log(e);
+                        // console.log(e);
                         sendMessage(e);
                     }}
                     className="far fa-paper-plane"

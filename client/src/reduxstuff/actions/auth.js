@@ -26,11 +26,7 @@ export const register = (name, email, password) => async (dispatch) => {
     const body = JSON.stringify({ name, email, password });
 
     try {
-        const res = await axios.post(
-            "http://192.168.0.116:5000/api/signup",
-            body,
-            config
-        );
+        const res = await axios.post("/api/signup", body, config);
 
         setAuthToken(res.data.token);
 
@@ -43,7 +39,7 @@ export const register = (name, email, password) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         const errors = err.response.data.errors; // This errors will come from backend that we setted as errors.array
 
         if (errors) {
@@ -69,11 +65,7 @@ export const login = (email, password) => async (dispatch) => {
     const body = JSON.stringify({ email, password });
 
     try {
-        const res = await axios.post(
-            "http://192.168.0.116:5000/api/login",
-            body,
-            config
-        );
+        const res = await axios.post("/api/login", body, config);
 
         setAuthToken(res.data.token);
 
@@ -88,14 +80,14 @@ export const login = (email, password) => async (dispatch) => {
         });
     } catch (err) {
         const errors = err.response.data.errors;
-        console.log(err);
+        // console.log(err);
         if (errors) {
             errors.forEach((error) => {
                 dispatch(setAlert(error.msg, "error"));
                 // alert(error.msg);
             });
         }
-        console.log(err);
+        // console.log(err);
         dispatch({
             type: LOGIN_FAIL,
         });

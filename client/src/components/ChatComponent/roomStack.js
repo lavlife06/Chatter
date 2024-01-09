@@ -52,7 +52,7 @@ const RoomStack = () => {
     }, []);
 
     useEffect(() => {
-        console.log(`printing socketId from Frontend:${socket.id}`);
+        // console.log(`printing socketId from Frontend:${socket.id}`);
     }, [socket.id]);
 
     //  for initialising every room with some more data
@@ -74,7 +74,7 @@ const RoomStack = () => {
 
         return () => {
             socket.off("addNewGrpChatRoom");
-            console.log("inside unmount of off.addNewGrpChatRoom");
+            // console.log("inside unmount of off.addNewGrpChatRoom");
         };
     }, [rooms]);
 
@@ -114,7 +114,7 @@ const RoomStack = () => {
 
         return () => {
             socket.off("newMessage");
-            console.log("inside unmount of off.newMessage");
+            // console.log("inside unmount of off.newMessage");
         };
     }, [rooms]);
 
