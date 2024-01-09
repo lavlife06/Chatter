@@ -47,6 +47,7 @@ const Login = () => {
             clearTimeout(timeout);
             settimeout(null);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated, myprofileLoading, myRoomsLoading]);
 
     if (isAuthenticated && !myprofileLoading && !myRoomsLoading) {
