@@ -39,13 +39,20 @@
 <!-- <p align="center">
 <img src="https://imgur.com/MYBT6fY.gif" width="80%"></p> -->
 
-## Login Details for Testing
+<!-- ## Login Details for Testing
 email: test@gmail.com <br/>
 password: test1234
 
 email: test2@gmail.com <br/>
-password: test1234
+password: test1234 -->
 
+## UI Look
+<img src="./images/DesktopSignup.png">
+<img src="./images/DesktopGroupChat.png">
+<img src="./images/DesktopPrivateChat.png">
+<img src="./images/CreateChatModal.png">
+<img src="./images/MobileAllChat.png"  height=300>
+<img src="./images/MobilePrivateChat.png" height=300>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
