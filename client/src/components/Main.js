@@ -21,7 +21,7 @@ const Main = () => {
         let socketinstance;
         if (token) {
             socketinstance = io(
-                "https://chatter-chatapplication.herokuapp.com/",
+                process.env.REACT_APP_API_ENDPOINT,
                 {
                     query: {
                         token,
