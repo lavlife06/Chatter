@@ -23,6 +23,15 @@ connectDB();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//health check
+app.get("/healthcheck", async (req, res) => {
+  try {
+    res.status(200).json({message: "Working fine"});
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 require("./routes/signup")(app);
 require("./routes/login")(app);
 require("./routes/profile")(app);
