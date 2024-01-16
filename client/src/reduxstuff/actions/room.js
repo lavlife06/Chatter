@@ -1,10 +1,11 @@
 import { GET_MYROOMS } from "./types";
 import axios from "axios";
+import { ApiEndPoints, ApiServerHost } from "../../utils/constants";
 
 // get my rooms
 export const getMyRooms = (token) => async (dispatch) => {
     try {
-        const res = await axios.get("/api/room/myRooms", {
+        const res = await axios.get(`${ApiServerHost}${ApiEndPoints.getMyRooms}`, {
             headers: {
                 "x-auth-token": token,
             },

@@ -14,6 +14,7 @@ import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
 import { getCurrentProfile } from "./profile";
 import { getMyRooms } from "./room";
+import { ApiEndPoints, ApiServerHost } from "../../utils/constants";
 
 // Regiseter user
 export const register = (name, email, password) => async (dispatch) => {
@@ -26,7 +27,7 @@ export const register = (name, email, password) => async (dispatch) => {
     const body = JSON.stringify({ name, email, password });
 
     try {
-        const res = await axios.post("/api/signup", body, config);
+        const res = await axios.post(`${ApiServerHost}${ApiEndPoints.register}`, body, config);
 
         setAuthToken(res.data.token);
 
@@ -65,7 +66,7 @@ export const login = (email, password) => async (dispatch) => {
     const body = JSON.stringify({ email, password });
 
     try {
-        const res = await axios.post("/api/login", body, config);
+        const res = await axios.post(`${ApiServerHost}${ApiEndPoints.login}`, body, config);
 
         setAuthToken(res.data.token);
 
