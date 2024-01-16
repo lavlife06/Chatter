@@ -46,6 +46,13 @@ password: test1234
 email: test2@gmail.com <br/>
 password: test1234 -->
 
+## Login Details for Testing
+email: test@gmail.com <br/>
+password: test1234
+
+email: test2@gmail.com <br/>
+password: test1234
+
 ## UI Look
 <img src="./images/DesktopSignup.png">
 <img src="./images/DesktopGroupChat.png">
